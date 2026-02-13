@@ -32,8 +32,8 @@ const Footer = () => (
           <h4 className="font-bold text-foreground mb-4">Newsletter</h4>
           <p className="text-sm text-muted-foreground mb-4">Receba as melhores ofertas primeiro.</p>
           <div className="flex gap-2">
-            <input className="bg-muted border-none rounded px-3 py-2 text-sm w-full focus:ring-2 focus:ring-primary" placeholder="Seu e-mail" type="email" />
-            <button className="bg-primary hover:bg-primary-dark text-primary-foreground px-4 py-2 rounded text-sm font-medium transition-colors">OK</button>
+            <input className="bg-muted border-none rounded-lg px-3 py-2 text-sm w-full focus:ring-2 focus:ring-primary" placeholder="Seu e-mail" type="email" />
+            <button className="bg-primary hover:bg-primary-dark text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors">OK</button>
           </div>
         </div>
       </div>
