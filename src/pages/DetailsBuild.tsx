@@ -136,29 +136,29 @@ const DetailsBuild = () => {
             </span>
             Lista de Componentes
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {components.map((comp) => (
-              <div key={comp.name} className="bg-surface rounded-xl shadow-sm hover:shadow-md border border-border transition-all duration-300 group flex flex-col h-full overflow-hidden">
-                <div className="p-4 relative">
-                  <span className="inline-block px-2 py-1 text-[10px] font-bold tracking-wider uppercase text-primary bg-blue-50 rounded mb-2">
-                    {comp.category}
-                  </span>
-                  <div className="relative aspect-square mb-4 bg-muted rounded-lg flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-300">
-                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded shadow-sm z-10">{comp.discount}</span>
-                    <span className="material-symbols-outlined text-6xl text-muted-foreground group-hover:text-primary transition-colors">{comp.icon}</span>
+              <div key={comp.name} className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-4 flex flex-col">
+                <div className="relative mb-4 bg-card rounded-lg p-6 flex items-center justify-center h-48">
+                  <div className="absolute top-2 left-2">
+                    <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded">{comp.discount}</span>
                   </div>
-                  <h3 className="font-bold text-foreground text-sm md:text-base leading-snug mb-1 line-clamp-2 min-h-[2.5rem]">{comp.name}</h3>
-                  <p className="text-xs text-muted-foreground mb-3 line-clamp-1">{comp.desc}</p>
-                  <div className="flex flex-col mt-auto">
-                    <span className="text-xs text-muted-foreground line-through mb-0.5">{comp.oldPrice}</span>
-                    <div className="flex items-baseline gap-1 mb-4">
-                      <span className="text-lg font-bold text-foreground">{comp.newPrice}</span>
-                    </div>
-                    <button className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1 shadow-sm">
-                      Ver oferta <span className="material-symbols-outlined text-xs">chevron_right</span>
-                    </button>
+                  <div className="w-full h-full flex items-center justify-center bg-muted rounded text-muted-foreground">
+                    <span className="material-symbols-outlined text-6xl">{comp.icon}</span>
                   </div>
                 </div>
+                <div className="flex-1">
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{comp.category}</span>
+                  <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base leading-tight">{comp.name}</h3>
+                  <p className="text-xs text-muted-foreground line-through">{comp.oldPrice}</p>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xl font-bold text-foreground">{comp.newPrice}</span>
+                    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded">{comp.discount}</span>
+                  </div>
+                </div>
+                <Link to="/ofertas/1" className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-sm font-medium py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors">
+                  Ver oferta <span className="material-symbols-outlined text-xs">chevron_right</span>
+                </Link>
               </div>
             ))}
           </div>
