@@ -42,7 +42,7 @@ const DetailsBuild = () => {
       </header>
 
       <main className="container mx-auto px-4 -mt-10 relative z-30 pb-20">
-        <div className="bg-surface rounded-2xl shadow-xl overflow-hidden border border-border">
+        <div className="bg-surface rounded-xl shadow-xl overflow-hidden border border-border">
           <div className="flex flex-col lg:flex-row">
             {/* Image */}
             <div className="lg:w-1/2 bg-gray-900 relative min-h-[400px] lg:min-h-[600px] flex items-center justify-center p-8 group">
@@ -100,19 +100,19 @@ const DetailsBuild = () => {
                 <div className="flex flex-col gap-4">
                   <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Compartilhar Build</h4>
                   <div className="flex gap-4">
-                    <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
                       <span className="material-symbols-outlined">chat</span>
                       <span className="hidden xl:inline">WhatsApp</span>
                     </button>
-                    <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
                       <span className="material-symbols-outlined">send</span>
                       <span className="hidden xl:inline">Telegram</span>
                     </button>
-                    <button className="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <button className="flex-1 bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
                       <span className="material-symbols-outlined">post</span>
                       <span className="hidden xl:inline">X / Twitter</span>
                     </button>
-                    <button className="flex-1 bg-muted hover:opacity-80 text-foreground py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm border border-border">
+                    <button className="flex-1 bg-muted hover:opacity-80 text-foreground py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm border border-border">
                       <span className="material-symbols-outlined text-xl">content_copy</span>
                       <span className="hidden xl:inline">Copiar Link</span>
                     </button>
@@ -138,7 +138,7 @@ const DetailsBuild = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {components.map((comp) => (
-              <div key={comp.name} className="bg-surface rounded-xl shadow-md hover:shadow-xl border border-border transition-all duration-300 group flex flex-col h-full overflow-hidden">
+              <div key={comp.name} className="bg-surface rounded-xl shadow-sm hover:shadow-md border border-border transition-all duration-300 group flex flex-col h-full overflow-hidden">
                 <div className="p-4 relative">
                   <span className="inline-block px-2 py-1 text-[10px] font-bold tracking-wider uppercase text-primary bg-blue-50 rounded mb-2">
                     {comp.category}
@@ -154,8 +154,8 @@ const DetailsBuild = () => {
                     <div className="flex items-baseline gap-1 mb-4">
                       <span className="text-lg font-bold text-foreground">{comp.newPrice}</span>
                     </div>
-                    <button className="w-full bg-primary hover:bg-primary-dark text-primary-foreground text-sm font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-1.5">
-                      Ver oferta
+                    <button className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-sm font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1 shadow-sm">
+                      Ver oferta <span className="material-symbols-outlined text-xs">chevron_right</span>
                     </button>
                   </div>
                 </div>

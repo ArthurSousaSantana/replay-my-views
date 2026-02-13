@@ -84,7 +84,7 @@ const ListingBuilds = () => {
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <p className="text-muted-foreground text-sm">Mostrando <span className="font-bold text-foreground">6</span> resultados</p>
-              <select className="bg-surface border border-border text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5">
+              <select className="bg-surface border border-border text-sm rounded-lg focus:ring-primary focus:border-primary block p-2">
                 <option>Relevância</option>
                 <option>Menor Preço</option>
                 <option>Maior Preço</option>
@@ -101,14 +101,14 @@ const ListingBuilds = () => {
             {/* Pagination */}
             <div className="mt-12 flex justify-center">
               <nav className="flex items-center gap-2">
-                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted">
-                  <span className="material-symbols-outlined text-sm">chevron_left</span>
+                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-muted-foreground hover:bg-muted transition-colors">
+                  <span className="material-symbols-outlined text-base">chevron_left</span>
                 </button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-primary-foreground font-medium">1</button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border text-foreground hover:bg-muted transition-colors">2</button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border text-foreground hover:bg-muted transition-colors">3</button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted">
-                  <span className="material-symbols-outlined text-sm">chevron_right</span>
+                <button className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary text-primary-foreground font-medium shadow-sm">1</button>
+                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-foreground hover:bg-muted transition-colors">2</button>
+                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-foreground hover:bg-muted transition-colors">3</button>
+                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-muted-foreground hover:bg-muted transition-colors">
+                  <span className="material-symbols-outlined text-base">chevron_right</span>
                 </button>
               </nav>
             </div>

@@ -49,8 +49,8 @@ const BuildCard = ({ title, description, image, badgeText, badgeColor, oldPrice,
             <p className="text-[10px] text-muted-foreground">à vista no PIX</p>
           </div>
         </div>
-        <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm shadow-md">
-          Ver detalhes da build
+        <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm shadow-sm">
+          Ver detalhes <span className="material-symbols-outlined text-xs">chevron_right</span>
         </Link>
       </div>
     </div>
