@@ -16,17 +16,17 @@ const builds = [
 ];
 
 const offers = [
-  { title: "iPhone 15 128GB", image: IMG_IPHONE, badge: "-25% OFF", badgeClass: "bg-red-500 text-white", oldPrice: "A partir de R$ 6.799", newPrice: "R$ 5.099,00", discount: "+25%" },
-  { title: "Samsung Galaxy Tab S9", image: IMG_TABLET, badge: "Melhor Preço", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "A partir de R$ 6.999", newPrice: "R$ 4.199,00", discount: "+31%" },
-  { title: "Samsung 980 PRO NVMe", icon: "storage", badge: "Menor Preço", badgeClass: "bg-blue-500 text-white uppercase", oldPrice: "A partir de R$ 1.699", newPrice: "R$ 1.199,00", discount: "+26%" },
-  { title: "Corsair Vengeance RGB", icon: "memory", badge: "Oferta Limitada", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "32GB (2x16) DDR5", newPrice: "R$ 899,00", discount: "+98%" },
+  { title: "iPhone 15 128GB", image: IMG_IPHONE, category: "Smartphone", badge: "-25% OFF", badgeClass: "bg-red-500 text-white", oldPrice: "A partir de R$ 6.799", newPrice: "R$ 5.099,00", discount: "+25%" },
+  { title: "Samsung Galaxy Tab S9", image: IMG_TABLET, category: "Tablet", badge: "Melhor Preço", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "A partir de R$ 6.999", newPrice: "R$ 4.199,00", discount: "+31%" },
+  { title: "Samsung 980 PRO NVMe", icon: "storage", category: "Armazenamento", badge: "Menor Preço", badgeClass: "bg-blue-500 text-white uppercase", oldPrice: "A partir de R$ 1.699", newPrice: "R$ 1.199,00", discount: "+26%" },
+  { title: "Corsair Vengeance RGB", icon: "memory", category: "Memória RAM", badge: "Oferta Limitada", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "32GB (2x16) DDR5", newPrice: "R$ 899,00", discount: "+98%" },
 ];
 
 const hardwareOffers = [
-  { title: "GeForce RTX 4070 12GB", icon: "videogame_asset", badge: "-12% OFF", oldPrice: "De R$ 4.599,00", newPrice: "R$ 4.049,00", discount: "12%" },
-  { title: "ASUS ROG Strix Z790-E", icon: "developer_board", badge: "Lançamento", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "De R$ 3.899,00", newPrice: "R$ 3.199,00", discount: "18%" },
-  { title: "Fonte Corsair RM750e", icon: "power", badge: "80+ Gold", badgeClass: "bg-blue-500 text-white uppercase", oldPrice: "De R$ 899,00", newPrice: "R$ 679,00", discount: "24%" },
-  { title: "Teclado Mecânico Keychron K2", icon: "keyboard", badge: "RGB Pro", badgeClass: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 950,00", newPrice: "R$ 759,00", discount: "20%" },
+  { title: "GeForce RTX 4070 12GB", icon: "videogame_asset", category: "GPU", badge: "-12% OFF", oldPrice: "De R$ 4.599,00", newPrice: "R$ 4.049,00", discount: "12%" },
+  { title: "ASUS ROG Strix Z790-E", icon: "developer_board", category: "Placa Mãe", badge: "Lançamento", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "De R$ 3.899,00", newPrice: "R$ 3.199,00", discount: "18%" },
+  { title: "Fonte Corsair RM750e", icon: "power", category: "Fonte", badge: "80+ Gold", badgeClass: "bg-blue-500 text-white uppercase", oldPrice: "De R$ 899,00", newPrice: "R$ 679,00", discount: "24%" },
+  { title: "Teclado Mecânico Keychron K2", icon: "keyboard", category: "Periférico", badge: "RGB Pro", badgeClass: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 950,00", newPrice: "R$ 759,00", discount: "20%" },
 ];
 
 const Index = () => {
@@ -127,6 +127,11 @@ const Index = () => {
                 )}
               </div>
               <div className="flex-1 flex flex-col">
+                {offer.category && (
+                  <div className="mb-1">
+                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{offer.category}</span>
+                  </div>
+                )}
                 <h3 className="font-semibold text-foreground mb-auto text-sm md:text-base leading-tight">{offer.title}</h3>
                 <div className="mt-4">
                   <p className="text-xs text-muted-foreground line-through">{offer.oldPrice}</p>
@@ -170,6 +175,11 @@ const Index = () => {
                 </div>
               </div>
               <div className="flex-1 flex flex-col">
+                {offer.category && (
+                  <div className="mb-1">
+                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{offer.category}</span>
+                  </div>
+                )}
                 <h3 className="font-semibold text-foreground mb-auto text-sm md:text-base leading-tight">{offer.title}</h3>
                 <div className="mt-4">
                   <p className="text-xs text-muted-foreground line-through">{offer.oldPrice}</p>
