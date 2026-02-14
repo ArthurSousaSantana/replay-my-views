@@ -2,29 +2,24 @@ import { Link } from "react-router-dom";
 
 interface BuildCardProps {
   title: string;
-  description: string;
   image: string;
   badgeText: string;
   badgeColor: string;
   oldPrice: string;
   newPrice: string;
   discount: string;
+  description?: string;
   chips?: string[];
   link?: string;
 }
 
-const BuildCard = ({ title, description, image, badgeText, badgeColor, oldPrice, newPrice, discount, chips = [], link = "/builds/1" }: BuildCardProps) => (
-  <div className="bg-surface rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-border flex flex-col h-full">
-    <div className="relative h-56 bg-gray-900 overflow-hidden">
+const BuildCard = ({ title, image, badgeText, badgeColor, oldPrice, newPrice, discount, description, chips = [], link = "/builds/1" }: BuildCardProps) => (
+  <div className="bg-surface rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden group border border-border flex flex-col h-full">
+    <div className="relative h-64 bg-gray-900 overflow-hidden">
       <div className="absolute top-4 left-4 z-10">
-        <span className={`${badgeColor} text-primary-foreground text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm`}>{badgeText}</span>
+        <span className={`${badgeColor} text-xs font-bold px-3 py-1 rounded-md backdrop-blur-sm uppercase tracking-wider`}>{badgeText}</span>
       </div>
-      <div className="absolute top-4 right-4 z-10">
-        <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md p-1.5 rounded-full text-primary-foreground transition-colors">
-          <span className="material-symbols-outlined text-lg">favorite</span>
-        </button>
-      </div>
-      <img alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" src={image} />
+      <img alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={image} />
       {chips.length > 0 && (
         <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
           <div className="flex gap-2 text-xs font-medium text-white/90">
@@ -35,22 +30,24 @@ const BuildCard = ({ title, description, image, badgeText, badgeColor, oldPrice,
         </div>
       )}
     </div>
-    <div className="p-5 flex-1 flex flex-col">
-      <h3 className="text-lg font-bold text-foreground mb-1 line-clamp-1">{title}</h3>
-      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{description}</p>
+    <div className="p-6 flex-1 flex flex-col">
+      <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
+      {description && (
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{description}</p>
+      )}
       <div className="mt-auto">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs text-muted-foreground line-through">{oldPrice}</span>
-          <span className="bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.5 rounded">{discount}</span>
+          <span className="text-sm text-muted-foreground line-through">{oldPrice}</span>
         </div>
-        <div className="flex justify-between items-end mb-4">
+        <div className="flex justify-between items-end mb-6">
           <div>
+            <p className="text-xs text-muted-foreground mb-1">A partir de</p>
             <span className="text-2xl font-bold text-foreground">{newPrice}</span>
-            <p className="text-[10px] text-muted-foreground">à vista no PIX</p>
           </div>
+          <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded">{discount}</span>
         </div>
-        <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm shadow-sm">
-          Ver detalhes <span className="material-symbols-outlined text-xs">chevron_right</span>
+        <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm">
+          Ver detalhes <span className="material-symbols-outlined text-sm">chevron_right</span>
         </Link>
       </div>
     </div>

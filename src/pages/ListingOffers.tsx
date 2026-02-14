@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import HeroBanner from "@/components/HeroBanner";
+import OfferCard from "@/components/OfferCard";
 
 const IMG_IPHONE = "https://lh3.googleusercontent.com/aida-public/AB6AXuBta2gopW6oGAGdy5rD8qFBk0bzVQzoq2OqQN1eXzgxCPMLLBOtzdqBRxuOgmhovIpPAao3pklK4B_NS_NQEQOyGurv9t-ypWvlZ6tc3dgTyC0PTFnQj1xuAQS3ap4ebnSoof-B2AMF2punEi4BqbOz8BYfLgCJQKA3OzNaMPD5cpcj87gEHSvMej8WvK62-OVYX2j5qLRtB8vPhhUNd2bEpOuWfNHqy6tGgB99IRMYDoBxOuwnt9AJa8KJnApDjgvp3I6A6aamcg";
 const IMG_TABLET = "https://lh3.googleusercontent.com/aida-public/AB6AXuBpUH1nXPTRywV4pgIWNorBhrxPUTFJ29a11qs36UiKJVO0lnfDXkQhKDi2WctYMiBArf9bJky_KK3-MbpvuN1Yt3V8O3-bs7Jqtxd_Ik2nRDzUoaphHIpdVoc_mLbvbahr6unYu7HkKlSXOEN2dLCxpEOn_f-7w_xl-UwPIN0GcVNpndkTXvlkEYC5P1zNkxB1a9JijUJ5PMGRCsg9wVYidr2zXFbHtW_2i_8ADuZSnN4Gp0RzJHu7P6czYdYMVH2ryiEfEFNiUg";
 
 const allOffers = [
-  { title: "iPhone 15 128GB - Preto Espacial", image: IMG_IPHONE, category: "Smartphone", badge: "-25% OFF", badgeClass: "bg-red-500 text-white", oldPrice: "De R$ 6.799", newPrice: "R$ 5.099,00", discount: "+25%" },
-  { title: "Samsung Galaxy Tab S9 WiFi", image: IMG_TABLET, category: "Tablet", badge: "Melhor Preço", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "De R$ 6.999", newPrice: "R$ 4.199,00", discount: "+31%" },
-  { title: "SSD Samsung 980 PRO 1TB NVMe", icon: "storage", category: "Armazenamento", badge: "Menor Preço", badgeClass: "bg-blue-500 text-white uppercase", oldPrice: "De R$ 1.699", newPrice: "R$ 1.199,00", discount: "+26%" },
-  { title: "Corsair Vengeance RGB 32GB DDR5", icon: "memory", category: "Memória RAM", badge: "Oferta Limitada", badgeClass: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "De R$ 1.299", newPrice: "R$ 899,00", discount: "+30%" },
-  { title: "GeForce RTX 4070 Super 12GB", icon: "videogame_asset", category: "GPU", badge: "Lançamento", badgeClass: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 4.599", newPrice: "R$ 4.049,00", discount: "+12%" },
-  { title: "Fonte Corsair RM750e Modular", icon: "power", category: "Fonte", badge: "80+ Gold", badgeClass: "bg-blue-500 text-white uppercase", oldPrice: "De R$ 899", newPrice: "R$ 679,00", discount: "+24%" },
+  { title: "iPhone 15 128GB - Preto Espacial", image: IMG_IPHONE, category: "Smartphone", badge: "-25% OFF", badgeColor: "bg-red-500 text-white", oldPrice: "De R$ 6.799", newPrice: "R$ 5.099,00", discount: "+25%" },
+  { title: "Samsung Galaxy Tab S9 WiFi", image: IMG_TABLET, category: "Tablet", badge: "Melhor Preço", badgeColor: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "De R$ 6.999", newPrice: "R$ 4.199,00", discount: "+31%" },
+  { title: "SSD Samsung 980 PRO 1TB NVMe", icon: "storage", category: "Armazenamento", badge: "Menor Preço", badgeColor: "bg-blue-500 text-white uppercase", oldPrice: "De R$ 1.699", newPrice: "R$ 1.199,00", discount: "+26%" },
+  { title: "Corsair Vengeance RGB 32GB DDR5", icon: "memory", category: "Memória RAM", badge: "Oferta Limitada", badgeColor: "bg-yellow-400 text-yellow-900 uppercase", oldPrice: "De R$ 1.299", newPrice: "R$ 899,00", discount: "+30%" },
+  { title: "GeForce RTX 4070 Super 12GB", icon: "videogame_asset", category: "GPU", badge: "Lançamento", badgeColor: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 4.599", newPrice: "R$ 4.049,00", discount: "+12%" },
+  { title: "Fonte Corsair RM750e Modular", icon: "power", category: "Fonte", badge: "80+ Gold", badgeColor: "bg-blue-500 text-white uppercase", oldPrice: "De R$ 899", newPrice: "R$ 679,00", discount: "+24%" },
   { title: "ASUS ROG Strix Z790-E Gaming", icon: "developer_board", category: "Placa Mãe", oldPrice: "De R$ 3.899", newPrice: "R$ 3.199,00", discount: "+18%" },
-  { title: "Keychron K2 V2 Wireless", icon: "keyboard", category: "Teclado", badge: "RGB Pro", badgeClass: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 950", newPrice: "R$ 759,00", discount: "+20%" },
+  { title: "Keychron K2 V2 Wireless", icon: "keyboard", category: "Teclado", badge: "RGB Pro", badgeColor: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 950", newPrice: "R$ 759,00", discount: "+20%" },
 ];
 
 const ListingOffers = () => {
@@ -115,40 +115,7 @@ const ListingOffers = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {allOffers.map((offer) => (
-                <div key={offer.title} className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-4 flex flex-col group h-full">
-                  <div className="relative mb-4 bg-card rounded-lg p-6 flex items-center justify-center h-48 overflow-hidden">
-                    {offer.badge && (
-                      <div className="absolute top-2 left-2 z-10">
-                        <span className={`${offer.badgeClass || "bg-red-500 text-white"} text-[10px] font-bold px-2 py-1 rounded shadow-sm`}>{offer.badge}</span>
-                      </div>
-                    )}
-                    {offer.image ? (
-                      <img alt={offer.title} className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300" src={offer.image} />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-muted rounded text-muted-foreground">
-                        <span className="material-symbols-outlined text-6xl group-hover:scale-110 transition-transform duration-300">{offer.icon}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 flex flex-col">
-                    {offer.category && (
-                      <div className="mb-1">
-                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{offer.category}</span>
-                      </div>
-                    )}
-                    <h3 className="font-semibold text-foreground mb-auto text-sm md:text-base leading-tight">{offer.title}</h3>
-                    <div className="mt-4">
-                      <p className="text-xs text-muted-foreground line-through">{offer.oldPrice}</p>
-                      <div className="flex justify-between items-center mb-4">
-                        <span className="text-xl font-bold text-foreground">{offer.newPrice}</span>
-                        <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded">{offer.discount}</span>
-                      </div>
-                      <Link to="/ofertas/1" className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-sm font-medium py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors shadow-sm">
-                        Ver oferta <span className="material-symbols-outlined text-xs">chevron_right</span>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <OfferCard key={offer.title} {...offer} />
               ))}
             </div>
 

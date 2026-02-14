@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import OfferCard from "@/components/OfferCard";
 
 const IMG_PC1 = "https://lh3.googleusercontent.com/aida-public/AB6AXuClWAJthYb-I5gj8rjlSxUAJvHgqV7rY8JfZJYrg6C-ilTVXQ9Twr-xig79W3IeYZUt6QI3n6i1Ds4CtHC8Om7NYyKvPZz-xGk6cXgfgPWVk084FxpBI1PNi8_vCbbgt2v2LYWD-t2ZGpyU8iqdxuMGVYwkRZpIEBVz-uDDggt5u8HvqF67ZJ7QOuP0iEjwLO5_heKgUVsA8_PP-aYnvwgZ5Rwc0TgFMLdLEELxFLl9pTIpq5cHId7w2qli37SsnfKaPfCmlllY7Q";
 
@@ -138,32 +139,17 @@ const DetailsBuild = () => {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {components.map((comp) => (
-              <div key={comp.name} className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-4 flex flex-col group h-full">
-                <div className="relative mb-4 bg-card rounded-lg p-6 flex items-center justify-center h-48 overflow-hidden">
-                  <div className="absolute top-2 left-2 z-10">
-                    <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">{comp.discount}</span>
-                  </div>
-                  <div className="w-full h-full flex items-center justify-center bg-muted rounded text-muted-foreground">
-                    <span className="material-symbols-outlined text-6xl group-hover:scale-110 transition-transform duration-300">{comp.icon}</span>
-                  </div>
-                </div>
-                <div className="flex-1 flex flex-col">
-                  <div className="mb-1">
-                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{comp.category}</span>
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-auto text-sm md:text-base leading-tight">{comp.name}</h3>
-                  <div className="mt-4">
-                    <p className="text-xs text-muted-foreground line-through">{comp.oldPrice}</p>
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-xl font-bold text-foreground">{comp.newPrice}</span>
-                      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded">{comp.discount}</span>
-                    </div>
-                    <Link to="/ofertas/1" className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-sm font-medium py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors shadow-sm">
-                      Ver oferta <span className="material-symbols-outlined text-xs">chevron_right</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <OfferCard
+                key={comp.name}
+                title={comp.name}
+                icon={comp.icon}
+                oldPrice={comp.oldPrice}
+                newPrice={comp.newPrice}
+                discount={comp.discount}
+                badge={comp.discount}
+                badgeColor="bg-red-500 text-white"
+                category={comp.category}
+              />
             ))}
           </div>
         </div>

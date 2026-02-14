@@ -13,7 +13,7 @@ interface OfferCardProps {
   link?: string;
 }
 
-const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-primary-foreground", category, link = "/ofertas/1" }: OfferCardProps) => (
+const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-white", category, link = "/ofertas/1" }: OfferCardProps) => (
   <div className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-4 flex flex-col group h-full">
     <div className="relative mb-4 bg-card rounded-lg p-6 flex items-center justify-center h-48 overflow-hidden">
       {badge && (
