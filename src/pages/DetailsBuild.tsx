@@ -129,7 +129,7 @@ const DetailsBuild = () => {
         </div>
 
         {/* Components List */}
-        <div className="mt-12 max-w-6xl mx-auto">
+        <div className="mt-12">
           <h3 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-3">
             <span className="bg-blue-100 p-2 rounded-lg text-primary">
               <span className="material-symbols-outlined">memory</span>
