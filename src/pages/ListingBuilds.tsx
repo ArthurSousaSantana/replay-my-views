@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import PublicLayout from "@/components/layouts/PublicLayout";
 import HeroBanner from "@/components/HeroBanner";
 import BuildCard from "@/components/BuildCard";
+import FilterGroup from "@/components/shared/FilterGroup";
+import Pagination from "@/components/shared/Pagination";
 
 const IMG_PC1 = "https://lh3.googleusercontent.com/aida-public/AB6AXuClWAJthYb-I5gj8rjlSxUAJvHgqV7rY8JfZJYrg6C-ilTVXQ9Twr-xig79W3IeYZUt6QI3n6i1Ds4CtHC8Om7NYyKvPZz-xGk6cXgfgPWVk084FxpBI1PNi8_vCbbgt2v2LYWD-t2ZGpyU8iqdxuMGVYwkRZpIEBVz-uDDggt5u8HvqF67ZJ7QOuP0iEjwLO5_heKgUVsA8_PP-aYnvwgZ5Rwc0TgFMLdLEELxFLl9pTIpq5cHId7w2qli37SsnfKaPfCmlllY7Q";
 const IMG_PC2 = "https://lh3.googleusercontent.com/aida-public/AB6AXuB3VnpSkouEwhPCud8E87nYLpCKr8Cpk8LExBEarip6MFvzckKYWGLHHUeYYOEn-ZgWNKlco6UQ8minrCUt6B_PFSw--plMwbokeTcJT1jKWInEmxJru9IolHqf_shnhEa59I7XYeSkNvZ2P4esxMD-OJrvZYBlg8gCePFNppvv5YPa2Z0uVFA7SE_TyUtM6URAWco7WiFWKr6uAXA1jK8xwNOBv0ZvV1dUM3n3ejlgRKzHYN27m3Oiwn2cfwWW8o_wDCx4j48y_w";
@@ -19,106 +19,53 @@ const builds = [
   { title: "Silent Worker Pro", description: "Focado em silêncio e eficiência. Gabinete com isolamento acústico e fans premium.", image: IMG_TABLET, badgeText: "Silent", badgeColor: "bg-teal-500", oldPrice: "R$ 9.200,00", newPrice: "R$ 8.460,00", discount: "-8%", chips: ["i5-14600K", "RTX 4070"] },
 ];
 
-const ListingBuilds = () => {
-  return (
-    <div className="bg-background text-foreground">
-      <Navbar />
+const ListingBuilds = () => (
+  <PublicLayout>
+    <HeroBanner size="md">
+      <div className="text-center">
+        <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-xl text-white">
+          Builds de PC Recomendadas
+        </h1>
+        <p className="text-lg text-blue-100 max-w-2xl mx-auto font-light drop-shadow-md">
+          Escolha sua performance. De configurações básicas a máquinas extremas para 4K, tudo testado e aprovado.
+        </p>
+      </div>
+    </HeroBanner>
 
-      <HeroBanner size="md">
-        <div className="text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-xl text-white">
-            Builds de PC Recomendadas
-          </h1>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto font-light drop-shadow-md">
-            Escolha sua performance. De configurações básicas a máquinas extremas para 4K, tudo testado e aprovado.
-          </p>
-        </div>
-      </HeroBanner>
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
-          <aside className="w-full lg:w-64 flex-shrink-0">
-            <div className="bg-surface rounded-xl shadow-sm border border-border p-5 sticky top-24">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-foreground text-lg">Filtros</h3>
-                <button className="text-xs text-primary hover:underline font-medium">Limpar</button>
-              </div>
-              <div className="mb-6 border-b border-border pb-6">
-                <h4 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wide">Orçamento</h4>
-                <div className="space-y-2">
-                  {["Até R$ 3.000", "R$ 3.000 - R$ 5.000", "R$ 5.000 - R$ 8.000", "Acima de R$ 8.000"].map((b, i) => (
-                    <label key={b} className="flex items-center gap-2 cursor-pointer group">
-                      <input type="checkbox" className="rounded border-border text-primary focus:ring-primary h-4 w-4" defaultChecked={i === 1} />
-                      <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{b}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="mb-6 border-b border-border pb-6">
-                <h4 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wide">Uso Principal</h4>
-                <div className="space-y-2">
-                  {["Gaming (Jogos)", "Trabalho / Office", "Streaming / Edição"].map((u, i) => (
-                    <label key={u} className="flex items-center gap-2 cursor-pointer group">
-                      <input type="checkbox" className="rounded border-border text-primary focus:ring-primary h-4 w-4" defaultChecked={i === 0} />
-                      <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{u}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h4 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wide">Plataforma</h4>
-                <div className="space-y-2">
-                  {["Intel", "AMD"].map((p) => (
-                    <label key={p} className="flex items-center gap-2 cursor-pointer group">
-                      <input type="checkbox" className="rounded border-border text-primary focus:ring-primary h-4 w-4" />
-                      <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{p}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Main Content */}
-          <div className="flex-1">
+    <main className="container mx-auto px-4 py-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <aside className="w-full lg:w-64 flex-shrink-0">
+          <div className="bg-surface rounded-xl shadow-sm border border-border p-5 sticky top-24">
             <div className="flex justify-between items-center mb-6">
-              <p className="text-muted-foreground text-sm">Mostrando <span className="font-bold text-foreground">6</span> resultados</p>
-              <select className="bg-surface border border-border text-sm rounded-lg focus:ring-primary focus:border-primary block p-2">
-                <option>Relevância</option>
-                <option>Menor Preço</option>
-                <option>Maior Preço</option>
-                <option>Mais Vendidos</option>
-              </select>
+              <h3 className="font-bold text-foreground text-lg">Filtros</h3>
+              <button className="text-xs text-primary hover:underline font-medium">Limpar</button>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {builds.map((build) => (
-                <BuildCard key={build.title} {...build} link="/builds/1" />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="mt-12 flex justify-center">
-              <nav className="flex items-center gap-2">
-                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-muted-foreground hover:bg-muted transition-colors">
-                  <span className="material-symbols-outlined text-base">chevron_left</span>
-                </button>
-                <button className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary text-primary-foreground font-medium shadow-sm">1</button>
-                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-foreground hover:bg-muted transition-colors">2</button>
-                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-foreground hover:bg-muted transition-colors">3</button>
-                <button className="flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-surface text-muted-foreground hover:bg-muted transition-colors">
-                  <span className="material-symbols-outlined text-base">chevron_right</span>
-                </button>
-              </nav>
-            </div>
+            <FilterGroup title="Orçamento" options={["Até R$ 3.000", "R$ 3.000 - R$ 5.000", "R$ 5.000 - R$ 8.000", "Acima de R$ 8.000"]} defaultChecked={[1]} />
+            <FilterGroup title="Uso Principal" options={["Gaming (Jogos)", "Trabalho / Office", "Streaming / Edição"]} defaultChecked={[0]} />
+            <FilterGroup title="Plataforma" options={["Intel", "AMD"]} bordered={false} />
           </div>
-        </div>
-      </main>
+        </aside>
 
-      <Footer />
-    </div>
-  );
-};
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-6">
+            <p className="text-muted-foreground text-sm">Mostrando <span className="font-bold text-foreground">6</span> resultados</p>
+            <select className="bg-surface border border-border text-sm rounded-lg focus:ring-primary focus:border-primary block p-2">
+              <option>Relevância</option>
+              <option>Menor Preço</option>
+              <option>Maior Preço</option>
+              <option>Mais Vendidos</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {builds.map((build) => <BuildCard key={build.title} {...build} link="/builds/1" />)}
+          </div>
+
+          <Pagination totalPages={3} />
+        </div>
+      </div>
+    </main>
+  </PublicLayout>
+);
 
 export default ListingBuilds;
