@@ -1,6 +1,10 @@
 import { useState } from "react";
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminLayout from "@/components/layouts/AdminLayout";
 import HeroBanner from "@/components/HeroBanner";
+import Breadcrumb from "@/components/shared/Breadcrumb";
+import AdminFormSection from "@/components/shared/AdminFormSection";
+import FormField from "@/components/shared/FormField";
+import ImageUpload from "@/components/shared/ImageUpload";
 
 interface PerformanceRow {
   id: number;
@@ -24,102 +28,46 @@ const AdminNewBuild = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <AdminNavbar />
-
+    <AdminLayout hideFooter>
       <HeroBanner size="sm">
-        <div className="flex items-center gap-2 text-blue-200 text-sm mb-2 font-medium">
-          <a className="hover:text-white" href="/admin">Admin</a>
-          <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <span>Builds</span>
-          <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <span>Nova Build</span>
+        <div className="mb-2">
+          <Breadcrumb variant="light" items={[{ label: "Admin", to: "/admin" }, { label: "Builds" }, { label: "Nova Build" }]} />
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-xl">
-          Cadastrar Nova Build
-        </h1>
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-xl">Cadastrar Nova Build</h1>
         <p className="text-blue-100 mt-2 max-w-2xl font-light">Crie uma nova configuração de PC para oferecer aos clientes.</p>
       </HeroBanner>
 
-      <main className="container mx-auto px-4 py-8 -mt-8 z-30 relative">
+      <main className="container mx-auto px-4 py-8 -mt-8 z-30 relative pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Basic Info */}
-            <section className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
-              <div className="border-b border-border p-6 flex justify-between items-center bg-muted/50">
-                <div className="flex items-center gap-3">
-                  <span className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                    <span className="material-symbols-outlined">description</span>
-                  </span>
-                  <h2 className="text-lg font-bold text-foreground">Informações Básicas</h2>
-                </div>
-                <label className="flex items-center cursor-pointer gap-3">
-                  <span className="text-sm font-medium text-muted-foreground">Destaque</span>
-                  <input type="checkbox" className="rounded border-border text-primary focus:ring-primary" />
-                </label>
-              </div>
-              <div className="p-6 space-y-6">
+            <AdminFormSection icon="description" title="Informações Básicas" headerRight={
+              <label className="flex items-center cursor-pointer gap-3">
+                <span className="text-sm font-medium text-muted-foreground">Destaque</span>
+                <input type="checkbox" className="rounded border-border text-primary focus:ring-primary" />
+              </label>
+            }>
+              <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Nome da Build</label>
-                    <input className="w-full rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary px-3 py-2 text-sm" placeholder="Ex: The 4K Monster" type="text" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Subtítulo Promocional</label>
-                    <input className="w-full rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary px-3 py-2 text-sm" placeholder="Ex: Performance extrema para criadores" type="text" />
-                  </div>
+                  <FormField type="text" label="Nome da Build" placeholder="Ex: The 4K Monster" />
+                  <FormField type="text" label="Subtítulo Promocional" placeholder="Ex: Performance extrema para criadores" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Categoria</label>
-                    <select className="w-full rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary px-3 py-2 text-sm">
-                      <option>Selecionar Categoria...</option>
-                      <option>Gamer Entry-Level</option>
-                      <option>Gamer Mid-Range</option>
-                      <option>Gamer High-End</option>
-                      <option>Workstation</option>
-                      <option>Office</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Badges / Tags</label>
-                    <select className="w-full rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary px-3 py-2 text-sm" multiple>
-                      <option>Lançamento</option>
-                      <option>Oferta Limitada</option>
-                      <option>RGB Pro</option>
-                      <option>Silent Build</option>
-                    </select>
-                  </div>
+                  <FormField type="select" label="Categoria" options={["Selecionar Categoria...", "Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]} />
+                  <FormField type="select" label="Badges / Tags" options={["Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build"]} multiple />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Descrição Longa</label>
-                  <textarea className="w-full rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary px-3 py-2 text-sm" placeholder="Descreva os principais benefícios e casos de uso desta build..." rows={4} />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Imagem Principal</label>
-                  <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:bg-muted/50 transition-colors cursor-pointer">
-                    <span className="material-symbols-outlined text-4xl text-muted-foreground mb-2">cloud_upload</span>
-                    <p className="text-sm text-muted-foreground">Arraste uma imagem ou clique para selecionar</p>
-                    <p className="text-xs text-muted-foreground mt-1">PNG, JPG até 5MB</p>
-                  </div>
-                </div>
+                <FormField type="textarea" label="Descrição Longa" placeholder="Descreva os principais benefícios e casos de uso desta build..." rows={4} />
+                <ImageUpload label="Imagem Principal" />
               </div>
-            </section>
+            </AdminFormSection>
 
             {/* Performance */}
-            <section className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
-              <div className="border-b border-border p-6 flex justify-between items-center bg-muted/50">
-                <div className="flex items-center gap-3">
-                  <span className="p-2 bg-purple-100 text-purple-600 rounded-lg">
-                    <span className="material-symbols-outlined">speed</span>
-                  </span>
-                  <h2 className="text-lg font-bold text-foreground">Performance Estimada</h2>
-                </div>
-                <button onClick={addPerformance} className="text-primary hover:underline text-sm font-semibold flex items-center gap-1">
-                  <span className="material-symbols-outlined text-lg">add_circle</span> Adicionar Performance
-                </button>
-              </div>
-              <div className="p-6 space-y-4">
+            <AdminFormSection icon="speed" iconColor="bg-purple-100 text-purple-600" title="Performance Estimada" headerRight={
+              <button onClick={addPerformance} className="text-primary hover:underline text-sm font-semibold flex items-center gap-1">
+                <span className="material-symbols-outlined text-lg">add_circle</span> Adicionar Performance
+              </button>
+            }>
+              <div className="space-y-4">
                 <div className="hidden md:grid grid-cols-12 gap-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                   <div className="col-span-5">Jogo / Aplicação</div>
                   <div className="col-span-4">Qualidade / Resolução</div>
@@ -153,19 +101,11 @@ const AdminNewBuild = () => {
                   </div>
                 ))}
               </div>
-            </section>
+            </AdminFormSection>
 
             {/* PC Composition */}
-            <section className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
-              <div className="border-b border-border p-6 flex justify-between items-center bg-muted/50">
-                <div className="flex items-center gap-3">
-                  <span className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
-                    <span className="material-symbols-outlined">memory</span>
-                  </span>
-                  <h2 className="text-lg font-bold text-foreground">Composição do PC</h2>
-                </div>
-              </div>
-              <div className="p-6 space-y-6">
+            <AdminFormSection icon="memory" iconColor="bg-emerald-100 text-emerald-600" title="Composição do PC">
+              <div className="space-y-6">
                 {/* CPU */}
                 <div>
                   <label className="block text-xs font-bold text-muted-foreground uppercase mb-2">Processador (CPU)</label>
@@ -242,16 +182,11 @@ const AdminNewBuild = () => {
                 {/* Other components */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {["Memória RAM", "Armazenamento (SSD)", "Fonte (PSU)", "Gabinete"].map((label) => (
-                    <div key={label}>
-                      <label className="block text-xs font-bold text-muted-foreground uppercase mb-2">{label}</label>
-                      <select className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2">
-                        <option>Selecionar {label}...</option>
-                      </select>
-                    </div>
+                    <FormField key={label} type="select" label={label} options={[`Selecionar ${label}...`]} labelSize="xs" />
                   ))}
                 </div>
               </div>
-            </section>
+            </AdminFormSection>
           </div>
 
           {/* Sidebar - Summary */}
@@ -297,43 +232,20 @@ const AdminNewBuild = () => {
                     <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">Economia: R$ 769,90</span>
                   </div>
                 </div>
-                <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-100">
-                  <div className="flex gap-2">
-                    <span className="material-symbols-outlined text-yellow-600 text-xl">warning</span>
-                    <p className="text-xs text-yellow-800">
-                      Atenção: A build está incompleta. Selecione Placa-Mãe, RAM, SSD e Fonte para validar.
-                    </p>
-                  </div>
+                <div className="mt-6 space-y-3">
+                  <button className="w-full bg-primary hover:bg-primary-dark text-primary-foreground font-bold py-3 rounded-lg transition-colors shadow-md flex items-center justify-center gap-2">
+                    <span className="material-symbols-outlined">save</span>Salvar Build
+                  </button>
+                  <button className="w-full bg-muted hover:opacity-80 text-foreground font-medium py-3 rounded-lg transition-colors border border-border flex items-center justify-center gap-2">
+                    <span className="material-symbols-outlined">visibility</span>Pré-visualizar
+                  </button>
                 </div>
               </div>
             </section>
           </div>
         </div>
       </main>
-
-      {/* Fixed Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-lg z-50">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-muted-foreground hidden sm:block">
-            Última alteração: <span className="font-medium text-foreground">Agora mesmo</span>
-          </div>
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button className="flex-1 sm:flex-none px-4 py-2 border border-border rounded-lg text-foreground font-medium hover:bg-muted transition-colors">
-              Cancelar
-            </button>
-            <button className="flex-1 sm:flex-none px-4 py-2 border border-destructive/20 text-destructive bg-destructive/5 rounded-lg font-medium hover:bg-destructive/10 transition-colors">
-              Excluir Build
-            </button>
-            <button className="flex-1 sm:flex-none px-4 py-2 bg-muted text-foreground rounded-lg font-medium hover:bg-muted/80 transition-colors flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-lg">visibility</span> Visualizar
-            </button>
-            <button className="flex-1 sm:flex-none px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-bold shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-lg">save</span> Salvar Build
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 };
 

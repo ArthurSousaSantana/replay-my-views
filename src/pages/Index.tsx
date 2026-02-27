@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import PublicLayout from "@/components/layouts/PublicLayout";
 import HeroBanner from "@/components/HeroBanner";
 import OfferCard from "@/components/OfferCard";
 import BuildCard from "@/components/BuildCard";
+import SectionHeader from "@/components/shared/SectionHeader";
 
 const IMG_PC1 = "https://lh3.googleusercontent.com/aida-public/AB6AXuClWAJthYb-I5gj8rjlSxUAJvHgqV7rY8JfZJYrg6C-ilTVXQ9Twr-xig79W3IeYZUt6QI3n6i1Ds4CtHC8Om7NYyKvPZz-xGk6cXgfgPWVk084FxpBI1PNi8_vCbbgt2v2LYWD-t2ZGpyU8iqdxuMGVYwkRZpIEBVz-uDDggt5u8HvqF67ZJ7QOuP0iEjwLO5_heKgUVsA8_PP-aYnvwgZ5Rwc0TgFMLdLEELxFLl9pTIpq5cHId7w2qli37SsnfKaPfCmlllY7Q";
 const IMG_PC2 = "https://lh3.googleusercontent.com/aida-public/AB6AXuB3VnpSkouEwhPCud8E87nYLpCKr8Cpk8LExBEarip6MFvzckKYWGLHHUeYYOEn-ZgWNKlco6UQ8minrCUt6B_PFSw--plMwbokeTcJT1jKWInEmxJru9IolHqf_shnhEa59I7XYeSkNvZ2P4esxMD-OJrvZYBlg8gCePFNppvv5YPa2Z0uVFA7SE_TyUtM6URAWco7WiFWKr6uAXA1jK8xwNOBv0ZvV1dUM3n3ejlgRKzHYN27m3Oiwn2cfwWW8o_wDCx4j48y_w";
@@ -31,92 +31,50 @@ const hardwareOffers = [
   { title: "Teclado Mecânico Keychron K2", icon: "keyboard", category: "Periférico", badge: "RGB Pro", badgeColor: "bg-purple-500 text-white uppercase", oldPrice: "De R$ 950,00", newPrice: "R$ 759,00", discount: "20%" },
 ];
 
-const Index = () => {
-  return (
-    <div className="bg-background text-foreground">
-      <Navbar />
-      
-      <HeroBanner size="lg">
-        <div className="text-center py-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-xl text-white">
-            As melhores ofertas <span className="text-blue-200">tech</span>,<br /> em um só lugar.
-          </h1>
-          <p className="text-lg md:text-xl text-blue-50 mb-10 max-w-2xl mx-auto font-light drop-shadow-md">
-            PCs, celulares, acessórios, tablets e mais, a preços imperdíveis. Otimizados para desempenho e prontos para você.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/ofertas" className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 border border-blue-400/30 ring-1 ring-blue-400/20">
-              <span className="material-symbols-outlined text-sm">send</span>
-              Encontrar ofertas
-            </Link>
-            <Link to="/builds" className="bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg transition-all hover:border-white/40">
-              <span className="material-symbols-outlined text-sm">computer</span>
-              Ver builds de PC
-            </Link>
-          </div>
-        </div>
-      </HeroBanner>
-
-      {/* Builds Section */}
-      <section className="container mx-auto px-4 py-12 relative z-30">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-          <div>
-            <h2 className="text-3xl font-bold text-foreground">Builds de PC</h2>
-            <p className="text-muted-foreground mt-2">Configurações otimizadas para jogos e desempenho.</p>
-          </div>
-          <Link to="/builds" className="inline-flex items-center justify-center px-6 py-2 border border-border rounded-full text-sm font-medium text-muted-foreground bg-surface hover:bg-muted transition-colors">
-            Ver builds
-            <span className="material-symbols-outlined text-sm ml-2">arrow_forward</span>
+const Index = () => (
+  <PublicLayout>
+    <HeroBanner size="lg">
+      <div className="text-center py-20">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-xl text-white">
+          As melhores ofertas <span className="text-blue-200">tech</span>,<br /> em um só lugar.
+        </h1>
+        <p className="text-lg md:text-xl text-blue-50 mb-10 max-w-2xl mx-auto font-light drop-shadow-md">
+          PCs, celulares, acessórios, tablets e mais, a preços imperdíveis. Otimizados para desempenho e prontos para você.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Link to="/ofertas" className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 border border-blue-400/30 ring-1 ring-blue-400/20">
+            <span className="material-symbols-outlined text-sm">send</span>
+            Encontrar ofertas
+          </Link>
+          <Link to="/builds" className="bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg transition-all hover:border-white/40">
+            <span className="material-symbols-outlined text-sm">computer</span>
+            Ver builds de PC
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {builds.map((build) => (
-            <BuildCard key={build.title} {...build} link="/builds/1" />
-          ))}
-        </div>
-      </section>
+      </div>
+    </HeroBanner>
 
-      {/* Tech Offers Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-          <div>
-            <h2 className="text-3xl font-bold text-foreground">Ofertas Tech em Destaque</h2>
-            <p className="text-muted-foreground">As melhores promoções além do mundo dos PCs.</p>
-          </div>
-          <Link to="/ofertas" className="inline-flex items-center justify-center px-6 py-2 border border-border rounded-full text-sm font-medium text-muted-foreground bg-surface hover:bg-muted transition-colors">
-            Ver todas as ofertas
-            <span className="material-symbols-outlined text-sm ml-2">arrow_forward</span>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {offers.map((offer) => (
-            <OfferCard key={offer.title} {...offer} />
-          ))}
-        </div>
-      </section>
+    <section className="container mx-auto px-4 py-12 relative z-30">
+      <SectionHeader title="Builds de PC" subtitle="Configurações otimizadas para jogos e desempenho." linkTo="/builds" linkLabel="Ver builds" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {builds.map((build) => <BuildCard key={build.title} {...build} link="/builds/1" />)}
+      </div>
+    </section>
 
-      {/* Hardware Offers Section */}
-      <section className="container mx-auto px-4 py-12 border-t border-border">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-          <div>
-            <h2 className="text-3xl font-bold text-foreground">Ofertas em Hardware de PC</h2>
-            <p className="text-muted-foreground mt-2">Descontos reais em peças e componentes.</p>
-          </div>
-          <Link to="/ofertas" className="inline-flex items-center justify-center px-6 py-2 border border-border rounded-full text-sm font-medium text-muted-foreground bg-surface hover:bg-muted transition-colors">
-            Ver todas as ofertas
-            <span className="material-symbols-outlined text-sm ml-2">arrow_forward</span>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {hardwareOffers.map((offer) => (
-            <OfferCard key={offer.title} {...offer} />
-          ))}
-        </div>
-      </section>
+    <section className="container mx-auto px-4 py-16">
+      <SectionHeader title="Ofertas Tech em Destaque" subtitle="As melhores promoções além do mundo dos PCs." linkTo="/ofertas" linkLabel="Ver todas as ofertas" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {offers.map((offer) => <OfferCard key={offer.title} {...offer} />)}
+      </div>
+    </section>
 
-      <Footer />
-    </div>
-  );
-};
+    <section className="container mx-auto px-4 py-12 border-t border-border">
+      <SectionHeader title="Ofertas em Hardware de PC" subtitle="Descontos reais em peças e componentes." linkTo="/ofertas" linkLabel="Ver todas as ofertas" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {hardwareOffers.map((offer) => <OfferCard key={offer.title} {...offer} />)}
+      </div>
+    </section>
+  </PublicLayout>
+);
 
 export default Index;
