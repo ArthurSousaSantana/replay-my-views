@@ -7,7 +7,6 @@ import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 
 const AdminNewOffer = () => {
-  const [offerType, setOfferType] = useState<"common" | "part">("common");
   const [specs, setSpecs] = useState([{ id: 1 }, { id: 2 }]);
 
   return (
@@ -23,81 +22,13 @@ const AdminNewOffer = () => {
       </HeroBanner>
 
       <main className="container mx-auto px-4 py-8 -mt-8 relative z-30 space-y-8 pb-24">
-        {/* Type Selector */}
-        <div className="bg-card rounded-xl shadow-lg border border-border p-2 flex flex-col sm:flex-row gap-2">
-          {[
-            { type: "common" as const, icon: "local_offer", title: "Oferta Comum", desc: "Smartphones, Periféricos, etc." },
-            { type: "part" as const, icon: "memory", title: "Peça de PC", desc: "Reutilizável em builds (CPU, GPU)" },
-          ].map((opt) => (
-            <button
-              key={opt.type}
-              onClick={() => setOfferType(opt.type)}
-              className={`flex-1 py-4 px-6 rounded-lg flex items-center justify-center gap-3 transition-all ${offerType === opt.type ? "bg-primary text-primary-foreground shadow-md" : "bg-muted text-muted-foreground hover:bg-muted/80 border border-transparent hover:border-border"}`}
-            >
-              <span className="material-symbols-outlined text-2xl">{opt.icon}</span>
-              <div className="text-left">
-                <div className="font-bold">{opt.title}</div>
-                <div className="text-xs opacity-80">{opt.desc}</div>
-              </div>
-              {offerType === opt.type && <span className="material-symbols-outlined ml-auto">check_circle</span>}
-            </button>
-          ))}
-        </div>
-
         <form className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Basic Info */}
             <AdminFormSection icon="feed" title="Informações Básicas">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" />
-                <FormField type="select" label="Marca" options={["Apple", "Samsung", "Logitech", "Nvidia"]} />
-                <FormField type="text" label="Modelo" placeholder="Ex: MTP03BZ/A" />
-                <FormField type="select" label="Categoria" options={["Smartphones", "Hardware", "Periféricos", "Computadores"]} />
-                <FormField type="select" label="Subcategoria" options={["iOS", "Android"]} />
-              </div>
-            </AdminFormSection>
-
-            {/* Description */}
-            <AdminFormSection icon="description" title="Descrição e Conteúdo">
-              <div className="space-y-6">
-                <FormField type="textarea" label="Descrição Curta (SEO & Cards)" rows={2} hint="Máximo 160 caracteres." />
-                <FormField type="textarea" label="Descrição Longa" rows={6} mono hint="Suporta Markdown simples." />
-                <div className="border-t border-border pt-6">
-                  <label className="block text-sm font-medium text-foreground mb-4">Especificações Técnicas (Key/Value)</label>
-                  <div className="space-y-3">
-                    {specs.map((spec) => (
-                      <div key={spec.id} className="flex gap-4">
-                        <input className="flex-1 rounded-lg border border-border bg-card text-sm px-3 py-2" placeholder="Característica (ex: Tela)" />
-                        <input className="flex-1 rounded-lg border border-border bg-card text-sm px-3 py-2" placeholder="Valor (ex: 6.1 OLED)" />
-                        <button type="button" onClick={() => setSpecs(specs.filter((s) => s.id !== spec.id))} className="text-destructive hover:text-destructive/80">
-                          <span className="material-symbols-outlined">delete</span>
-                        </button>
-                      </div>
-                    ))}
-                    <button type="button" onClick={() => setSpecs([...specs, { id: Date.now() }])} className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
-                      <span className="material-symbols-outlined text-base">add</span> Adicionar Linha
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </AdminFormSection>
-
-            {/* Build Data */}
-            <AdminFormSection icon="developer_board" title="Dados Técnicos de Build" highlighted={offerType === "part"} headerRight={
-              offerType === "common" ? <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Requer 'Peça de PC'</span> : undefined
-            }>
-              <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 relative ${offerType === "common" ? "opacity-50 pointer-events-none grayscale select-none" : ""}`}>
-                {offerType === "common" && (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-card/50 backdrop-blur-[1px]">
-                    <span className="bg-card px-4 py-2 rounded-lg shadow border border-border text-sm font-medium">Selecione "Peça de PC" acima para habilitar</span>
-                  </div>
-                )}
-                <FormField type="select" label="Tipo de Peça" options={["Processador", "Placa de Vídeo", "Placa Mãe"]} />
-                <FormField type="select" label="Plataforma" options={["Intel", "AMD"]} />
-                <FormField type="select" label="Soquete" options={["LGA 1700", "AM5"]} />
-                <FormField type="select" label="Interface Memória" options={["DDR4", "DDR5"]} />
-                <FormField type="number" label="TDP (Watts)" />
-                <FormField type="text" label="Chipset" />
+                <FormField type="select" label="Categoria" options={["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"]} />
               </div>
             </AdminFormSection>
           </div>
