@@ -31,6 +31,31 @@ const AdminNewOffer = () => {
                 <FormField type="select" label="Categoria" options={["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"]} />
               </div>
             </AdminFormSection>
+
+            {/* Description */}
+            <AdminFormSection icon="description" title="Descrição e Conteúdo">
+              <div className="space-y-6">
+                <FormField type="textarea" label="Descrição Curta (SEO & Cards)" rows={2} hint="Máximo 160 caracteres." />
+                <FormField type="textarea" label="Descrição Longa" rows={6} mono hint="Suporta Markdown simples." />
+                <div className="border-t border-border pt-6">
+                  <label className="block text-sm font-medium text-foreground mb-4">Especificações Técnicas (Key/Value)</label>
+                  <div className="space-y-3">
+                    {specs.map((spec) => (
+                      <div key={spec.id} className="flex gap-4">
+                        <input className="flex-1 rounded-lg border border-border bg-card text-sm px-3 py-2" placeholder="Característica (ex: Tela)" />
+                        <input className="flex-1 rounded-lg border border-border bg-card text-sm px-3 py-2" placeholder="Valor (ex: 6.1 OLED)" />
+                        <button type="button" onClick={() => setSpecs(specs.filter((s) => s.id !== spec.id))} className="text-destructive hover:text-destructive/80">
+                          <span className="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => setSpecs([...specs, { id: Date.now() }])} className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
+                      <span className="material-symbols-outlined text-base">add</span> Adicionar Linha
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </AdminFormSection>
           </div>
 
           {/* Sidebar */}
