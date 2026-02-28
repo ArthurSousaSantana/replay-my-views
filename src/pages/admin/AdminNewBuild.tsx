@@ -73,7 +73,7 @@ const AdminNewBuild = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField type="select" label="Categoria" options={["Selecionar Categoria...", "Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]} />
-                  <FormField type="select" label="Badges / Tags" options={["Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build"]} multiple />
+                  <FormField type="select" label="Badges / Tags" options={["Selecionar Tag...", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build"]} />
                 </div>
                 <FormField type="textarea" label="Descrição Longa" placeholder="Descreva os principais benefícios e casos de uso desta build..." rows={4} />
                 <ImageUpload label="Imagem Principal" />
