@@ -13,10 +13,23 @@ interface PerformanceRow {
   fps: number;
 }
 
+interface PartRow {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  price: string;
+}
+
 const AdminNewBuild = () => {
   const [performances, setPerformances] = useState<PerformanceRow[]>([
     { id: 1, game: "Cyberpunk 2077", quality: "4K Ultra / DLSS On", fps: 85 },
     { id: 2, game: "Call of Duty: Warzone", quality: "1440p Competitive", fps: 165 },
+  ]);
+
+  const [parts, setParts] = useState<PartRow[]>([
+    { id: 1, name: "Intel Core i9-13900K", description: "24 Cores / 32 Threads", category: "Processador (CPU)", price: "3899" },
+    { id: 2, name: "NVIDIA GeForce RTX 4090", description: "24GB GDDR6X", category: "Placa de Vídeo (GPU)", price: "11499" },
   ]);
 
   const addPerformance = () => {
@@ -25,6 +38,14 @@ const AdminNewBuild = () => {
 
   const removePerformance = (id: number) => {
     setPerformances(performances.filter((p) => p.id !== id));
+  };
+
+  const addPart = () => {
+    setParts([...parts, { id: Date.now(), name: "", description: "", category: "", price: "" }]);
+  };
+
+  const removePart = (id: number) => {
+    setParts(parts.filter((p) => p.id !== id));
   };
 
   return (
@@ -104,87 +125,49 @@ const AdminNewBuild = () => {
             </AdminFormSection>
 
             {/* PC Composition */}
-            <AdminFormSection icon="memory" iconColor="bg-emerald-100 text-emerald-600" title="Composição do PC">
-              <div className="space-y-6">
-                {/* CPU */}
-                <div>
-                  <label className="block text-xs font-bold text-muted-foreground uppercase mb-2">Processador (CPU)</label>
-                  <div className="flex flex-col md:flex-row gap-4 items-start">
-                    <div className="flex-1 w-full relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-muted-foreground">search</span>
-                      <input className="w-full pl-10 rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary text-sm px-3 py-2" placeholder="Buscar processador..." />
-                    </div>
-                    <button className="px-4 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-medium transition-colors">Adicionar Novo</button>
+            <AdminFormSection icon="memory" iconColor="bg-emerald-100 text-emerald-600" title="Composição do PC" headerRight={
+              <button type="button" onClick={addPart} className="text-primary hover:underline text-sm font-semibold flex items-center gap-1">
+                <span className="material-symbols-outlined text-lg">add_circle</span> Adicionar Peça
+              </button>
+            }>
+              <div className="space-y-4">
+                {parts.length === 0 && (
+                  <div className="border border-dashed border-border rounded-lg p-6 flex items-center justify-center text-muted-foreground text-sm">
+                    Nenhuma peça adicionada. Clique em "Adicionar Peça" para começar.
                   </div>
-                  <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg p-3 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-card rounded border border-border flex items-center justify-center">
-                        <span className="material-symbols-outlined text-muted-foreground text-xl">developer_board</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground">Intel Core i9-13900K</p>
-                        <p className="text-xs text-muted-foreground">24 Cores / 32 Threads - 5.8GHz</p>
-                      </div>
+                )}
+                {parts.map((part, index) => (
+                  <div key={part.id} className="bg-muted/50 p-4 rounded-lg border border-border space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-muted-foreground uppercase">Peça #{index + 1}</span>
+                      <button type="button" onClick={() => removePart(part.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
+                        <span className="material-symbols-outlined text-sm">delete</span>
+                      </button>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm font-semibold text-foreground">R$ 3.899,00</span>
-                      <button className="text-primary text-xs font-medium underline">Trocar</button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <input className="w-full text-sm rounded-lg border border-border bg-card text-foreground px-3 py-2" placeholder="Nome da peça (ex: RTX 4090)" defaultValue={part.name} />
+                      <input className="w-full text-sm rounded-lg border border-border bg-card text-foreground px-3 py-2" placeholder="Descrição curta (ex: 24GB GDDR6X)" defaultValue={part.description} />
                     </div>
-                  </div>
-                </div>
-
-                <hr className="border-border" />
-
-                {/* GPU */}
-                <div>
-                  <label className="block text-xs font-bold text-muted-foreground uppercase mb-2">Placa de Vídeo (GPU)</label>
-                  <div className="flex flex-col md:flex-row gap-4 items-start">
-                    <div className="flex-1 w-full relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-muted-foreground">search</span>
-                      <input className="w-full pl-10 rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary text-sm px-3 py-2" placeholder="Buscar GPU..." />
-                    </div>
-                    <button className="px-4 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-medium transition-colors">Adicionar Novo</button>
-                  </div>
-                  <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg p-3 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-card rounded border border-border flex items-center justify-center">
-                        <span className="material-symbols-outlined text-muted-foreground text-xl">videogame_asset</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground">NVIDIA GeForce RTX 4090 24GB</p>
-                        <p className="text-xs text-muted-foreground">ASUS ROG Strix OC Edition</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <select className="w-full text-sm rounded-lg border border-border bg-card text-foreground px-3 py-2" defaultValue={part.category}>
+                        <option value="">Tipo de peça...</option>
+                        <option>Processador (CPU)</option>
+                        <option>Placa de Vídeo (GPU)</option>
+                        <option>Placa-Mãe</option>
+                        <option>Memória RAM</option>
+                        <option>Armazenamento (SSD/HDD)</option>
+                        <option>Fonte (PSU)</option>
+                        <option>Gabinete</option>
+                        <option>Cooler / Refrigeração</option>
+                        <option>Outro</option>
+                      </select>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">R$</span>
+                        <input className="w-full text-sm rounded-lg border border-border bg-card text-foreground pl-9 pr-3 py-2" type="number" placeholder="0,00" defaultValue={part.price} />
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm font-semibold text-foreground">R$ 11.499,00</span>
-                      <button className="text-primary text-xs font-medium underline">Trocar</button>
-                    </div>
                   </div>
-                </div>
-
-                <hr className="border-border" />
-
-                {/* Motherboard */}
-                <div>
-                  <label className="block text-xs font-bold text-muted-foreground uppercase mb-2">Placa-Mãe</label>
-                  <div className="flex flex-col md:flex-row gap-4 items-start">
-                    <div className="flex-1 w-full relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-muted-foreground">search</span>
-                      <input className="w-full pl-10 rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary text-sm px-3 py-2" placeholder="Buscar placa-mãe..." />
-                    </div>
-                    <button className="px-4 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-medium transition-colors">Adicionar Novo</button>
-                  </div>
-                  <div className="mt-3 border border-dashed border-border rounded-lg p-3 flex items-center justify-center gap-2 text-muted-foreground text-sm">
-                    Nenhum produto selecionado
-                  </div>
-                </div>
-
-                {/* Other components */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {["Memória RAM", "Armazenamento (SSD)", "Fonte (PSU)", "Gabinete"].map((label) => (
-                    <FormField key={label} type="select" label={label} options={[`Selecionar ${label}...`]} labelSize="xs" />
-                  ))}
-                </div>
+                ))}
               </div>
             </AdminFormSection>
           </div>
