@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import HeroBanner from "@/components/HeroBanner";
 import Breadcrumb from "@/components/shared/Breadcrumb";
@@ -13,23 +14,24 @@ interface PerformanceRow {
   fps: number;
 }
 
-interface PartRow {
+interface SelectedPart {
   id: number;
   name: string;
   description: string;
-  category: string;
   price: string;
 }
 
 const AdminNewBuild = () => {
+  const navigate = useNavigate();
   const [performances, setPerformances] = useState<PerformanceRow[]>([
     { id: 1, game: "Cyberpunk 2077", quality: "4K Ultra / DLSS On", fps: 85 },
     { id: 2, game: "Call of Duty: Warzone", quality: "1440p Competitive", fps: 165 },
   ]);
 
-  const [parts, setParts] = useState<PartRow[]>([
-    { id: 1, name: "Intel Core i9-13900K", description: "24 Cores / 32 Threads", category: "Processador (CPU)", price: "3899" },
-    { id: 2, name: "NVIDIA GeForce RTX 4090", description: "24GB GDDR6X", category: "Placa de Vídeo (GPU)", price: "11499" },
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedParts, setSelectedParts] = useState<SelectedPart[]>([
+    { id: 1, name: "Intel Core i9-13900K", description: "24 Cores / 32 Threads - 5.8GHz", price: "R$ 3.899,00" },
+    { id: 2, name: "NVIDIA GeForce RTX 4090 24GB", description: "ASUS ROG Strix OC Edition", price: "R$ 11.499,00" },
   ]);
 
   const addPerformance = () => {
@@ -40,12 +42,8 @@ const AdminNewBuild = () => {
     setPerformances(performances.filter((p) => p.id !== id));
   };
 
-  const addPart = () => {
-    setParts([...parts, { id: Date.now(), name: "", description: "", category: "", price: "" }]);
-  };
-
   const removePart = (id: number) => {
-    setParts(parts.filter((p) => p.id !== id));
+    setSelectedParts(selectedParts.filter((p) => p.id !== id));
   };
 
   return (
@@ -125,49 +123,58 @@ const AdminNewBuild = () => {
             </AdminFormSection>
 
             {/* PC Composition */}
-            <AdminFormSection icon="memory" iconColor="bg-emerald-100 text-emerald-600" title="Composição do PC" headerRight={
-              <button type="button" onClick={addPart} className="text-primary hover:underline text-sm font-semibold flex items-center gap-1">
-                <span className="material-symbols-outlined text-lg">add_circle</span> Adicionar Peça
-              </button>
-            }>
-              <div className="space-y-4">
-                {parts.length === 0 && (
+            <AdminFormSection icon="memory" iconColor="bg-emerald-100 text-emerald-600" title="Composição do PC">
+              <div className="space-y-5">
+                {/* Search bar */}
+                <div className="flex flex-col md:flex-row gap-3">
+                  <div className="flex-1 relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-muted-foreground text-xl">search</span>
+                    <input
+                      className="w-full pl-10 rounded-lg border border-border bg-card text-foreground focus:ring-primary focus:border-primary text-sm px-3 py-2.5"
+                      placeholder="Buscar peça pelo nome..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/admin/ofertas/nova")}
+                    className="px-4 py-2.5 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-medium transition-colors border border-border flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <span className="material-symbols-outlined text-lg">add</span>
+                    Cadastrar Nova Peça
+                  </button>
+                </div>
+
+                {/* Selected parts list */}
+                {selectedParts.length === 0 ? (
                   <div className="border border-dashed border-border rounded-lg p-6 flex items-center justify-center text-muted-foreground text-sm">
-                    Nenhuma peça adicionada. Clique em "Adicionar Peça" para começar.
+                    Nenhuma peça adicionada. Busque e selecione peças acima.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <label className="block text-xs font-bold text-muted-foreground uppercase">Peças selecionadas ({selectedParts.length})</label>
+                    {selectedParts.map((part) => (
+                      <div key={part.id} className="bg-muted/50 border border-border rounded-lg p-3 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-card rounded border border-border flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-muted-foreground">memory</span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-foreground">{part.name}</p>
+                            <p className="text-xs text-muted-foreground">{part.description}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4 shrink-0">
+                          <span className="text-sm font-semibold text-foreground">{part.price}</span>
+                          <button type="button" onClick={() => removePart(part.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
+                            <span className="material-symbols-outlined text-sm">close</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
-                {parts.map((part, index) => (
-                  <div key={part.id} className="bg-muted/50 p-4 rounded-lg border border-border space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-muted-foreground uppercase">Peça #{index + 1}</span>
-                      <button type="button" onClick={() => removePart(part.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
-                        <span className="material-symbols-outlined text-sm">delete</span>
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input className="w-full text-sm rounded-lg border border-border bg-card text-foreground px-3 py-2" placeholder="Nome da peça (ex: RTX 4090)" defaultValue={part.name} />
-                      <input className="w-full text-sm rounded-lg border border-border bg-card text-foreground px-3 py-2" placeholder="Descrição curta (ex: 24GB GDDR6X)" defaultValue={part.description} />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <select className="w-full text-sm rounded-lg border border-border bg-card text-foreground px-3 py-2" defaultValue={part.category}>
-                        <option value="">Tipo de peça...</option>
-                        <option>Processador (CPU)</option>
-                        <option>Placa de Vídeo (GPU)</option>
-                        <option>Placa-Mãe</option>
-                        <option>Memória RAM</option>
-                        <option>Armazenamento (SSD/HDD)</option>
-                        <option>Fonte (PSU)</option>
-                        <option>Gabinete</option>
-                        <option>Cooler / Refrigeração</option>
-                        <option>Outro</option>
-                      </select>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">R$</span>
-                        <input className="w-full text-sm rounded-lg border border-border bg-card text-foreground pl-9 pr-3 py-2" type="number" placeholder="0,00" defaultValue={part.price} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
             </AdminFormSection>
           </div>
