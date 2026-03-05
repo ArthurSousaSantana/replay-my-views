@@ -14,7 +14,206 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      build_parts: {
+        Row: {
+          build_id: string
+          created_at: string
+          id: string
+          offer_id: string
+          sort_order: number
+        }
+        Insert: {
+          build_id: string
+          created_at?: string
+          id?: string
+          offer_id: string
+          sort_order?: number
+        }
+        Update: {
+          build_id?: string
+          created_at?: string
+          id?: string
+          offer_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "build_parts_build_id_fkey"
+            columns: ["build_id"]
+            isOneToOne: false
+            referencedRelation: "builds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "build_parts_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      build_performances: {
+        Row: {
+          build_id: string
+          created_at: string
+          fps: number
+          game: string
+          id: string
+          quality: string
+          sort_order: number
+        }
+        Insert: {
+          build_id: string
+          created_at?: string
+          fps?: number
+          game?: string
+          id?: string
+          quality?: string
+          sort_order?: number
+        }
+        Update: {
+          build_id?: string
+          created_at?: string
+          fps?: number
+          game?: string
+          id?: string
+          quality?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "build_performances_build_id_fkey"
+            columns: ["build_id"]
+            isOneToOne: false
+            referencedRelation: "builds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      builds: {
+        Row: {
+          badge: string | null
+          category: string
+          created_at: string
+          description: string | null
+          discount_percentage: number | null
+          final_price: number | null
+          id: string
+          image_url: string | null
+          is_featured: boolean
+          name: string
+          status: string
+          subtitle: string | null
+          total_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          badge?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          discount_percentage?: number | null
+          final_price?: number | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean
+          name: string
+          status?: string
+          subtitle?: string | null
+          total_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          badge?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          discount_percentage?: number | null
+          final_price?: number | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean
+          name?: string
+          status?: string
+          subtitle?: string | null
+          total_price?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      offers: {
+        Row: {
+          category: string
+          created_at: string
+          current_price: number | null
+          discount_percentage: number | null
+          external_url: string | null
+          gallery: Json | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          is_best_price: boolean
+          is_featured: boolean
+          is_limited_offer: boolean
+          is_reusable_in_builds: boolean
+          is_visible: boolean
+          long_description: string | null
+          name: string
+          old_price: number | null
+          promo_badge: string | null
+          short_description: string | null
+          specs: Json | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          current_price?: number | null
+          discount_percentage?: number | null
+          external_url?: string | null
+          gallery?: Json | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_best_price?: boolean
+          is_featured?: boolean
+          is_limited_offer?: boolean
+          is_reusable_in_builds?: boolean
+          is_visible?: boolean
+          long_description?: string | null
+          name: string
+          old_price?: number | null
+          promo_badge?: string | null
+          short_description?: string | null
+          specs?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          current_price?: number | null
+          discount_percentage?: number | null
+          external_url?: string | null
+          gallery?: Json | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          is_best_price?: boolean
+          is_featured?: boolean
+          is_limited_offer?: boolean
+          is_reusable_in_builds?: boolean
+          is_visible?: boolean
+          long_description?: string | null
+          name?: string
+          old_price?: number | null
+          promo_badge?: string | null
+          short_description?: string | null
+          specs?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
