@@ -30,33 +30,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+    let mounted = true;
 
-        if (session?.user) {
-          const admin = await checkAdminRole(session.user.id);
-          setIsAdmin(admin);
-        } else {
-          setIsAdmin(false);
-        }
-        setIsLoading(false);
-      }
-    );
-
+    // First, restore session from storage
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!mounted) return;
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
         const admin = await checkAdminRole(session.user.id);
-        setIsAdmin(admin);
+        if (mounted) setIsAdmin(admin);
       }
-      setIsLoading(false);
+      if (mounted) setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Then listen for future changes (sign in/out)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (!mounted) return;
+        setSession(session);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          // Use setTimeout to avoid blocking the callback
+          setTimeout(async () => {
+            if (!mounted) return;
+            const admin = await checkAdminRole(session.user.id);
+            if (mounted) setIsAdmin(admin);
+          }, 0);
+        } else {
+          setIsAdmin(false);
+        }
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
