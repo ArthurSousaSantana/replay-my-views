@@ -12,6 +12,8 @@ interface InputFieldProps extends FormFieldBaseProps {
   suffix?: string;
   disabled?: boolean;
   defaultValue?: string | number;
+  value?: string | number;
+  onChange?: (value: string) => void;
 }
 
 interface SelectFieldProps extends FormFieldBaseProps {
@@ -19,6 +21,8 @@ interface SelectFieldProps extends FormFieldBaseProps {
   options: string[];
   multiple?: boolean;
   defaultValue?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 interface TextareaFieldProps extends FormFieldBaseProps {
@@ -26,6 +30,8 @@ interface TextareaFieldProps extends FormFieldBaseProps {
   rows?: number;
   placeholder?: string;
   mono?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 type FormFieldProps = InputFieldProps | SelectFieldProps | TextareaFieldProps;
@@ -42,7 +48,13 @@ const FormField = (props: FormFieldProps) => {
       <label className={labelClass}>{props.label}</label>
 
       {props.type === "select" ? (
-        <select className={baseClasses} multiple={props.multiple} defaultValue={props.defaultValue}>
+        <select
+          className={baseClasses}
+          multiple={props.multiple}
+          value={props.value}
+          defaultValue={props.value === undefined ? props.defaultValue : undefined}
+          onChange={props.onChange ? (e) => props.onChange!(e.target.value) : undefined}
+        >
           {props.options.map((opt) => (
             <option key={opt}>{opt}</option>
           ))}
@@ -53,6 +65,8 @@ const FormField = (props: FormFieldProps) => {
             className={`${baseClasses} ${props.mono ? "font-mono" : ""}`}
             rows={props.rows || 4}
             placeholder={props.placeholder}
+            value={props.value}
+            onChange={props.onChange ? (e) => props.onChange!(e.target.value) : undefined}
           />
           {props.hint && <p className="text-xs text-muted-foreground mt-1">{props.hint}</p>}
         </>
@@ -67,7 +81,9 @@ const FormField = (props: FormFieldProps) => {
               type={props.type}
               placeholder={props.placeholder}
               disabled={props.disabled}
-              defaultValue={props.defaultValue}
+              value={props.value}
+              defaultValue={props.value === undefined ? props.defaultValue : undefined}
+              onChange={props.onChange ? (e) => props.onChange!(e.target.value) : undefined}
             />
             {props.suffix && (
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">{props.suffix}</span>
