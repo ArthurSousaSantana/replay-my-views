@@ -157,7 +157,7 @@ const AdminDashboard = () => {
               ) : (
                 <div className="divide-y divide-border">
                   {recentBuilds.map(b => (
-                    <div key={b.id} className="p-4 flex items-center gap-4 hover:bg-muted/50 transition-colors">
+                    <Link to={`/admin/builds/${b.id}/editar`} key={b.id} className="p-4 flex items-center gap-4 hover:bg-muted/50 transition-colors">
                       <div className="w-16 h-12 bg-muted rounded border border-border overflow-hidden flex items-center justify-center">
                         {b.image_url ? <img src={b.image_url} className="w-full h-full object-cover" /> : <span className="material-symbols-outlined text-muted-foreground">computer</span>}
                       </div>
