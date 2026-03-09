@@ -148,7 +148,7 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
               <div className="p-6 border-b border-border flex justify-between items-center">
                 <h3 className="text-lg font-bold text-foreground">Últimas Builds</h3>
-                <Link to="/admin/builds/nova" className="text-sm text-primary hover:underline font-medium">Nova build</Link>
+                <Link to="/admin/produtos?tab=builds" className="text-sm text-primary hover:underline font-medium">Ver todos</Link>
               </div>
               {loading ? (
                 <div className="p-4 space-y-4">{[1,2,3].map(i => <Skeleton key={i} className="h-14" />)}</div>
