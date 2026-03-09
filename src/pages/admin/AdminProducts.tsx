@@ -164,7 +164,8 @@ const AdminProducts = () => {
     return `R$ ${val.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
   };
 
-  const totalPages = Math.ceil(total / PAGE_SIZE);
+  const offersTotalPages = Math.ceil(offersTotal / PAGE_SIZE);
+  const buildsTotalPages = Math.ceil(buildsTotal / PAGE_SIZE);
 
   return (
     <AdminLayout>
