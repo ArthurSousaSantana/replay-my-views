@@ -96,8 +96,16 @@ const AdminProducts = () => {
   };
 
   useEffect(() => {
-    fetchOffers();
-  }, [page, search, categoryFilter, statusFilter]);
+    if (activeTab === "offers") {
+      fetchOffers();
+    }
+  }, [offersPage, offersSearch, offersCategoryFilter, offersStatusFilter]);
+
+  useEffect(() => {
+    if (activeTab === "builds") {
+      fetchBuilds();
+    }
+  }, [buildsPage, buildsSearch, buildsCategoryFilter, buildsStatusFilter]);
 
   const handleDelete = async (offer: Offer) => {
     if (!confirm(`Excluir "${offer.name}"? Esta ação não pode ser desfeita.`)) return;
