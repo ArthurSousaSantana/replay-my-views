@@ -15,7 +15,7 @@ interface BuildCardProps {
 
 const BuildCard = ({ title, image, badgeText, badgeColor, oldPrice, newPrice, discount, description, chips = [], link = "/builds/1" }: BuildCardProps) => (
   <div className="bg-surface rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden group border border-border flex flex-col h-full">
-    <div className="relative h-64 bg-gray-900 overflow-hidden flex items-center justify-center">
+    <div className="relative h-64 bg-white overflow-hidden flex items-center justify-center">
       <div className="absolute top-4 left-4 z-10">
         <span className={`${badgeColor} text-xs font-bold px-3 py-1 rounded-md backdrop-blur-sm uppercase tracking-wider`}>{badgeText}</span>
       </div>
