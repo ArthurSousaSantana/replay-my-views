@@ -107,6 +107,12 @@ const AdminProducts = () => {
     }
   }, [buildsPage, buildsSearch, buildsCategoryFilter, buildsStatusFilter]);
 
+  useEffect(() => {
+    if (activeTab === "builds" && builds.length === 0 && !buildsLoading) {
+      fetchBuilds();
+    }
+  }, [activeTab]);
+
   const handleDeleteOffer = async (offer: Offer) => {
     if (!confirm(`Excluir "${offer.name}"? Esta ação não pode ser desfeita.`)) return;
     setDeletingOffer(offer.id);
