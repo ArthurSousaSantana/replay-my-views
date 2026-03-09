@@ -15,11 +15,11 @@ interface BuildCardProps {
 
 const BuildCard = ({ title, image, badgeText, badgeColor, oldPrice, newPrice, discount, description, chips = [], link = "/builds/1" }: BuildCardProps) => (
   <div className="bg-surface rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden group border border-border flex flex-col h-full">
-    <div className="relative h-64 bg-gray-900 overflow-hidden">
+    <div className="relative h-64 bg-gray-900 overflow-hidden flex items-center justify-center">
       <div className="absolute top-4 left-4 z-10">
         <span className={`${badgeColor} text-xs font-bold px-3 py-1 rounded-md backdrop-blur-sm uppercase tracking-wider`}>{badgeText}</span>
       </div>
-      <img alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={image} />
+      <img alt={title} className="max-w-full max-h-full object-contain p-4" src={image} />
       {chips.length > 0 && (
         <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
           <div className="flex gap-2 text-xs font-medium text-white/90">

@@ -62,26 +62,27 @@ const DetailsBuild = () => {
         <div className="mb-4">
           <Breadcrumb variant="light" items={[{ label: "Home", to: "/" }, { label: "Builds de PC", to: "/builds" }, { label: build.name }]} />
         </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow-xl text-white mb-2">{build.name}</h1>
-        {build.subtitle && <p className="text-lg text-blue-100 font-light max-w-3xl">{build.subtitle}</p>}
       </HeroBanner>
 
       <main className="container mx-auto px-4 -mt-10 relative z-30 pb-20">
         <div className="bg-surface rounded-xl shadow-xl overflow-hidden border border-border">
           <div className="flex flex-col lg:flex-row">
             {/* Image */}
-            <div className="lg:w-1/2 bg-gray-900 relative min-h-[400px] lg:min-h-[600px] flex items-center justify-center p-8 group">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+            <div className="lg:w-1/2 bg-white relative min-h-[400px] lg:min-h-[600px] flex items-center justify-center p-8 group border-r border-border">
               {build.image_url ? (
                 <img alt={build.name} className="max-w-full max-h-full object-contain drop-shadow-2xl transform transition-transform duration-700 group-hover:scale-105" src={build.image_url} />
               ) : (
-                <span className="material-symbols-outlined text-9xl text-white/30">computer</span>
+                <span className="material-symbols-outlined text-9xl text-muted-foreground/30">computer</span>
               )}
             </div>
 
             {/* Info */}
             <div className="lg:w-1/2 p-8 lg:p-10 flex flex-col">
-              <div className="flex items-center gap-3 mb-4">
+              {/* Title & Subtitle */}
+              <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-2">{build.name}</h1>
+              {build.subtitle && <p className="text-base text-muted-foreground mb-4">{build.subtitle}</p>}
+
+              <div className="flex items-center gap-3 mb-6">
                 {build.badge && (
                   <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
                     <span className="material-symbols-outlined text-sm">verified</span> {build.badge}
@@ -93,8 +94,8 @@ const DetailsBuild = () => {
               {/* Performance */}
               {performances.length > 0 && (
                 <>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Performance Estimada</h2>
-                  <div className="grid grid-cols-3 gap-4 mb-8">
+                  <h2 className="text-xl font-bold text-foreground mb-4">Performance Estimada</h2>
+                  <div className="grid grid-cols-3 gap-3 mb-6">
                     {performances.slice(0, 3).map(p => (
                       <div key={p.id} className="bg-muted rounded-lg p-3 text-center border border-border">
                         <div className="text-xs text-muted-foreground mb-1">{p.game} ({p.quality})</div>
@@ -102,10 +103,11 @@ const DetailsBuild = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="h-px bg-border w-full mb-8" />
+                  <div className="h-px bg-border w-full mb-6" />
                 </>
               )}
 
+              {/* Price */}
               <div className="mt-auto">
                 <div className="flex items-end gap-3 mb-2">
                   <span className="text-4xl font-extrabold text-foreground tracking-tight">{formatBRL(build.final_price ?? build.total_price)}</span>
@@ -114,7 +116,7 @@ const DetailsBuild = () => {
                   )}
                 </div>
                 {savings > 0 && (
-                  <div className="flex items-center gap-2 mb-8">
+                  <div className="flex items-center gap-2 mb-6">
                     <span className="bg-emerald-100 text-emerald-700 text-sm font-bold px-3 py-1 rounded-md border border-emerald-200">
                       Economize {formatBRL(savings)} ({Math.round((savings / build.total_price!) * 100)}% OFF)
                     </span>
@@ -126,6 +128,18 @@ const DetailsBuild = () => {
             </div>
           </div>
         </div>
+
+        {/* Description - Above Components */}
+        {build.description && (
+          <div className="mt-12">
+            <div className="bg-surface rounded-xl shadow-sm border border-border p-8">
+              <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">description</span>Sobre esta Build
+              </h3>
+              <div className="prose max-w-none text-muted-foreground whitespace-pre-line">{build.description}</div>
+            </div>
+          </div>
+        )}
 
         {/* Components List */}
         {parts.length > 0 && (
@@ -155,18 +169,6 @@ const DetailsBuild = () => {
                   />
                 );
               })}
-            </div>
-          </div>
-        )}
-
-        {/* Description */}
-        {build.description && (
-          <div className="mt-12">
-            <div className="bg-surface rounded-xl shadow-sm border border-border p-8">
-              <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">description</span>Sobre esta Build
-              </h3>
-              <div className="prose max-w-none text-muted-foreground whitespace-pre-line">{build.description}</div>
             </div>
           </div>
         )}
