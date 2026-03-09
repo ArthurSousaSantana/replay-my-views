@@ -38,32 +38,61 @@ const AdminProducts = () => {
   const [deletingBuild, setDeletingBuild] = useState<string | null>(null);
 
   const fetchOffers = async () => {
-    setLoading(true);
+    setOffersLoading(true);
     let query = supabase.from("offers").select("*", { count: "exact" });
 
-    if (search.trim()) {
-      query = query.ilike("name", `%${search.trim()}%`);
+    if (offersSearch.trim()) {
+      query = query.ilike("name", `%${offersSearch.trim()}%`);
     }
-    if (categoryFilter !== "Todas") {
-      query = query.eq("category", categoryFilter);
+    if (offersCategoryFilter !== "Todas") {
+      query = query.eq("category", offersCategoryFilter);
     }
-    if (statusFilter === "Ativo") {
+    if (offersStatusFilter === "Ativo") {
       query = query.eq("is_active", true);
-    } else if (statusFilter === "Inativo") {
+    } else if (offersStatusFilter === "Inativo") {
       query = query.eq("is_active", false);
     }
 
     query = query.order("created_at", { ascending: false })
-      .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+      .range((offersPage - 1) * PAGE_SIZE, offersPage * PAGE_SIZE - 1);
 
     const { data, error, count } = await query;
     if (error) {
       toast.error("Erro ao carregar ofertas.");
     } else {
       setOffers(data || []);
-      setTotal(count || 0);
+      setOffersTotal(count || 0);
     }
-    setLoading(false);
+    setOffersLoading(false);
+  };
+
+  const fetchBuilds = async () => {
+    setBuildsLoading(true);
+    let query = supabase.from("builds").select("*", { count: "exact" });
+
+    if (buildsSearch.trim()) {
+      query = query.ilike("name", `%${buildsSearch.trim()}%`);
+    }
+    if (buildsCategoryFilter !== "Todas") {
+      query = query.eq("category", buildsCategoryFilter);
+    }
+    if (buildsStatusFilter === "Publicado") {
+      query = query.eq("status", "published");
+    } else if (buildsStatusFilter === "Rascunho") {
+      query = query.eq("status", "draft");
+    }
+
+    query = query.order("created_at", { ascending: false })
+      .range((buildsPage - 1) * PAGE_SIZE, buildsPage * PAGE_SIZE - 1);
+
+    const { data, error, count } = await query;
+    if (error) {
+      toast.error("Erro ao carregar builds.");
+    } else {
+      setBuilds(data || []);
+      setBuildsTotal(count || 0);
+    }
+    setBuildsLoading(false);
   };
 
   useEffect(() => {
