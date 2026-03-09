@@ -1,24 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import HeroBanner from "@/components/HeroBanner";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
+import { formatBRL } from "@/lib/format";
 
 interface PerformanceRow {
-  id: number;
+  id: string;
   game: string;
   quality: string;
   fps: number;
 }
 
 interface SelectedPart {
-  id: number;
+  id: string;
   name: string;
-  description: string;
-  price: string;
+  short_description: string;
+  current_price: number | null;
 }
 
 const AdminNewBuild = () => {
