@@ -174,7 +174,7 @@ const AdminDashboard = () => {
                         <span className="block text-xs font-medium text-muted-foreground">Atualizado</span>
                         <span className="text-xs text-muted-foreground">{new Date(b.updated_at).toLocaleDateString("pt-BR")}</span>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}
