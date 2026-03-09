@@ -487,6 +487,27 @@ const AdminNewBuild = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
+                    {searchLoading && (
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full"></div>
+                      </div>
+                    )}
+                    {searchResults.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto z-50">
+                        {searchResults.map((result) => (
+                          <button
+                            key={result.id}
+                            type="button"
+                            onClick={() => addPart(result)}
+                            className="w-full text-left px-4 py-3 hover:bg-muted transition-colors border-b border-border last:border-b-0"
+                          >
+                            <p className="text-sm font-semibold text-foreground">{result.name}</p>
+                            <p className="text-xs text-muted-foreground">{result.short_description}</p>
+                            <p className="text-xs text-primary font-medium mt-1">{formatBRL(result.current_price)}</p>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
