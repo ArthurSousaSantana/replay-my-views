@@ -27,28 +27,287 @@ interface SelectedPart {
 
 const AdminNewBuild = () => {
   const navigate = useNavigate();
-  const [performances, setPerformances] = useState<PerformanceRow[]>([
-    { id: 1, game: "Cyberpunk 2077", quality: "4K Ultra / DLSS On", fps: 85 },
-    { id: 2, game: "Call of Duty: Warzone", quality: "1440p Competitive", fps: 165 },
-  ]);
+  const { id } = useParams();
+  const { toast } = useToast();
+  const isEditing = !!id;
 
+  const [loading, setLoading] = useState(isEditing);
+  const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedParts, setSelectedParts] = useState<SelectedPart[]>([
-    { id: 1, name: "Intel Core i9-13900K", description: "24 Cores / 32 Threads - 5.8GHz", price: "R$ 3.899,00" },
-    { id: 2, name: "NVIDIA GeForce RTX 4090 24GB", description: "ASUS ROG Strix OC Edition", price: "R$ 11.499,00" },
-  ]);
+  const [searchResults, setSearchResults] = useState<SelectedPart[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
-  const addPerformance = () => {
-    setPerformances([...performances, { id: Date.now(), game: "", quality: "1080p Ultra", fps: 60 }]);
+  // Form state
+  const [name, setName] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [category, setCategory] = useState("Gamer Entry-Level");
+  const [badge, setBadge] = useState("");
+  const [description, setDescription] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [status, setStatus] = useState("draft");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [discountPercentage, setDiscountPercentage] = useState(5);
+
+  const [performances, setPerformances] = useState<PerformanceRow[]>([]);
+  const [selectedParts, setSelectedParts] = useState<SelectedPart[]>([]);
+
+  // Load build data when editing
+  useEffect(() => {
+    if (isEditing) {
+      loadBuildData();
+    }
+  }, [id]);
+
+  // Search offers when query changes
+  useEffect(() => {
+    if (searchQuery.length >= 2) {
+      searchOffers();
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery]);
+
+  const loadBuildData = async () => {
+    try {
+      setLoading(true);
+      const { data: build, error: buildError } = await supabase
+        .from("builds")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (buildError) throw buildError;
+
+      setName(build.name);
+      setSubtitle(build.subtitle || "");
+      setCategory(build.category);
+      setBadge(build.badge || "");
+      setDescription(build.description || "");
+      setIsFeatured(build.is_featured);
+      setStatus(build.status);
+      setImagePreview(build.image_url || "");
+      setDiscountPercentage(build.discount_percentage || 5);
+
+      // Load parts
+      const { data: parts, error: partsError } = await supabase
+        .from("build_parts")
+        .select("offer_id, offers(*)")
+        .eq("build_id", id)
+        .order("sort_order");
+
+      if (partsError) throw partsError;
+
+      const loadedParts = parts.map((p: any) => ({
+        id: p.offers.id,
+        name: p.offers.name,
+        short_description: p.offers.short_description || "",
+        current_price: p.offers.current_price,
+      }));
+      setSelectedParts(loadedParts);
+
+      // Load performances
+      const { data: perfs, error: perfsError } = await supabase
+        .from("build_performances")
+        .select("*")
+        .eq("build_id", id)
+        .order("sort_order");
+
+      if (perfsError) throw perfsError;
+
+      setPerformances(perfs || []);
+    } catch (error: any) {
+      toast({
+        title: "Erro ao carregar build",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removePerformance = (id: number) => {
+  const searchOffers = async () => {
+    try {
+      setSearchLoading(true);
+      const { data, error } = await supabase
+        .from("offers")
+        .select("id, name, short_description, current_price")
+        .ilike("name", `%${searchQuery}%`)
+        .eq("is_reusable_in_builds", true)
+        .limit(10);
+
+      if (error) throw error;
+      setSearchResults(data || []);
+    } catch (error: any) {
+      console.error("Error searching offers:", error);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const addPerformance = () => {
+    setPerformances([...performances, { 
+      id: crypto.randomUUID(), 
+      game: "", 
+      quality: "1080p Ultra", 
+      fps: 60 
+    }]);
+  };
+
+  const updatePerformance = (id: string, field: keyof PerformanceRow, value: any) => {
+    setPerformances(performances.map(p => p.id === id ? { ...p, [field]: value } : p));
+  };
+
+  const removePerformance = (id: string) => {
     setPerformances(performances.filter((p) => p.id !== id));
   };
 
-  const removePart = (id: number) => {
+  const addPart = (part: SelectedPart) => {
+    if (!selectedParts.find(p => p.id === part.id)) {
+      setSelectedParts([...selectedParts, part]);
+    }
+    setSearchQuery("");
+    setSearchResults([]);
+  };
+
+  const removePart = (id: string) => {
     setSelectedParts(selectedParts.filter((p) => p.id !== id));
   };
+
+  const calculatePrices = () => {
+    const subtotal = selectedParts.reduce((sum, part) => sum + (part.current_price || 0), 0);
+    const discount = subtotal * (discountPercentage / 100);
+    const final = subtotal - discount;
+    return { subtotal, discount, final };
+  };
+
+  const handleImageSelect = (file: File) => {
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleSave = async () => {
+    if (!name.trim()) {
+      toast({
+        title: "Nome obrigatório",
+        description: "Por favor, preencha o nome da build.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setSaving(true);
+      const { subtotal, final } = calculatePrices();
+      
+      let imageUrl = imagePreview;
+
+      // Upload image if new file selected
+      if (imageFile) {
+        const fileExt = imageFile.name.split(".").pop();
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(fileName, imageFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from("product-images")
+          .getPublicUrl(fileName);
+
+        imageUrl = publicUrl;
+      }
+
+      const buildData = {
+        name,
+        subtitle,
+        category,
+        badge: badge || null,
+        description,
+        is_featured: isFeatured,
+        status,
+        image_url: imageUrl,
+        total_price: subtotal,
+        discount_percentage: discountPercentage,
+        final_price: final,
+      };
+
+      let buildId = id;
+
+      if (isEditing) {
+        const { error: updateError } = await supabase
+          .from("builds")
+          .update(buildData)
+          .eq("id", id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { data: newBuild, error: insertError } = await supabase
+          .from("builds")
+          .insert(buildData)
+          .select()
+          .single();
+
+        if (insertError) throw insertError;
+        buildId = newBuild.id;
+      }
+
+      // Delete existing parts and performances
+      await supabase.from("build_parts").delete().eq("build_id", buildId);
+      await supabase.from("build_performances").delete().eq("build_id", buildId);
+
+      // Insert new parts
+      if (selectedParts.length > 0) {
+        const partsData = selectedParts.map((part, index) => ({
+          build_id: buildId,
+          offer_id: part.id,
+          sort_order: index,
+        }));
+
+        const { error: partsError } = await supabase
+          .from("build_parts")
+          .insert(partsData);
+
+        if (partsError) throw partsError;
+      }
+
+      // Insert new performances
+      if (performances.length > 0) {
+        const perfsData = performances.map((perf, index) => ({
+          build_id: buildId,
+          game: perf.game,
+          quality: perf.quality,
+          fps: perf.fps,
+          sort_order: index,
+        }));
+
+        const { error: perfsError } = await supabase
+          .from("build_performances")
+          .insert(perfsData);
+
+        if (perfsError) throw perfsError;
+      }
+
+      toast({
+        title: isEditing ? "Build atualizada!" : "Build criada!",
+        description: "As alterações foram salvas com sucesso.",
+      });
+
+      navigate("/admin/produtos");
+    } catch (error: any) {
+      toast({
+        title: "Erro ao salvar",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const prices = calculatePrices();
 
   return (
     <AdminLayout hideFooter>
