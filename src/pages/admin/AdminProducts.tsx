@@ -107,9 +107,9 @@ const AdminProducts = () => {
     }
   }, [buildsPage, buildsSearch, buildsCategoryFilter, buildsStatusFilter]);
 
-  const handleDelete = async (offer: Offer) => {
+  const handleDeleteOffer = async (offer: Offer) => {
     if (!confirm(`Excluir "${offer.name}"? Esta ação não pode ser desfeita.`)) return;
-    setDeleting(offer.id);
+    setDeletingOffer(offer.id);
     const { error } = await supabase.from("offers").delete().eq("id", offer.id);
     if (error) {
       toast.error("Erro ao excluir oferta.");
@@ -117,16 +117,45 @@ const AdminProducts = () => {
       toast.success("Oferta excluída.");
       fetchOffers();
     }
-    setDeleting(null);
+    setDeletingOffer(null);
   };
 
-  const toggleActive = async (offer: Offer) => {
+  const handleDeleteBuild = async (build: Build) => {
+    if (!confirm(`Excluir "${build.name}"? Esta ação não pode ser desfeita.`)) return;
+    setDeletingBuild(build.id);
+    
+    // Delete related data first
+    await supabase.from("build_parts").delete().eq("build_id", build.id);
+    await supabase.from("build_performances").delete().eq("build_id", build.id);
+    
+    const { error } = await supabase.from("builds").delete().eq("id", build.id);
+    if (error) {
+      toast.error("Erro ao excluir build.");
+    } else {
+      toast.success("Build excluída.");
+      fetchBuilds();
+    }
+    setDeletingBuild(null);
+  };
+
+  const toggleOfferActive = async (offer: Offer) => {
     const { error } = await supabase.from("offers").update({ is_active: !offer.is_active }).eq("id", offer.id);
     if (error) {
       toast.error("Erro ao alterar status.");
     } else {
       toast.success(offer.is_active ? "Oferta desativada." : "Oferta ativada.");
       fetchOffers();
+    }
+  };
+
+  const toggleBuildStatus = async (build: Build) => {
+    const newStatus = build.status === "published" ? "draft" : "published";
+    const { error } = await supabase.from("builds").update({ status: newStatus }).eq("id", build.id);
+    if (error) {
+      toast.error("Erro ao alterar status.");
+    } else {
+      toast.success(build.status === "published" ? "Build despublicada." : "Build publicada.");
+      fetchBuilds();
     }
   };
 
