@@ -249,17 +249,17 @@ const AdminProducts = () => {
               </div>
             </div>
 
-        {/* Table */}
-        <div className="bg-card rounded-2xl shadow-xl overflow-hidden border border-border">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-muted/50 border-b border-border">
-                  {["Produto", "Categoria", "Preço", "Status", "Ações"].map((h, i) => (
-                    <th key={h} className={`px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider ${i === 4 ? "text-right" : ""}`}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
+            {/* Offers Table */}
+            <div className="bg-card rounded-2xl shadow-xl overflow-hidden border border-border">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-muted/50 border-b border-border">
+                      {["Produto", "Categoria", "Preço", "Status", "Ações"].map((h, i) => (
+                        <th key={h} className={`px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider ${i === 4 ? "text-right" : ""}`}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
               <tbody className="divide-y divide-border">
                 {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
