@@ -9,6 +9,7 @@ import Pagination from "@/components/shared/Pagination";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Offer = Tables<"offers">;
+type Build = Tables<"builds">;
 
 const PAGE_SIZE = 10;
 
