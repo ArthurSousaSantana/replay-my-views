@@ -190,36 +190,64 @@ const AdminProducts = () => {
       </HeroBanner>
 
       <main className="container mx-auto px-4 -mt-12 relative z-20 pb-20">
-        {/* Filters */}
-        <div className="bg-card rounded-2xl shadow-xl border border-border p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Buscar</label>
-              <div className="relative">
-                <input
-                  className="w-full bg-muted border border-border rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2"
-                  placeholder="Nome do produto..."
-                  value={search}
-                  onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                />
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">search</span>
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Categoria</label>
-              <select className="w-full bg-muted border border-border rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2" value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}>
-                <option>Todas</option>
-                {["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games"].map(c => <option key={c}>{c}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Status</label>
-              <select className="w-full bg-muted border border-border rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2" value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}>
-                {["Todos", "Ativo", "Inativo"].map(s => <option key={s}>{s}</option>)}
-              </select>
-            </div>
+        {/* Tabs */}
+        <div className="bg-card rounded-2xl shadow-xl border border-border mb-8 overflow-hidden">
+          <div className="flex border-b border-border">
+            <button
+              onClick={() => setActiveTab("offers")}
+              className={`flex-1 px-6 py-4 font-bold text-sm transition-colors ${
+                activeTab === "offers"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              Ofertas ({offersTotal})
+            </button>
+            <button
+              onClick={() => setActiveTab("builds")}
+              className={`flex-1 px-6 py-4 font-bold text-sm transition-colors ${
+                activeTab === "builds"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              Builds ({buildsTotal})
+            </button>
           </div>
         </div>
+
+        {activeTab === "offers" ? (
+          <>
+            {/* Offers Filters */}
+            <div className="bg-card rounded-2xl shadow-xl border border-border p-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Buscar</label>
+                  <div className="relative">
+                    <input
+                      className="w-full bg-muted border border-border rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2"
+                      placeholder="Nome do produto..."
+                      value={offersSearch}
+                      onChange={(e) => { setOffersSearch(e.target.value); setOffersPage(1); }}
+                    />
+                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">search</span>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Categoria</label>
+                  <select className="w-full bg-muted border border-border rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2" value={offersCategoryFilter} onChange={(e) => { setOffersCategoryFilter(e.target.value); setOffersPage(1); }}>
+                    <option>Todas</option>
+                    {["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games"].map(c => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">Status</label>
+                  <select className="w-full bg-muted border border-border rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2" value={offersStatusFilter} onChange={(e) => { setOffersStatusFilter(e.target.value); setOffersPage(1); }}>
+                    {["Todos", "Ativo", "Inativo"].map(s => <option key={s}>{s}</option>)}
+                  </select>
+                </div>
+              </div>
+            </div>
 
         {/* Table */}
         <div className="bg-card rounded-2xl shadow-xl overflow-hidden border border-border">
