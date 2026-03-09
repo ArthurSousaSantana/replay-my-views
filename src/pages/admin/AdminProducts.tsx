@@ -260,22 +260,22 @@ const AdminProducts = () => {
                       ))}
                     </tr>
                   </thead>
-              <tbody className="divide-y divide-border">
-                {loading ? (
-                  Array.from({ length: 3 }).map((_, i) => (
-                    <tr key={i}>
-                      <td colSpan={5} className="px-6 py-6">
-                        <div className="h-5 bg-muted rounded animate-pulse" />
-                      </td>
-                    </tr>
-                  ))
-                ) : offers.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                      Nenhuma oferta encontrada.
-                    </td>
-                  </tr>
-                ) : (
+                  <tbody className="divide-y divide-border">
+                    {offersLoading ? (
+                      Array.from({ length: 3 }).map((_, i) => (
+                        <tr key={i}>
+                          <td colSpan={5} className="px-6 py-6">
+                            <div className="h-5 bg-muted rounded animate-pulse" />
+                          </td>
+                        </tr>
+                      ))
+                    ) : offers.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
+                          Nenhuma oferta encontrada.
+                        </td>
+                      </tr>
+                    ) : (
                   offers.map((offer) => (
                     <tr key={offer.id} className={`hover:bg-muted/50 transition-colors ${!offer.is_active ? "opacity-75" : ""}`}>
                       <td className="px-6 py-4">
