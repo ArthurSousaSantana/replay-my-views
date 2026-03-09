@@ -434,10 +434,19 @@ const AdminNewBuild = () => {
                 {performances.map((perf) => (
                   <div key={perf.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-muted/50 p-3 rounded-lg border border-border">
                     <div className="col-span-12 md:col-span-5">
-                      <input className="w-full text-sm rounded border border-border bg-card text-foreground px-3 py-2" placeholder="Nome do Jogo" defaultValue={perf.game} />
+                      <input 
+                        className="w-full text-sm rounded border border-border bg-card text-foreground px-3 py-2" 
+                        placeholder="Nome do Jogo" 
+                        value={perf.game}
+                        onChange={(e) => updatePerformance(perf.id, 'game', e.target.value)}
+                      />
                     </div>
                     <div className="col-span-12 md:col-span-4">
-                      <select className="w-full text-sm rounded border border-border bg-card text-foreground px-3 py-2" defaultValue={perf.quality}>
+                      <select 
+                        className="w-full text-sm rounded border border-border bg-card text-foreground px-3 py-2" 
+                        value={perf.quality}
+                        onChange={(e) => updatePerformance(perf.id, 'quality', e.target.value)}
+                      >
                         <option>4K Ultra / DLSS On</option>
                         <option>1440p High</option>
                         <option>1440p Competitive</option>
@@ -446,12 +455,17 @@ const AdminNewBuild = () => {
                     </div>
                     <div className="col-span-12 md:col-span-2">
                       <div className="relative">
-                        <input className="w-full text-sm rounded border border-border bg-card text-foreground px-3 py-2 pr-10" type="number" defaultValue={perf.fps} />
+                        <input 
+                          className="w-full text-sm rounded border border-border bg-card text-foreground px-3 py-2 pr-10" 
+                          type="number" 
+                          value={perf.fps}
+                          onChange={(e) => updatePerformance(perf.id, 'fps', Number(e.target.value))}
+                        />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">FPS</span>
                       </div>
                     </div>
                     <div className="col-span-12 md:col-span-1 text-center flex justify-end md:justify-center">
-                      <button onClick={() => removePerformance(perf.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
+                      <button type="button" onClick={() => removePerformance(perf.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
                         <span className="material-symbols-outlined">delete</span>
                       </button>
                     </div>
