@@ -535,11 +535,11 @@ const AdminNewBuild = () => {
                           </div>
                           <div>
                             <p className="text-sm font-bold text-foreground">{part.name}</p>
-                            <p className="text-xs text-muted-foreground">{part.description}</p>
+                            <p className="text-xs text-muted-foreground">{part.short_description}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-4 shrink-0">
-                          <span className="text-sm font-semibold text-foreground">{part.price}</span>
+                          <span className="text-sm font-semibold text-foreground">{formatBRL(part.current_price)}</span>
                           <button type="button" onClick={() => removePart(part.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
                             <span className="material-symbols-outlined text-sm">close</span>
                           </button>
