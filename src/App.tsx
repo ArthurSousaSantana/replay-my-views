@@ -40,6 +40,7 @@ const App = () => (
             {/* Protected admin routes */}
             <Route path="/admin" element={<AdminRouteGuard><AdminDashboard /></AdminRouteGuard>} />
             <Route path="/admin/builds/nova" element={<AdminRouteGuard><AdminNewBuild /></AdminRouteGuard>} />
+            <Route path="/admin/builds/:id/editar" element={<AdminRouteGuard><AdminNewBuild /></AdminRouteGuard>} />
             <Route path="/admin/ofertas/nova" element={<AdminRouteGuard><AdminNewOffer /></AdminRouteGuard>} />
             <Route path="/admin/ofertas/:id/editar" element={<AdminRouteGuard><AdminNewOffer /></AdminRouteGuard>} />
             <Route path="/admin/produtos" element={<AdminRouteGuard><AdminProducts /></AdminRouteGuard>} />
