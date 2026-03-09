@@ -95,23 +95,20 @@ const AdminProducts = () => {
     setBuildsLoading(false);
   };
 
+  // Read tab from URL params
   useEffect(() => {
-    if (activeTab === "offers") {
-      fetchOffers();
-    }
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    if (tab === "builds") setActiveTab("builds");
+  }, []);
+
+  useEffect(() => {
+    fetchOffers();
   }, [offersPage, offersSearch, offersCategoryFilter, offersStatusFilter]);
 
   useEffect(() => {
-    if (activeTab === "builds") {
-      fetchBuilds();
-    }
+    fetchBuilds();
   }, [buildsPage, buildsSearch, buildsCategoryFilter, buildsStatusFilter]);
-
-  useEffect(() => {
-    if (activeTab === "builds" && builds.length === 0 && !buildsLoading) {
-      fetchBuilds();
-    }
-  }, [activeTab]);
 
   const handleDeleteOffer = async (offer: Offer) => {
     if (!confirm(`Excluir "${offer.name}"? Esta ação não pode ser desfeita.`)) return;

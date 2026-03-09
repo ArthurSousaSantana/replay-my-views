@@ -148,7 +148,7 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
               <div className="p-6 border-b border-border flex justify-between items-center">
                 <h3 className="text-lg font-bold text-foreground">Últimas Builds</h3>
-                <Link to="/admin/builds/nova" className="text-sm text-primary hover:underline font-medium">Nova build</Link>
+                <Link to="/admin/produtos?tab=builds" className="text-sm text-primary hover:underline font-medium">Ver todos</Link>
               </div>
               {loading ? (
                 <div className="p-4 space-y-4">{[1,2,3].map(i => <Skeleton key={i} className="h-14" />)}</div>
@@ -157,7 +157,7 @@ const AdminDashboard = () => {
               ) : (
                 <div className="divide-y divide-border">
                   {recentBuilds.map(b => (
-                    <div key={b.id} className="p-4 flex items-center gap-4 hover:bg-muted/50 transition-colors">
+                    <Link to={`/admin/builds/${b.id}/editar`} key={b.id} className="p-4 flex items-center gap-4 hover:bg-muted/50 transition-colors">
                       <div className="w-16 h-12 bg-muted rounded border border-border overflow-hidden flex items-center justify-center">
                         {b.image_url ? <img src={b.image_url} className="w-full h-full object-cover" /> : <span className="material-symbols-outlined text-muted-foreground">computer</span>}
                       </div>
@@ -174,7 +174,7 @@ const AdminDashboard = () => {
                         <span className="block text-xs font-medium text-muted-foreground">Atualizado</span>
                         <span className="text-xs text-muted-foreground">{new Date(b.updated_at).toLocaleDateString("pt-BR")}</span>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}
