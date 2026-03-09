@@ -276,9 +276,9 @@ const AdminProducts = () => {
                         </td>
                       </tr>
                     ) : (
-                  offers.map((offer) => (
-                    <tr key={offer.id} className={`hover:bg-muted/50 transition-colors ${!offer.is_active ? "opacity-75" : ""}`}>
-                      <td className="px-6 py-4">
+                      offers.map((offer) => (
+                        <tr key={offer.id} className={`hover:bg-muted/50 transition-colors ${!offer.is_active ? "opacity-75" : ""}`}>
+                          <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 bg-muted rounded-lg flex-shrink-0 p-1 border border-border flex items-center justify-center overflow-hidden">
                             {offer.image_url ? (
