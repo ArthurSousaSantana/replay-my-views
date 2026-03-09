@@ -309,14 +309,32 @@ const AdminNewBuild = () => {
 
   const prices = calculatePrices();
 
+  if (loading) {
+    return (
+      <AdminLayout hideFooter>
+        <HeroBanner size="sm">
+          <Skeleton className="h-8 w-64 mb-2" />
+          <Skeleton className="h-10 w-96" />
+        </HeroBanner>
+        <main className="container mx-auto px-4 py-8">
+          <Skeleton className="h-96 w-full" />
+        </main>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout hideFooter>
       <HeroBanner size="sm">
         <div className="mb-2">
-          <Breadcrumb variant="light" items={[{ label: "Admin", to: "/admin" }, { label: "Builds" }, { label: "Nova Build" }]} />
+          <Breadcrumb variant="light" items={[{ label: "Admin", to: "/admin" }, { label: "Builds" }, { label: isEditing ? "Editar Build" : "Nova Build" }]} />
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-xl">Cadastrar Nova Build</h1>
-        <p className="text-blue-100 mt-2 max-w-2xl font-light">Crie uma nova configuração de PC para oferecer aos clientes.</p>
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-xl">
+          {isEditing ? "Editar Build" : "Cadastrar Nova Build"}
+        </h1>
+        <p className="text-blue-100 mt-2 max-w-2xl font-light">
+          {isEditing ? "Atualize a configuração do PC." : "Crie uma nova configuração de PC para oferecer aos clientes."}
+        </p>
       </HeroBanner>
 
       <main className="container mx-auto px-4 py-8 -mt-8 z-30 relative pb-24">
