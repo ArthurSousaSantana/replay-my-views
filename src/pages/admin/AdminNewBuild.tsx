@@ -344,20 +344,77 @@ const AdminNewBuild = () => {
             <AdminFormSection icon="description" title="Informações Básicas" headerRight={
               <label className="flex items-center cursor-pointer gap-3">
                 <span className="text-sm font-medium text-muted-foreground">Destaque</span>
-                <input type="checkbox" className="rounded border-border text-primary focus:ring-primary" />
+                <input 
+                  type="checkbox" 
+                  className="rounded border-border text-primary focus:ring-primary" 
+                  checked={isFeatured}
+                  onChange={(e) => setIsFeatured(e.target.checked)}
+                />
               </label>
             }>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField type="text" label="Nome da Build" placeholder="Ex: The 4K Monster" />
-                  <FormField type="text" label="Subtítulo Promocional" placeholder="Ex: Performance extrema para criadores" />
+                  <FormField 
+                    type="text" 
+                    label="Nome da Build" 
+                    placeholder="Ex: The 4K Monster"
+                    value={name}
+                    onChange={setName}
+                  />
+                  <FormField 
+                    type="text" 
+                    label="Subtítulo Promocional" 
+                    placeholder="Ex: Performance extrema para criadores"
+                    value={subtitle}
+                    onChange={setSubtitle}
+                  />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField type="select" label="Categoria" options={["Selecionar Categoria...", "Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]} />
-                  <FormField type="select" label="Badges / Tags" options={["Selecionar Tag...", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build"]} />
+                  <FormField 
+                    type="select" 
+                    label="Categoria" 
+                    options={["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]}
+                    value={category}
+                    onChange={setCategory}
+                  />
+                  <FormField 
+                    type="select" 
+                    label="Badges / Tags" 
+                    options={["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build"]}
+                    value={badge}
+                    onChange={setBadge}
+                  />
                 </div>
-                <FormField type="textarea" label="Descrição Longa" placeholder="Descreva os principais benefícios e casos de uso desta build..." rows={4} />
-                <ImageUpload label="Imagem Principal" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField 
+                    type="select" 
+                    label="Status" 
+                    options={["draft", "published"]}
+                    value={status}
+                    onChange={setStatus}
+                  />
+                  <FormField 
+                    type="number" 
+                    label="Desconto do Bundle (%)" 
+                    placeholder="5"
+                    value={discountPercentage}
+                    onChange={(v) => setDiscountPercentage(Number(v))}
+                    suffix="%"
+                  />
+                </div>
+                <FormField 
+                  type="textarea" 
+                  label="Descrição Longa" 
+                  placeholder="Descreva os principais benefícios e casos de uso desta build..." 
+                  rows={4}
+                  value={description}
+                  onChange={setDescription}
+                />
+                <ImageUpload 
+                  label="Imagem Principal" 
+                  previewUrl={imagePreview}
+                  onFileSelect={handleImageSelect}
+                />
               </div>
             </AdminFormSection>
 
