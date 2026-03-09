@@ -279,25 +279,25 @@ const AdminProducts = () => {
                       offers.map((offer) => (
                         <tr key={offer.id} className={`hover:bg-muted/50 transition-colors ${!offer.is_active ? "opacity-75" : ""}`}>
                           <td className="px-6 py-4">
-                        <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 bg-muted rounded-lg flex-shrink-0 p-1 border border-border flex items-center justify-center overflow-hidden">
-                            {offer.image_url ? (
-                              <img src={offer.image_url} alt={offer.name} className="w-full h-full object-contain" />
-                            ) : (
-                              <span className="material-symbols-outlined text-3xl text-muted-foreground">image</span>
-                            )}
-                          </div>
-                          <div>
-                            <p className="font-bold text-foreground leading-snug">{offer.name}</p>
-                            {offer.promo_badge && (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase text-primary bg-primary/10">{offer.promo_badge}</span>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-medium text-muted-foreground">{offer.category}</span>
-                      </td>
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 bg-muted rounded-lg flex-shrink-0 p-1 border border-border flex items-center justify-center overflow-hidden">
+                                {offer.image_url ? (
+                                  <img src={offer.image_url} alt={offer.name} className="w-full h-full object-contain" />
+                                ) : (
+                                  <span className="material-symbols-outlined text-3xl text-muted-foreground">image</span>
+                                )}
+                              </div>
+                              <div>
+                                <p className="font-bold text-foreground leading-snug">{offer.name}</p>
+                                {offer.promo_badge && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase text-primary bg-primary/10">{offer.promo_badge}</span>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="text-sm font-medium text-muted-foreground">{offer.category}</span>
+                          </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
                           <span className="text-sm font-bold text-foreground">{formatPrice(offer.current_price)}</span>
