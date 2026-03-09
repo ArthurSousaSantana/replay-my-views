@@ -560,47 +560,54 @@ const AdminNewBuild = () => {
                 <p className="text-xs text-muted-foreground mt-1">Visão geral de preços e itens selecionados.</p>
               </div>
               <div className="p-6">
-                <ul className="space-y-4 text-sm mb-6">
-                  <li className="flex justify-between items-center text-muted-foreground">
-                    <span className="truncate w-40">CPU: Intel Core i9</span>
-                    <span>R$ 3.899,00</span>
-                  </li>
-                  <li className="flex justify-between items-center text-muted-foreground">
-                    <span className="truncate w-40">GPU: RTX 4090</span>
-                    <span>R$ 11.499,00</span>
-                  </li>
-                  <li className="flex justify-between items-center text-muted-foreground/50 italic">
-                    <span className="truncate w-40">Placa-mãe...</span>
-                    <span>-</span>
-                  </li>
-                  <li className="flex justify-between items-center text-muted-foreground/50 italic">
-                    <span className="truncate w-40">Memória RAM...</span>
-                    <span>-</span>
-                  </li>
-                </ul>
+                {selectedParts.length > 0 ? (
+                  <ul className="space-y-4 text-sm mb-6">
+                    {selectedParts.map((part, index) => (
+                      <li key={part.id} className="flex justify-between items-center text-muted-foreground">
+                        <span className="truncate w-40">{part.name}</span>
+                        <span>{formatBRL(part.current_price)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-muted-foreground mb-6 italic">Nenhuma peça selecionada</p>
+                )}
                 <div className="border-t border-border pt-4 space-y-2">
                   <div className="flex justify-between items-center text-muted-foreground text-sm">
                     <span>Subtotal</span>
-                    <span>R$ 15.398,00</span>
+                    <span>{formatBRL(prices.subtotal)}</span>
                   </div>
                   <div className="flex justify-between items-center text-emerald-600 text-sm font-medium">
-                    <span>Desconto do Bundle (5%)</span>
-                    <span>- R$ 769,90</span>
+                    <span>Desconto do Bundle ({discountPercentage}%)</span>
+                    <span>- {formatBRL(prices.discount)}</span>
                   </div>
                   <div className="flex justify-between items-end mt-4 pt-2 border-t border-border">
                     <div>
                       <span className="block text-xs text-muted-foreground">Preço Final</span>
-                      <span className="text-2xl font-bold text-foreground">R$ 14.628,10</span>
+                      <span className="text-2xl font-bold text-foreground">{formatBRL(prices.final)}</span>
                     </div>
-                    <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">Economia: R$ 769,90</span>
+                    <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">
+                      Economia: {formatBRL(prices.discount)}
+                    </span>
                   </div>
                 </div>
                 <div className="mt-6 space-y-3">
-                  <button className="w-full bg-primary hover:bg-primary-dark text-primary-foreground font-bold py-3 rounded-lg transition-colors shadow-md flex items-center justify-center gap-2">
-                    <span className="material-symbols-outlined">save</span>Salvar Build
-                  </button>
-                  <button className="w-full bg-muted hover:opacity-80 text-foreground font-medium py-3 rounded-lg transition-colors border border-border flex items-center justify-center gap-2">
-                    <span className="material-symbols-outlined">visibility</span>Pré-visualizar
+                  <button 
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground font-bold py-3 rounded-lg transition-colors shadow-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {saving ? (
+                      <>
+                        <div className="animate-spin h-5 w-5 border-2 border-primary-foreground border-t-transparent rounded-full"></div>
+                        Salvando...
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined">save</span>
+                        {isEditing ? "Atualizar Build" : "Salvar Build"}
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
