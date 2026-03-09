@@ -15,14 +15,27 @@ const PAGE_SIZE = 10;
 
 const AdminProducts = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<"offers" | "builds">("offers");
+  
+  // Offers state
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("Todas");
-  const [statusFilter, setStatusFilter] = useState("Todos");
-  const [deleting, setDeleting] = useState<string | null>(null);
+  const [offersLoading, setOffersLoading] = useState(true);
+  const [offersTotal, setOffersTotal] = useState(0);
+  const [offersPage, setOffersPage] = useState(1);
+  const [offersSearch, setOffersSearch] = useState("");
+  const [offersCategoryFilter, setOffersCategoryFilter] = useState("Todas");
+  const [offersStatusFilter, setOffersStatusFilter] = useState("Todos");
+  const [deletingOffer, setDeletingOffer] = useState<string | null>(null);
+
+  // Builds state
+  const [builds, setBuilds] = useState<Build[]>([]);
+  const [buildsLoading, setBuildsLoading] = useState(true);
+  const [buildsTotal, setBuildsTotal] = useState(0);
+  const [buildsPage, setBuildsPage] = useState(1);
+  const [buildsSearch, setBuildsSearch] = useState("");
+  const [buildsCategoryFilter, setBuildsCategoryFilter] = useState("Todas");
+  const [buildsStatusFilter, setBuildsStatusFilter] = useState("Todos");
+  const [deletingBuild, setDeletingBuild] = useState<string | null>(null);
 
   const fetchOffers = async () => {
     setLoading(true);
