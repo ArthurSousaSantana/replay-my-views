@@ -176,11 +176,16 @@ const AdminProducts = () => {
               <Breadcrumb variant="light" items={[{ label: "Admin", to: "/admin" }, { label: "Dashboard", to: "/admin" }, { label: "Produtos" }]} />
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Gerenciamento de Produtos</h1>
-            <p className="text-blue-100/80 mt-2 font-light">Controle de estoque, preços e visibilidade da plataforma.</p>
+            <p className="text-blue-100/80 mt-2 font-light">Ofertas individuais e builds completas.</p>
           </div>
-          <Link to="/admin/ofertas/nova" className="bg-white text-primary hover:bg-blue-50 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 shadow-xl transition-all transform hover:scale-[1.02] active:scale-95">
-            <span className="material-symbols-outlined">add_circle</span>Adicionar Novo Produto
-          </Link>
+          <div className="flex gap-3">
+            <Link to="/admin/ofertas/nova" className="bg-white text-primary hover:bg-blue-50 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 shadow-xl transition-all transform hover:scale-[1.02] active:scale-95">
+              <span className="material-symbols-outlined">add_circle</span>Nova Oferta
+            </Link>
+            <Link to="/admin/builds/nova" className="bg-white text-primary hover:bg-blue-50 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 shadow-xl transition-all transform hover:scale-[1.02] active:scale-95">
+              <span className="material-symbols-outlined">add_circle</span>Nova Build
+            </Link>
+          </div>
         </div>
       </HeroBanner>
 
