@@ -187,6 +187,11 @@ const AdminNewBuild = () => {
     setImagePreview(URL.createObjectURL(file));
   };
 
+  const handleImageUrl = (url: string) => {
+    setImageFile(null);
+    setImagePreview(url);
+  };
+
   const handleSave = async () => {
     if (!name.trim()) {
       toast({
@@ -414,6 +419,7 @@ const AdminNewBuild = () => {
                   label="Imagem Principal" 
                   previewUrl={imagePreview}
                   onFileSelect={handleImageSelect}
+                  onUrlSubmit={handleImageUrl}
                 />
               </div>
             </AdminFormSection>
