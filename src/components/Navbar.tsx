@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-
-const LOGO_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuC8DJY7gvG5QchLaSkJMxxjfMxLM-nB7amBFfho_rRhktPHun5WZj4fnbkSyoRLdSWwBLVjeZk_Cs6vpcIhmv10ZNVk55770yPbOA4tqDkDN39TPTWAlkycUxv3v5o75YOexaijUPj0ES3Cv25QPCE6UqCrPrE4yE4ddlNVHDUa8Zju3-7z3XB7TOl4Xg_lqwb0h4DuTTamOsNd_Ji-Odp7Hpnk7AWSKLFDhCBAFSvO4B8INhUeRZMMWk0PIqhr-lQy6cYAtub8gQ";
+import logoImg from "@/assets/logo.png";
 
 const Navbar = () => {
   const location = useLocation();
