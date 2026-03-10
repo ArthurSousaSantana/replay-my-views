@@ -37,9 +37,6 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <a className="hover:text-primary transition-colors" href="#">Hardware</a>
-            </li>
-            <li>
               <a className="hover:text-primary transition-colors" href="#">Comunidade</a>
             </li>
           </ul>
