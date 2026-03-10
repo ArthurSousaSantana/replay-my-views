@@ -85,6 +85,11 @@ const AdminNewOffer = () => {
     setImagePreview(URL.createObjectURL(file));
   };
 
+  const handleImageUrl = (url: string) => {
+    setImageFile(null);
+    setImagePreview(url);
+  };
+
   const uploadImage = async (): Promise<string | null> => {
     if (!imageFile) return imagePreview || null;
     const ext = imageFile.name.split(".").pop();
