@@ -380,7 +380,7 @@ const AdminNewBuild = () => {
                   <FormField 
                     type="select" 
                     label="Badges / Tags" 
-                    options={["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build"]}
+                    options={["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]}
                     value={badge}
                     onChange={setBadge}
                   />
