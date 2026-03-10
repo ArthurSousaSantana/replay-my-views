@@ -5,7 +5,7 @@ const Footer = () => (
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
         <div>
-          <h3 className="text-xl font-bold text-foreground mb-4">TechDeals</h3>
+          <h3 className="text-xl font-bold text-foreground mb-4">DescontoGamer</h3>
           <p className="text-sm text-muted-foreground">
             Sua fonte número um para as melhores ofertas de tecnologia e hardware de alto desempenho.
           </p>
