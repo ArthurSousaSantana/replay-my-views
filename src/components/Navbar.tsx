@@ -47,9 +47,6 @@ const Navbar = () => {
             <button className="sm:hidden text-muted-foreground hover:text-foreground">
               <span className="material-symbols-outlined">search</span>
             </button>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              <span className="material-symbols-outlined text-2xl">account_circle</span>
-            </button>
             <button className="lg:hidden text-muted-foreground hover:text-foreground">
               <span className="material-symbols-outlined">menu</span>
             </button>

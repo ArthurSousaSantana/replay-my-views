@@ -38,7 +38,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-        <p>© 2023 TechDeals. Todos os direitos reservados.</p>
+        <p>© 2025 DescontoGamer. Todos os direitos reservados.</p>
         <div className="flex gap-4 mt-4 md:mt-0">
           <a className="hover:text-foreground" href="#">Privacidade</a>
           <a className="hover:text-foreground" href="#">Termos</a>
