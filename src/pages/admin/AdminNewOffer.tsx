@@ -249,7 +249,7 @@ const AdminNewOffer = () => {
             <AdminFormSection icon="image" title="Link e Mídia">
               <div className="space-y-4">
                 <FormField type="url" label="URL Externa (Afiliado)" prefix="🔗" labelSize="xs" value={externalUrl} onChange={setExternalUrl} />
-                <ImageUpload label="Imagem Principal" compact previewUrl={imagePreview} onFileSelect={handleImageSelect} />
+                <ImageUpload label="Imagem Principal" compact previewUrl={imagePreview} onFileSelect={handleImageSelect} onUrlSubmit={handleImageUrl} />
               </div>
             </AdminFormSection>
 

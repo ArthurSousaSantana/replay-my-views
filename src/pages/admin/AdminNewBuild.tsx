@@ -419,6 +419,7 @@ const AdminNewBuild = () => {
                   label="Imagem Principal" 
                   previewUrl={imagePreview}
                   onFileSelect={handleImageSelect}
+                  onUrlSubmit={handleImageUrl}
                 />
               </div>
             </AdminFormSection>
