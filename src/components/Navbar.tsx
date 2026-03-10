@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-
-const LOGO_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuC8DJY7gvG5QchLaSkJMxxjfMxLM-nB7amBFfho_rRhktPHun5WZj4fnbkSyoRLdSWwBLVjeZk_Cs6vpcIhmv10ZNVk55770yPbOA4tqDkDN39TPTWAlkycUxv3v5o75YOexaijUPj0ES3Cv25QPCE6UqCrPrE4yE4ddlNVHDUa8Zju3-7z3XB7TOl4Xg_lqwb0h4DuTTamOsNd_Ji-Odp7Hpnk7AWSKLFDhCBAFSvO4B8INhUeRZMMWk0PIqhr-lQy6cYAtub8gQ";
+import logoImg from "@/assets/logo.png";
 
 const Navbar = () => {
   const location = useLocation();
@@ -10,8 +9,8 @@ const Navbar = () => {
     <nav className="bg-surface border-b border-border sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-          <img alt="TechDeals Logo" className="w-10 h-10 object-contain" src={LOGO_URL} />
-          <span className="font-bold text-xl text-foreground hidden md:block">TechDeals</span>
+          <img alt="DescontoGamer Logo" className="w-10 h-10 object-contain" src={logoImg} />
+          <span className="font-bold text-xl text-foreground hidden md:block">DescontoGamer</span>
         </Link>
         <div className="flex-1 max-w-xl mx-auto hidden sm:block">
           <div className="relative">
@@ -47,9 +46,6 @@ const Navbar = () => {
           <div className="flex items-center gap-3 border-l border-border pl-6">
             <button className="sm:hidden text-muted-foreground hover:text-foreground">
               <span className="material-symbols-outlined">search</span>
-            </button>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              <span className="material-symbols-outlined text-2xl">account_circle</span>
             </button>
             <button className="lg:hidden text-muted-foreground hover:text-foreground">
               <span className="material-symbols-outlined">menu</span>
