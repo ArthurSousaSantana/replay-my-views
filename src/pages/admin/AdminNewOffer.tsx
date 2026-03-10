@@ -10,7 +10,7 @@ import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 
 const CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
-const BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday"];
+const BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
 
 interface SpecRow {
   id: number;
