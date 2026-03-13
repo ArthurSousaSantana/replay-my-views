@@ -36,9 +36,6 @@ const Navbar = () => {
                 Builds
               </Link>
             </li>
-            <li>
-              <a className="hover:text-primary transition-colors" href="#">Comunidade</a>
-            </li>
           </ul>
           <div className="flex items-center gap-3 border-l border-border pl-6">
             <button className="sm:hidden text-muted-foreground hover:text-foreground">
