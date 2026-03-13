@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PublicLayout from "@/components/layouts/PublicLayout";
-import HeroBanner from "@/components/HeroBanner";
+import HeroCarousel from "@/components/HeroCarousel";
 import OfferCard from "@/components/OfferCard";
 import BuildCard from "@/components/BuildCard";
 import SectionHeader from "@/components/shared/SectionHeader";
@@ -30,26 +30,7 @@ const Index = () => {
 
   return (
     <PublicLayout>
-      <HeroBanner size="lg" contained>
-        <div className="text-center py-12 md:py-16">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-5 tracking-tight drop-shadow-xl text-white">
-            As melhores ofertas <span className="text-blue-200">tech</span>,<br /> em um só lugar.
-          </h1>
-          <p className="text-base md:text-lg text-blue-50 mb-8 max-w-2xl mx-auto font-light drop-shadow-md">
-            PCs, celulares, acessórios, tablets e mais, a preços imperdíveis. Otimizados para desempenho e prontos para você.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/ofertas" className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 border border-blue-400/30 ring-1 ring-blue-400/20">
-              <span className="material-symbols-outlined text-sm">send</span>
-              Encontrar ofertas
-            </Link>
-            <Link to="/builds" className="bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg transition-all hover:border-white/40">
-              <span className="material-symbols-outlined text-sm">computer</span>
-              Ver builds de PC
-            </Link>
-          </div>
-        </div>
-      </HeroBanner>
+      <HeroCarousel />
 
       {/* Builds */}
       <section className="container mx-auto px-4 py-12 relative z-30">
