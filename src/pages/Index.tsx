@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PublicLayout from "@/components/layouts/PublicLayout";
-import HeroBanner from "@/components/HeroBanner";
+import HeroCarousel from "@/components/HeroCarousel";
 import OfferCard from "@/components/OfferCard";
 import BuildCard from "@/components/BuildCard";
 import SectionHeader from "@/components/shared/SectionHeader";
