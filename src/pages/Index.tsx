@@ -30,12 +30,12 @@ const Index = () => {
 
   return (
     <PublicLayout>
-      <HeroBanner size="lg">
-        <div className="text-center py-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-xl text-white">
+      <HeroBanner size="lg" contained>
+        <div className="text-center py-12 md:py-16">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-5 tracking-tight drop-shadow-xl text-white">
             As melhores ofertas <span className="text-blue-200">tech</span>,<br /> em um só lugar.
           </h1>
-          <p className="text-lg md:text-xl text-blue-50 mb-10 max-w-2xl mx-auto font-light drop-shadow-md">
+          <p className="text-base md:text-lg text-blue-50 mb-8 max-w-2xl mx-auto font-light drop-shadow-md">
             PCs, celulares, acessórios, tablets e mais, a preços imperdíveis. Otimizados para desempenho e prontos para você.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
