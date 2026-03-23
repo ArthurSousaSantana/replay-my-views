@@ -149,7 +149,7 @@ const AdminNewBuild = () => {
         .limit(10);
 
       if (error) throw error;
-      setSearchResults(data || []);
+      setSearchResults((data || []).map((d) => ({ ...d, quantity: 1 })));
     } catch (error: any) {
       console.error("Error searching offers:", error);
     } finally {
@@ -175,11 +175,20 @@ const AdminNewBuild = () => {
   };
 
   const addPart = (part: SelectedPart) => {
-    if (!selectedParts.find(p => p.id === part.id)) {
-      setSelectedParts([...selectedParts, part]);
+    const existing = selectedParts.find(p => p.id === part.id);
+    if (existing) {
+      setSelectedParts(selectedParts.map(p => p.id === part.id ? { ...p, quantity: p.quantity + 1 } : p));
+    } else {
+      setSelectedParts([...selectedParts, { ...part, quantity: 1 }]);
     }
     setSearchQuery("");
     setSearchResults([]);
+  };
+
+  const updatePartQuantity = (id: string, delta: number) => {
+    setSelectedParts(prev =>
+      prev.map(p => p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p)
+    );
   };
 
   const removePart = (id: string) => {
@@ -187,7 +196,7 @@ const AdminNewBuild = () => {
   };
 
   const calculatePrices = () => {
-    const subtotal = selectedParts.reduce((sum, part) => sum + (part.current_price || 0), 0);
+    const subtotal = selectedParts.reduce((sum, part) => sum + (part.current_price || 0) * part.quantity, 0);
     const discount = subtotal * (discountPercentage / 100);
     const final = subtotal - discount;
     return { subtotal, discount, final };
