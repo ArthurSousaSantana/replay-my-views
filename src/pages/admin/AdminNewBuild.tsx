@@ -614,10 +614,13 @@ const AdminNewBuild = () => {
               <div className="p-6">
                 {selectedParts.length > 0 ? (
                   <ul className="space-y-4 text-sm mb-6">
-                    {selectedParts.map((part, index) => (
-                      <li key={part.id} className="flex justify-between items-center text-muted-foreground">
-                        <span className="truncate w-40">{part.name}</span>
-                        <span>{formatBRL(part.current_price)}</span>
+                    {selectedParts.map((part) => (
+                      <li key={part.id} className="flex justify-between items-start text-muted-foreground gap-2">
+                        <span className="truncate flex-1">{part.name}</span>
+                        <span className="shrink-0 text-right">
+                          {part.quantity > 1 && <span className="text-xs text-muted-foreground mr-1">×{part.quantity}</span>}
+                          {formatBRL((part.current_price || 0) * part.quantity)}
+                        </span>
                       </li>
                     ))}
                   </ul>
