@@ -554,20 +554,44 @@ const AdminNewBuild = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <label className="block text-xs font-bold text-muted-foreground uppercase">Peças selecionadas ({selectedParts.length})</label>
+                    <label className="block text-xs font-bold text-muted-foreground uppercase">
+                      Peças selecionadas ({selectedParts.reduce((s, p) => s + p.quantity, 0)} unidades)
+                    </label>
                     {selectedParts.map((part) => (
                       <div key={part.id} className="bg-muted/50 border border-border rounded-lg p-3 flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
                           <div className="w-10 h-10 bg-card rounded border border-border flex items-center justify-center shrink-0">
                             <span className="material-symbols-outlined text-muted-foreground">memory</span>
                           </div>
-                          <div>
-                            <p className="text-sm font-bold text-foreground">{part.name}</p>
-                            <p className="text-xs text-muted-foreground">{part.short_description}</p>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-foreground truncate">{part.name}</p>
+                            <p className="text-xs text-muted-foreground truncate">{part.short_description}</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 shrink-0">
-                          <span className="text-sm font-semibold text-foreground">{formatBRL(part.current_price)}</span>
+                        <div className="flex items-center gap-3 shrink-0">
+                          {/* Quantity controls */}
+                          <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden">
+                            <button
+                              type="button"
+                              onClick={() => updatePartQuantity(part.id, -1)}
+                              className="px-2 py-1 text-muted-foreground hover:bg-muted transition-colors"
+                            >
+                              <span className="material-symbols-outlined text-base leading-none">remove</span>
+                            </button>
+                            <span className="px-3 py-1 text-sm font-bold text-foreground min-w-[2rem] text-center border-x border-border">
+                              {part.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => updatePartQuantity(part.id, 1)}
+                              className="px-2 py-1 text-muted-foreground hover:bg-muted transition-colors"
+                            >
+                              <span className="material-symbols-outlined text-base leading-none">add</span>
+                            </button>
+                          </div>
+                          <span className="text-sm font-semibold text-foreground w-24 text-right">
+                            {formatBRL((part.current_price || 0) * part.quantity)}
+                          </span>
                           <button type="button" onClick={() => removePart(part.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
                             <span className="material-symbols-outlined text-sm">close</span>
                           </button>
