@@ -23,6 +23,7 @@ interface SelectedPart {
   name: string;
   short_description: string;
   current_price: number | null;
+  quantity: number;
 }
 
 const AdminNewBuild = () => {
