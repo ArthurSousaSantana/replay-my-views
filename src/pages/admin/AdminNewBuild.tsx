@@ -273,15 +273,14 @@ const AdminNewBuild = () => {
       await supabase.from("build_parts").delete().eq("build_id", buildId);
       await supabase.from("build_performances").delete().eq("build_id", buildId);
 
-      // Insert new parts (expanded by quantity)
+      // Insert new parts with quantity field
       if (selectedParts.length > 0) {
-        const partsData = selectedParts.flatMap((part, index) =>
-          Array.from({ length: part.quantity }, (_, qi) => ({
-            build_id: buildId,
-            offer_id: part.id,
-            sort_order: index * 100 + qi,
-          }))
-        );
+        const partsData = selectedParts.map((part, index) => ({
+          build_id: buildId,
+          offer_id: part.id,
+          quantity: part.quantity,
+          sort_order: index,
+        }));
 
         const { error: partsError } = await supabase
           .from("build_parts")
