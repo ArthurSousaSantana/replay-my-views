@@ -234,7 +234,7 @@ const ListingBuilds = () => {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <FiltersContent />
+              {filtersContent}
             </div>
           </div>
         )}
