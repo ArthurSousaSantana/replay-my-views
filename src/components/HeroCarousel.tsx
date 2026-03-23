@@ -97,26 +97,6 @@ const HeroCarousel = ({ slides = placeholderSlides, autoPlayInterval = 5000 }: H
                   alt={slide.title}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                <div className="absolute inset-0 flex items-center z-10">
-                  <div className="px-8 md:px-16 max-w-2xl">
-                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-3 drop-shadow-lg tracking-tight">
-                      {slide.title}
-                    </h2>
-                    <p className="text-sm md:text-lg text-blue-100 mb-6 drop-shadow-md font-light">
-                      {slide.subtitle}
-                    </p>
-                    {slide.ctaText && slide.ctaLink && (
-                      <a
-                        href={slide.ctaLink}
-                        className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
-                      >
-                        {slide.ctaText}
-                        <ChevronRight className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           ))}
