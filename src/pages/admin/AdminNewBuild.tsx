@@ -93,29 +93,19 @@ const AdminNewBuild = () => {
       // Load parts
       const { data: parts, error: partsError } = await supabase
         .from("build_parts")
-        .select("offer_id, offers(*)")
+        .select("offer_id, quantity, offers(*)")
         .eq("build_id", id)
         .order("sort_order");
 
       if (partsError) throw partsError;
 
-      // Aggregate parts with quantity
-      const partsMap = new Map<string, SelectedPart>();
-      for (const p of parts as any[]) {
-        const existing = partsMap.get(p.offers.id);
-        if (existing) {
-          partsMap.set(p.offers.id, { ...existing, quantity: existing.quantity + 1 });
-        } else {
-          partsMap.set(p.offers.id, {
-            id: p.offers.id,
-            name: p.offers.name,
-            short_description: p.offers.short_description || "",
-            current_price: p.offers.current_price,
-            quantity: 1,
-          });
-        }
-      }
-      setSelectedParts(Array.from(partsMap.values()));
+      setSelectedParts((parts as any[]).map((p) => ({
+        id: p.offers.id,
+        name: p.offers.name,
+        short_description: p.offers.short_description || "",
+        current_price: p.offers.current_price,
+        quantity: p.quantity ?? 1,
+      })));
 
       // Load performances
       const { data: perfs, error: perfsError } = await supabase
@@ -283,15 +273,14 @@ const AdminNewBuild = () => {
       await supabase.from("build_parts").delete().eq("build_id", buildId);
       await supabase.from("build_performances").delete().eq("build_id", buildId);
 
-      // Insert new parts (expanded by quantity)
+      // Insert new parts with quantity field
       if (selectedParts.length > 0) {
-        const partsData = selectedParts.flatMap((part, index) =>
-          Array.from({ length: part.quantity }, (_, qi) => ({
-            build_id: buildId,
-            offer_id: part.id,
-            sort_order: index * 100 + qi,
-          }))
-        );
+        const partsData = selectedParts.map((part, index) => ({
+          build_id: buildId,
+          offer_id: part.id,
+          quantity: part.quantity,
+          sort_order: index,
+        }));
 
         const { error: partsError } = await supabase
           .from("build_parts")
