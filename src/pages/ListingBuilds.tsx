@@ -243,7 +243,7 @@ const ListingBuilds = () => {
           {/* Desktop sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-card rounded-xl border border-border p-5 sticky top-24">
-              <FiltersContent />
+              {filtersContent}
             </div>
           </aside>
 
