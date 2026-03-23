@@ -99,13 +99,23 @@ const AdminNewBuild = () => {
 
       if (partsError) throw partsError;
 
-      const loadedParts = parts.map((p: any) => ({
-        id: p.offers.id,
-        name: p.offers.name,
-        short_description: p.offers.short_description || "",
-        current_price: p.offers.current_price,
-      }));
-      setSelectedParts(loadedParts);
+      // Aggregate parts with quantity
+      const partsMap = new Map<string, SelectedPart>();
+      for (const p of parts as any[]) {
+        const existing = partsMap.get(p.offers.id);
+        if (existing) {
+          partsMap.set(p.offers.id, { ...existing, quantity: existing.quantity + 1 });
+        } else {
+          partsMap.set(p.offers.id, {
+            id: p.offers.id,
+            name: p.offers.name,
+            short_description: p.offers.short_description || "",
+            current_price: p.offers.current_price,
+            quantity: 1,
+          });
+        }
+      }
+      setSelectedParts(Array.from(partsMap.values()));
 
       // Load performances
       const { data: perfs, error: perfsError } = await supabase
