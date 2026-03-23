@@ -23,6 +23,7 @@ interface SelectedPart {
   name: string;
   short_description: string;
   current_price: number | null;
+  quantity: number;
 }
 
 const AdminNewBuild = () => {
@@ -98,13 +99,23 @@ const AdminNewBuild = () => {
 
       if (partsError) throw partsError;
 
-      const loadedParts = parts.map((p: any) => ({
-        id: p.offers.id,
-        name: p.offers.name,
-        short_description: p.offers.short_description || "",
-        current_price: p.offers.current_price,
-      }));
-      setSelectedParts(loadedParts);
+      // Aggregate parts with quantity
+      const partsMap = new Map<string, SelectedPart>();
+      for (const p of parts as any[]) {
+        const existing = partsMap.get(p.offers.id);
+        if (existing) {
+          partsMap.set(p.offers.id, { ...existing, quantity: existing.quantity + 1 });
+        } else {
+          partsMap.set(p.offers.id, {
+            id: p.offers.id,
+            name: p.offers.name,
+            short_description: p.offers.short_description || "",
+            current_price: p.offers.current_price,
+            quantity: 1,
+          });
+        }
+      }
+      setSelectedParts(Array.from(partsMap.values()));
 
       // Load performances
       const { data: perfs, error: perfsError } = await supabase
@@ -138,7 +149,7 @@ const AdminNewBuild = () => {
         .limit(10);
 
       if (error) throw error;
-      setSearchResults(data || []);
+      setSearchResults((data || []).map((d) => ({ ...d, quantity: 1 })));
     } catch (error: any) {
       console.error("Error searching offers:", error);
     } finally {
@@ -164,11 +175,20 @@ const AdminNewBuild = () => {
   };
 
   const addPart = (part: SelectedPart) => {
-    if (!selectedParts.find(p => p.id === part.id)) {
-      setSelectedParts([...selectedParts, part]);
+    const existing = selectedParts.find(p => p.id === part.id);
+    if (existing) {
+      setSelectedParts(selectedParts.map(p => p.id === part.id ? { ...p, quantity: p.quantity + 1 } : p));
+    } else {
+      setSelectedParts([...selectedParts, { ...part, quantity: 1 }]);
     }
     setSearchQuery("");
     setSearchResults([]);
+  };
+
+  const updatePartQuantity = (id: string, delta: number) => {
+    setSelectedParts(prev =>
+      prev.map(p => p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p)
+    );
   };
 
   const removePart = (id: string) => {
@@ -176,7 +196,7 @@ const AdminNewBuild = () => {
   };
 
   const calculatePrices = () => {
-    const subtotal = selectedParts.reduce((sum, part) => sum + (part.current_price || 0), 0);
+    const subtotal = selectedParts.reduce((sum, part) => sum + (part.current_price || 0) * part.quantity, 0);
     const discount = subtotal * (discountPercentage / 100);
     const final = subtotal - discount;
     return { subtotal, discount, final };
@@ -263,13 +283,15 @@ const AdminNewBuild = () => {
       await supabase.from("build_parts").delete().eq("build_id", buildId);
       await supabase.from("build_performances").delete().eq("build_id", buildId);
 
-      // Insert new parts
+      // Insert new parts (expanded by quantity)
       if (selectedParts.length > 0) {
-        const partsData = selectedParts.map((part, index) => ({
-          build_id: buildId,
-          offer_id: part.id,
-          sort_order: index,
-        }));
+        const partsData = selectedParts.flatMap((part, index) =>
+          Array.from({ length: part.quantity }, (_, qi) => ({
+            build_id: buildId,
+            offer_id: part.id,
+            sort_order: index * 100 + qi,
+          }))
+        );
 
         const { error: partsError } = await supabase
           .from("build_parts")
@@ -532,20 +554,44 @@ const AdminNewBuild = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <label className="block text-xs font-bold text-muted-foreground uppercase">Peças selecionadas ({selectedParts.length})</label>
+                    <label className="block text-xs font-bold text-muted-foreground uppercase">
+                      Peças selecionadas ({selectedParts.reduce((s, p) => s + p.quantity, 0)} unidades)
+                    </label>
                     {selectedParts.map((part) => (
                       <div key={part.id} className="bg-muted/50 border border-border rounded-lg p-3 flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
                           <div className="w-10 h-10 bg-card rounded border border-border flex items-center justify-center shrink-0">
                             <span className="material-symbols-outlined text-muted-foreground">memory</span>
                           </div>
-                          <div>
-                            <p className="text-sm font-bold text-foreground">{part.name}</p>
-                            <p className="text-xs text-muted-foreground">{part.short_description}</p>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-foreground truncate">{part.name}</p>
+                            <p className="text-xs text-muted-foreground truncate">{part.short_description}</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4 shrink-0">
-                          <span className="text-sm font-semibold text-foreground">{formatBRL(part.current_price)}</span>
+                        <div className="flex items-center gap-3 shrink-0">
+                          {/* Quantity controls */}
+                          <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden">
+                            <button
+                              type="button"
+                              onClick={() => updatePartQuantity(part.id, -1)}
+                              className="px-2 py-1 text-muted-foreground hover:bg-muted transition-colors"
+                            >
+                              <span className="material-symbols-outlined text-base leading-none">remove</span>
+                            </button>
+                            <span className="px-3 py-1 text-sm font-bold text-foreground min-w-[2rem] text-center border-x border-border">
+                              {part.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => updatePartQuantity(part.id, 1)}
+                              className="px-2 py-1 text-muted-foreground hover:bg-muted transition-colors"
+                            >
+                              <span className="material-symbols-outlined text-base leading-none">add</span>
+                            </button>
+                          </div>
+                          <span className="text-sm font-semibold text-foreground w-24 text-right">
+                            {formatBRL((part.current_price || 0) * part.quantity)}
+                          </span>
                           <button type="button" onClick={() => removePart(part.id)} className="text-destructive hover:text-destructive/80 p-1 rounded hover:bg-destructive/10">
                             <span className="material-symbols-outlined text-sm">close</span>
                           </button>
@@ -568,10 +614,13 @@ const AdminNewBuild = () => {
               <div className="p-6">
                 {selectedParts.length > 0 ? (
                   <ul className="space-y-4 text-sm mb-6">
-                    {selectedParts.map((part, index) => (
-                      <li key={part.id} className="flex justify-between items-center text-muted-foreground">
-                        <span className="truncate w-40">{part.name}</span>
-                        <span>{formatBRL(part.current_price)}</span>
+                    {selectedParts.map((part) => (
+                      <li key={part.id} className="flex justify-between items-start text-muted-foreground gap-2">
+                        <span className="truncate flex-1">{part.name}</span>
+                        <span className="shrink-0 text-right">
+                          {part.quantity > 1 && <span className="text-xs text-muted-foreground mr-1">×{part.quantity}</span>}
+                          {formatBRL((part.current_price || 0) * part.quantity)}
+                        </span>
                       </li>
                     ))}
                   </ul>
