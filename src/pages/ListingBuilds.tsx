@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import PublicLayout from "@/components/layouts/PublicLayout";
 import HeroBanner from "@/components/HeroBanner";
 import BuildCard from "@/components/BuildCard";
@@ -6,17 +7,13 @@ import Pagination from "@/components/shared/Pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { formatBRL, formatDiscount } from "@/lib/format";
+import { useSearch } from "@/contexts/SearchContext";
 import type { Tables } from "@/integrations/supabase/types";
 import { SlidersHorizontal, X } from "lucide-react";
 
 const PAGE_SIZE = 9;
 
-const CATEGORIES = [
-  "Básico",
-  "Intermediário",
-  "Avançado",
-  "Extremo",
-];
+const CATEGORIES = ["Básico", "Intermediário", "Avançado", "Extremo"];
 
 const DISCOUNT_OPTIONS = [
   { label: "Qualquer desconto", value: 0 },
@@ -26,6 +23,8 @@ const DISCOUNT_OPTIONS = [
 ];
 
 const ListingBuilds = () => {
+  const [searchParams] = useSearchParams();
+  const { searchQuery, setSearchQuery } = useSearch();
   const [builds, setBuilds] = useState<Tables<"builds">[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -39,6 +38,14 @@ const ListingBuilds = () => {
   const [minDiscount, setMinDiscount] = useState(0);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
+  // Pick up ?q= from URL on mount
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
+
   const fetchBuilds = useCallback(async () => {
     setLoading(true);
     const from = (page - 1) * PAGE_SIZE;
@@ -48,6 +55,9 @@ const ListingBuilds = () => {
       .select("*", { count: "exact" })
       .eq("status", "published");
 
+    if (searchQuery) {
+      query = query.ilike("name", `%${searchQuery}%`);
+    }
     if (selectedCategories.length > 0) {
       query = query.in("category", selectedCategories);
     }
@@ -69,7 +79,7 @@ const ListingBuilds = () => {
     setBuilds(data ?? []);
     setTotal(count ?? 0);
     setLoading(false);
-  }, [page, selectedCategories, appliedMinPrice, appliedMaxPrice, minDiscount]);
+  }, [page, selectedCategories, appliedMinPrice, appliedMaxPrice, minDiscount, searchQuery]);
 
   useEffect(() => {
     fetchBuilds();
@@ -100,6 +110,7 @@ const ListingBuilds = () => {
     setAppliedMinPrice(null);
     setAppliedMaxPrice(null);
     setMinDiscount(0);
+    setSearchQuery("");
     setPage(1);
   };
 
@@ -107,7 +118,8 @@ const ListingBuilds = () => {
     selectedCategories.length > 0 ||
     appliedMinPrice !== null ||
     appliedMaxPrice !== null ||
-    minDiscount > 0;
+    minDiscount > 0 ||
+    !!searchQuery;
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
@@ -115,7 +127,6 @@ const ListingBuilds = () => {
     <div className="space-y-6">
       <h3 className="text-lg font-bold text-foreground">Filtros</h3>
 
-      {/* Categories */}
       <div className="border-b border-border pb-6">
         <h4 className="font-semibold text-sm text-foreground mb-3">Categorias</h4>
         <div className="space-y-2">
@@ -135,7 +146,6 @@ const ListingBuilds = () => {
         </div>
       </div>
 
-      {/* Price range */}
       <div className="border-b border-border pb-6">
         <h4 className="font-semibold text-sm text-foreground mb-3">Preço</h4>
         <div className="flex items-center gap-2 mb-3">
@@ -163,7 +173,6 @@ const ListingBuilds = () => {
         </button>
       </div>
 
-      {/* Discount */}
       <div>
         <h4 className="font-semibold text-sm text-foreground mb-3">Desconto</h4>
         <div className="space-y-2">
@@ -200,16 +209,17 @@ const ListingBuilds = () => {
       <HeroBanner size="md">
         <div className="text-center">
           <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-xl text-white">
-            Builds de PC Recomendadas
+            {searchQuery ? `Resultados para "${searchQuery}"` : "Builds de PC Recomendadas"}
           </h1>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto font-light drop-shadow-md">
-            Escolha sua performance. De configurações básicas a máquinas extremas para 4K, tudo testado e aprovado.
-          </p>
+          {!searchQuery && (
+            <p className="text-lg text-blue-100 max-w-2xl mx-auto font-light drop-shadow-md">
+              Escolha sua performance. De configurações básicas a máquinas extremas para 4K, tudo testado e aprovado.
+            </p>
+          )}
         </div>
       </HeroBanner>
 
       <main className="container mx-auto px-4 py-8">
-        {/* Mobile filter toggle */}
         <button
           onClick={() => setShowMobileFilters(true)}
           className="lg:hidden flex items-center gap-2 mb-4 px-4 py-2.5 rounded-lg border border-border bg-card text-sm font-medium text-foreground shadow-sm"
@@ -218,12 +228,11 @@ const ListingBuilds = () => {
           Filtros
           {hasActiveFilters && (
             <span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-              {selectedCategories.length + (appliedMinPrice !== null || appliedMaxPrice !== null ? 1 : 0) + (minDiscount > 0 ? 1 : 0)}
+              {selectedCategories.length + (appliedMinPrice !== null || appliedMaxPrice !== null ? 1 : 0) + (minDiscount > 0 ? 1 : 0) + (searchQuery ? 1 : 0)}
             </span>
           )}
         </button>
 
-        {/* Mobile filters drawer */}
         {showMobileFilters && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/50" onClick={() => setShowMobileFilters(false)} />
@@ -240,14 +249,12 @@ const ListingBuilds = () => {
         )}
 
         <div className="flex gap-8">
-          {/* Desktop sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-card rounded-xl border border-border p-5 sticky top-24">
               {filtersContent}
             </div>
           </aside>
 
-          {/* Main content */}
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-center mb-6">
               <p className="text-muted-foreground text-sm">

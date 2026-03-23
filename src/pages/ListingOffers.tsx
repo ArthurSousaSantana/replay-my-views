@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import PublicLayout from "@/components/layouts/PublicLayout";
 import HeroBanner from "@/components/HeroBanner";
 import OfferCard from "@/components/OfferCard";
@@ -7,32 +8,17 @@ import Pagination from "@/components/shared/Pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { formatBRL, formatDiscount } from "@/lib/format";
+import { useSearch } from "@/contexts/SearchContext";
 import type { Tables } from "@/integrations/supabase/types";
 import { SlidersHorizontal, X } from "lucide-react";
 
 const PAGE_SIZE = 12;
 
 const CATEGORIES = [
-  "Hardware",
-  "Smartphones",
-  "Periféricos",
-  "Mobiliário",
-  "Acessórios",
-  "Gadgets",
-  "Notebooks",
-  "Áudio",
-  "Monitores",
-  "Redes",
-  "Armazenamento",
-  "Games",
-  "Iluminação",
-  "Escritório",
-  "Ergonomia",
-  "Componentes",
-  "Conectividade",
-  "Tablets",
-  "Wearables",
-  "Suportes",
+  "Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios",
+  "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes",
+  "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia",
+  "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes",
 ];
 
 const DISCOUNT_OPTIONS = [
@@ -43,12 +29,13 @@ const DISCOUNT_OPTIONS = [
 ];
 
 const ListingOffers = () => {
+  const [searchParams] = useSearchParams();
+  const { searchQuery, setSearchQuery } = useSearch();
   const [offers, setOffers] = useState<Tables<"offers">[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // Filters
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -56,6 +43,14 @@ const ListingOffers = () => {
   const [appliedMaxPrice, setAppliedMaxPrice] = useState<number | null>(null);
   const [minDiscount, setMinDiscount] = useState(0);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // Pick up ?q= from URL on mount
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
 
   const fetchOffers = useCallback(async () => {
     setLoading(true);
@@ -67,6 +62,9 @@ const ListingOffers = () => {
       .eq("is_active", true)
       .eq("is_visible", true);
 
+    if (searchQuery) {
+      query = query.ilike("name", `%${searchQuery}%`);
+    }
     if (selectedCategories.length > 0) {
       query = query.in("category", selectedCategories);
     }
@@ -88,7 +86,7 @@ const ListingOffers = () => {
     setOffers(data ?? []);
     setTotal(count ?? 0);
     setLoading(false);
-  }, [page, selectedCategories, appliedMinPrice, appliedMaxPrice, minDiscount]);
+  }, [page, selectedCategories, appliedMinPrice, appliedMaxPrice, minDiscount, searchQuery]);
 
   useEffect(() => {
     fetchOffers();
@@ -119,6 +117,7 @@ const ListingOffers = () => {
     setAppliedMinPrice(null);
     setAppliedMaxPrice(null);
     setMinDiscount(0);
+    setSearchQuery("");
     setPage(1);
   };
 
@@ -126,7 +125,8 @@ const ListingOffers = () => {
     selectedCategories.length > 0 ||
     appliedMinPrice !== null ||
     appliedMaxPrice !== null ||
-    minDiscount > 0;
+    minDiscount > 0 ||
+    !!searchQuery;
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
@@ -134,7 +134,6 @@ const ListingOffers = () => {
     <div className="space-y-6">
       <h3 className="text-lg font-bold text-foreground">Filtros</h3>
 
-      {/* Categories */}
       <div className="border-b border-border pb-6">
         <h4 className="font-semibold text-sm text-foreground mb-3">Categorias</h4>
         <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
@@ -154,7 +153,6 @@ const ListingOffers = () => {
         </div>
       </div>
 
-      {/* Price range */}
       <div className="border-b border-border pb-6">
         <h4 className="font-semibold text-sm text-foreground mb-3">Preço</h4>
         <div className="flex items-center gap-2 mb-3">
@@ -182,7 +180,6 @@ const ListingOffers = () => {
         </button>
       </div>
 
-      {/* Discount */}
       <div>
         <h4 className="font-semibold text-sm text-foreground mb-3">Desconto</h4>
         <div className="space-y-2">
@@ -203,7 +200,6 @@ const ListingOffers = () => {
         </div>
       </div>
 
-      {/* Clear filters */}
       {hasActiveFilters && (
         <button
           onClick={clearFilters}
@@ -219,16 +215,15 @@ const ListingOffers = () => {
     <PublicLayout>
       <HeroBanner size="sm">
         <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
-          Ofertas Tech em Destaque
+          {searchQuery ? `Resultados para "${searchQuery}"` : "Ofertas Tech em Destaque"}
         </h1>
       </HeroBanner>
 
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6">
-          <Breadcrumb items={[{ label: "Home", to: "/" }, { label: "Ofertas Tech em Destaque" }]} />
+          <Breadcrumb items={[{ label: "Home", to: "/" }, { label: searchQuery ? `Busca: ${searchQuery}` : "Ofertas Tech em Destaque" }]} />
         </div>
 
-        {/* Mobile filter toggle */}
         <button
           onClick={() => setShowMobileFilters(true)}
           className="lg:hidden flex items-center gap-2 mb-4 px-4 py-2.5 rounded-lg border border-border bg-card text-sm font-medium text-foreground shadow-sm"
@@ -237,12 +232,11 @@ const ListingOffers = () => {
           Filtros
           {hasActiveFilters && (
             <span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-              {selectedCategories.length + (appliedMinPrice !== null || appliedMaxPrice !== null ? 1 : 0) + (minDiscount > 0 ? 1 : 0)}
+              {selectedCategories.length + (appliedMinPrice !== null || appliedMaxPrice !== null ? 1 : 0) + (minDiscount > 0 ? 1 : 0) + (searchQuery ? 1 : 0)}
             </span>
           )}
         </button>
 
-        {/* Mobile filters drawer */}
         {showMobileFilters && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/50" onClick={() => setShowMobileFilters(false)} />
@@ -259,14 +253,12 @@ const ListingOffers = () => {
         )}
 
         <div className="flex gap-8">
-          {/* Desktop sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-card rounded-xl border border-border p-5 sticky top-24">
               {filtersContent}
             </div>
           </aside>
 
-          {/* Main content */}
           <main className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-6">
               <span className="text-sm text-muted-foreground">
