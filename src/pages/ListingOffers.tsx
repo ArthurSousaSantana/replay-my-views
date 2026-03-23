@@ -130,7 +130,7 @@ const ListingOffers = () => {
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  const FiltersContent = () => (
+  const filtersContent = (
     <div className="space-y-6">
       <h3 className="text-lg font-bold text-foreground">Filtros</h3>
 
