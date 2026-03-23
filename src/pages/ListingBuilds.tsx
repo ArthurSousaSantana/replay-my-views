@@ -111,7 +111,7 @@ const ListingBuilds = () => {
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  const FiltersContent = () => (
+  const filtersContent = (
     <div className="space-y-6">
       <h3 className="text-lg font-bold text-foreground">Filtros</h3>
 
@@ -234,7 +234,7 @@ const ListingBuilds = () => {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <FiltersContent />
+              {filtersContent}
             </div>
           </div>
         )}
@@ -243,7 +243,7 @@ const ListingBuilds = () => {
           {/* Desktop sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-card rounded-xl border border-border p-5 sticky top-24">
-              <FiltersContent />
+              {filtersContent}
             </div>
           </aside>
 
