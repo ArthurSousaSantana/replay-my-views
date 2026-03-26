@@ -195,9 +195,9 @@ const Index = () => {
         ) : (
           <>
             {/* Mobile: horizontal scroll carousel */}
-            <div className="flex md:hidden gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 scrollbar-hide">
+            <div className="flex md:hidden gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 scrollbar-hide">
               {builds.map((b) => (
-                <div key={b.id} className="snap-start shrink-0 w-[75vw] max-w-[300px]">
+                <div key={b.id} className="snap-start shrink-0 w-[52vw] max-w-[220px]">
                   <BuildCard {...buildCardProps(b)} compact />
                 </div>
               ))}
