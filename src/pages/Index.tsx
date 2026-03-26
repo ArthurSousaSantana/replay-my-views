@@ -253,43 +253,25 @@ const Index = () => {
                 />
               ))}
             </div>
-            {/* Desktop: scrollable row when searching with overflow, grid otherwise */}
-            {isSearching && offers.length > 4 ? (
-              <div className="hidden sm:block">
-                <ScrollableRow itemCount={offers.length}>
-                  {offers.map((o) => (
-                    <div key={o.id} className="snap-start shrink-0 w-[calc(25%-12px)]">
-                      <OfferCard
-                        title={o.name}
-                        image={o.image_url || undefined}
-                        category={o.category}
-                        badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
-                        oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
-                        newPrice={formatBRL(o.current_price)}
-                        discount={formatDiscount(o.discount_percentage)}
-                        link={`/ofertas/${o.id}`}
-                      />
-                    </div>
-                  ))}
-                </ScrollableRow>
-              </div>
-            ) : (
-              <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Desktop: always scrollable carousel */}
+            <div className="hidden sm:block">
+              <ScrollableRow itemCount={offers.length}>
                 {offers.map((o) => (
-                  <OfferCard
-                    key={o.id}
-                    title={o.name}
-                    image={o.image_url || undefined}
-                    category={o.category}
-                    badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
-                    oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
-                    newPrice={formatBRL(o.current_price)}
-                    discount={formatDiscount(o.discount_percentage)}
-                    link={`/ofertas/${o.id}`}
-                  />
+                  <div key={o.id} className="snap-start shrink-0 w-[calc(25%-12px)]">
+                    <OfferCard
+                      title={o.name}
+                      image={o.image_url || undefined}
+                      category={o.category}
+                      badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
+                      oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
+                      newPrice={formatBRL(o.current_price)}
+                      discount={formatDiscount(o.discount_percentage)}
+                      link={`/ofertas/${o.id}`}
+                    />
+                  </div>
                 ))}
-              </div>
-            )}
+              </ScrollableRow>
+            </div>
           </>
         )}
       </section>
