@@ -91,7 +91,7 @@ const HeroCarousel = ({ slides = placeholderSlides, autoPlayInterval = 5000 }: H
         >
           {slides.map((slide) => (
             <div key={slide.id} className="min-w-full relative">
-              <div className="relative h-[280px] md:h-[400px] lg:h-[450px]">
+              <div className="relative h-[170px] md:h-[400px] lg:h-[450px]">
                 <img
                   src={slide.image}
                   alt={slide.title}
