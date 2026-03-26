@@ -217,7 +217,7 @@ const Index = () => {
       </section>
 
       {/* Offers */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-6 md:py-16">
         <SectionHeader
           title={isSearching ? `Ofertas encontradas (${totalOffers})` : "Ofertas Tech em Destaque"}
           subtitle={isSearching ? undefined : "As melhores promoções além do mundo dos PCs."}
