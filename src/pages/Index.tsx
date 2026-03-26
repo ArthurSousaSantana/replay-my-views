@@ -175,7 +175,7 @@ const Index = () => {
       )}
 
       {/* Builds */}
-      <section className="container mx-auto px-4 py-12 relative z-30">
+      <section className="container mx-auto px-4 py-6 md:py-12 relative z-30">
         <SectionHeader
           title={isSearching ? `Builds encontradas (${totalBuilds})` : "Builds de PC"}
           subtitle={isSearching ? undefined : "Configurações otimizadas para jogos e desempenho."}
@@ -195,9 +195,9 @@ const Index = () => {
         ) : (
           <>
             {/* Mobile: horizontal scroll carousel */}
-            <div className="flex md:hidden gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 scrollbar-hide">
+            <div className="flex md:hidden gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 scrollbar-hide">
               {builds.map((b) => (
-                <div key={b.id} className="snap-start shrink-0 w-[75vw] max-w-[300px]">
+                <div key={b.id} className="snap-start shrink-0 w-[52vw] max-w-[220px]">
                   <BuildCard {...buildCardProps(b)} compact />
                 </div>
               ))}
@@ -217,7 +217,7 @@ const Index = () => {
       </section>
 
       {/* Offers */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-6 md:py-16">
         <SectionHeader
           title={isSearching ? `Ofertas encontradas (${totalOffers})` : "Ofertas Tech em Destaque"}
           subtitle={isSearching ? undefined : "As melhores promoções além do mundo dos PCs."}
