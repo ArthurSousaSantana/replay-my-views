@@ -202,24 +202,16 @@ const Index = () => {
                 </div>
               ))}
             </div>
-            {/* Desktop: scrollable row when searching with overflow, grid otherwise */}
-            {isSearching && builds.length > 3 ? (
-              <div className="hidden md:block">
-                <ScrollableRow itemCount={builds.length}>
-                  {builds.map((b) => (
-                    <div key={b.id} className="snap-start shrink-0 w-[calc(33.333%-11px)]">
-                      <BuildCard {...buildCardProps(b)} />
-                    </div>
-                  ))}
-                </ScrollableRow>
-              </div>
-            ) : (
-              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Desktop: always scrollable carousel */}
+            <div className="hidden md:block">
+              <ScrollableRow itemCount={builds.length}>
                 {builds.map((b) => (
-                  <BuildCard key={b.id} {...buildCardProps(b)} />
+                  <div key={b.id} className="snap-start shrink-0 w-[calc(33.333%-11px)]">
+                    <BuildCard {...buildCardProps(b)} />
+                  </div>
                 ))}
-              </div>
-            )}
+              </ScrollableRow>
+            </div>
           </>
         )}
       </section>
