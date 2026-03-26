@@ -49,36 +49,36 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
   }
 
   return (
-    <div className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-4 flex flex-col group h-full">
-      <div className="relative mb-4 bg-card rounded-lg p-6 flex items-center justify-center h-48 overflow-hidden">
+    <div className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-3 flex flex-col group h-full">
+      <div className="relative mb-3 bg-card rounded-lg p-3 flex items-center justify-center h-28 md:h-48 overflow-hidden">
         {badge && (
-          <div className="absolute top-2 left-2 z-10">
-            <span className={`${badgeColor} text-[10px] font-bold px-2 py-1 rounded shadow-sm`}>{badge}</span>
+          <div className="absolute top-1.5 left-1.5 z-10">
+            <span className={`${badgeColor} text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm`}>{badge}</span>
           </div>
         )}
         {image ? (
           <img alt={title} className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300" src={image} />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted rounded text-muted-foreground">
-            <span className="material-symbols-outlined text-6xl group-hover:scale-110 transition-transform duration-300">{icon || "devices"}</span>
+            <span className="material-symbols-outlined text-5xl md:text-6xl group-hover:scale-110 transition-transform duration-300">{icon || "devices"}</span>
           </div>
         )}
       </div>
       <div className="flex-1 flex flex-col">
         {category && (
           <div className="mb-1">
-            <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+            <span className="text-[9px] md:text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
           </div>
         )}
-        <h3 className="font-semibold text-foreground mb-auto text-sm md:text-base leading-tight">{title}</h3>
-        <div className="mt-4">
-          <p className="text-xs text-muted-foreground line-through">{oldPrice}</p>
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-xl font-bold text-foreground">{newPrice}</span>
-            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded">{discount}</span>
+        <h3 className="font-semibold text-foreground mb-auto text-xs md:text-base leading-tight line-clamp-2">{title}</h3>
+        <div className="mt-2 md:mt-4">
+          <p className="text-[10px] md:text-xs text-muted-foreground line-through">{oldPrice}</p>
+          <div className="flex justify-between items-center mb-2 md:mb-4">
+            <span className="text-base md:text-xl font-bold text-foreground">{newPrice}</span>
+            <span className="bg-emerald-100 text-emerald-800 text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded">{discount}</span>
           </div>
-          <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-sm font-medium py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors shadow-sm">
-            Ver oferta <span className="material-symbols-outlined text-xs">chevron_right</span>
+          <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-[10px] md:text-sm font-medium py-1.5 md:py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors shadow-sm">
+            Ver oferta
           </Link>
         </div>
       </div>

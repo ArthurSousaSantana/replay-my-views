@@ -236,21 +236,21 @@ const Index = () => {
           </p>
         ) : (
           <>
-            {/* Mobile: compact cards stacked */}
-            <div className="flex flex-col gap-3 sm:hidden">
+            {/* Mobile: horizontal scroll carousel */}
+            <div className="flex sm:hidden gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 scrollbar-hide">
               {offers.map((o) => (
-                <OfferCard
-                  key={o.id}
-                  title={o.name}
-                  image={o.image_url || undefined}
-                  category={o.category}
-                  badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
-                  oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
-                  newPrice={formatBRL(o.current_price)}
-                  discount={formatDiscount(o.discount_percentage)}
-                  link={`/ofertas/${o.id}`}
-                  compact
-                />
+                <div key={o.id} className="snap-start shrink-0 w-[40vw] max-w-[170px]">
+                  <OfferCard
+                    title={o.name}
+                    image={o.image_url || undefined}
+                    category={o.category}
+                    badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
+                    oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
+                    newPrice={formatBRL(o.current_price)}
+                    discount={formatDiscount(o.discount_percentage)}
+                    link={`/ofertas/${o.id}`}
+                  />
+                </div>
               ))}
             </div>
             {/* Desktop: always scrollable carousel */}
