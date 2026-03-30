@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      banners: {
+        Row: {
+          created_at: string
+          id: string
+          image_desktop: string | null
+          image_mobile: string | null
+          image_tablet: string | null
+          is_active: boolean
+          link: string | null
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_desktop?: string | null
+          image_mobile?: string | null
+          image_tablet?: string | null
+          is_active?: boolean
+          link?: string | null
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_desktop?: string | null
+          image_mobile?: string | null
+          image_tablet?: string | null
+          is_active?: boolean
+          link?: string | null
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       build_parts: {
         Row: {
           build_id: string
