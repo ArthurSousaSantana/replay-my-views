@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminNewBuild from "./pages/admin/AdminNewBuild";
 import AdminNewOffer from "./pages/admin/AdminNewOffer";
 import AdminProducts from "./pages/admin/AdminProducts";
+import AdminBanners from "./pages/admin/AdminBanners";
 
 const queryClient = new QueryClient();
 
