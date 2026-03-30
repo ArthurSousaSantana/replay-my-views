@@ -11,6 +11,7 @@ const AdminNavbar = () => {
     { to: "/admin/produtos", label: "Produtos" },
     { to: "/admin/ofertas/nova", label: "Ofertas" },
     { to: "/admin/builds/nova", label: "Builds" },
+    { to: "/admin/banners", label: "Banners" },
   ];
 
   return (

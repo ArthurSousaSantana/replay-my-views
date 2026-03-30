@@ -47,6 +47,7 @@ const App = () => (
               <Route path="/admin/ofertas/nova" element={<AdminRouteGuard><AdminNewOffer /></AdminRouteGuard>} />
               <Route path="/admin/ofertas/:id/editar" element={<AdminRouteGuard><AdminNewOffer /></AdminRouteGuard>} />
               <Route path="/admin/produtos" element={<AdminRouteGuard><AdminProducts /></AdminRouteGuard>} />
+              <Route path="/admin/banners" element={<AdminRouteGuard><AdminBanners /></AdminRouteGuard>} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>
