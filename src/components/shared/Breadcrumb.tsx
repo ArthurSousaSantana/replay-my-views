@@ -30,9 +30,14 @@ const Breadcrumb = ({ items, variant = "dark" }: BreadcrumbProps) => {
                   {item.label}
                 </Link>
               ) : (
-                <span className={i === items.length - 1 ? `font-medium ${activeColor}` : ""}>
+                <span className={`${i === items.length - 1 ? `font-medium ${activeColor}` : ""} ${i === items.length - 1 ? "sm:inline hidden" : ""}`}>
                   {item.label}
                 </span>
+                {i === items.length - 1 && (
+                  <span className={`font-medium ${activeColor} sm:hidden`}>
+                    {item.label.split(" ")[0]}...
+                  </span>
+                )}
               )}
             </div>
           </li>
