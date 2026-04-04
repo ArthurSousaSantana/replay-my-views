@@ -29,10 +29,17 @@ const Breadcrumb = ({ items, variant = "dark" }: BreadcrumbProps) => {
                 <Link to={item.to} className={`${hoverColor} transition-colors`}>
                   {item.label}
                 </Link>
+              ) : i === items.length - 1 ? (
+                <>
+                  <span className={`font-medium ${activeColor} hidden sm:inline`}>
+                    {item.label}
+                  </span>
+                  <span className={`font-medium ${activeColor} sm:hidden`}>
+                    {item.label.split(" ")[0]}...
+                  </span>
+                </>
               ) : (
-                <span className={i === items.length - 1 ? `font-medium ${activeColor}` : ""}>
-                  {item.label}
-                </span>
+                <span>{item.label}</span>
               )}
             </div>
           </li>
