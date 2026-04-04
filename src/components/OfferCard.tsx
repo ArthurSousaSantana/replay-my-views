@@ -17,7 +17,7 @@ interface OfferCardProps {
 const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-white", category, link = "/ofertas/1", compact = false }: OfferCardProps) => {
   if (compact) {
     return (
-      <div className="bg-surface rounded-xl shadow-sm border border-border p-3 flex items-center gap-3 group">
+      <Link to={link} className="bg-surface rounded-xl shadow-sm border border-border p-3 flex items-center gap-3 group hover:shadow-md transition-shadow">
         <div className="relative w-20 h-20 shrink-0 bg-card rounded-lg flex items-center justify-center overflow-hidden">
           {badge && (
             <div className="absolute top-0.5 left-0.5 z-10">
@@ -41,15 +41,15 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
             <span className="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1 py-0.5 rounded">{discount}</span>
           </div>
         </div>
-        <Link to={link} className="shrink-0 bg-secondary hover:opacity-90 text-secondary-foreground text-xs font-medium p-2 rounded-lg transition-colors shadow-sm">
+        <span className="shrink-0 text-muted-foreground">
           <span className="material-symbols-outlined text-sm">chevron_right</span>
-        </Link>
-      </div>
+        </span>
+      </Link>
     );
   }
 
   return (
-    <div className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-3 flex flex-col group h-full">
+    <Link to={link} className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all border border-border p-3 flex flex-col group h-full">
       <div className="relative mb-3 bg-card rounded-lg p-3 flex items-center justify-center h-28 md:h-48 overflow-hidden">
         {badge && (
           <div className="absolute top-1.5 left-1.5 z-10">
@@ -73,16 +73,13 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
         <h3 className="font-semibold text-foreground mb-auto text-xs md:text-base leading-tight line-clamp-2">{title}</h3>
         <div className="mt-2 md:mt-4">
           <p className="text-[10px] md:text-xs text-muted-foreground line-through">{oldPrice}</p>
-          <div className="flex justify-between items-center mb-2 md:mb-4">
+          <div className="flex justify-between items-center">
             <span className="text-base md:text-xl font-bold text-foreground">{newPrice}</span>
             <span className="bg-emerald-100 text-emerald-800 text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded">{discount}</span>
           </div>
-          <Link to={link} className="w-full bg-secondary hover:opacity-90 text-secondary-foreground text-[10px] md:text-sm font-medium py-1.5 md:py-2.5 rounded-lg flex items-center justify-center gap-1 transition-colors shadow-sm">
-            Ver oferta
-          </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
