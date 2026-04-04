@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { X, Menu } from "lucide-react";
+import { X, Menu, Search } from "lucide-react";
 import { useSearch } from "@/contexts/SearchContext";
 import logoImg from "@/assets/logo.png";
 
@@ -10,27 +10,33 @@ const Navbar = () => {
   const { searchQuery, setSearchQuery } = useSearch();
   const [localQuery, setLocalQuery] = useState(searchQuery);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileSearchQuery, setMobileSearchQuery] = useState(searchQuery);
   const isActive = (path: string) => location.pathname === path;
   const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
-  // Sync local query when context changes (e.g. clearing from another page)
   useEffect(() => {
     setLocalQuery(searchQuery);
     setMobileSearchQuery(searchQuery);
   }, [searchQuery]);
 
-  // Close menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setMobileSearchOpen(false);
   }, [location.pathname]);
+
+  // Auto-focus mobile search input when opened
+  useEffect(() => {
+    if (mobileSearchOpen) {
+      setTimeout(() => mobileInputRef.current?.focus(), 100);
+    }
+  }, [mobileSearchOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = localQuery.trim();
     setSearchQuery(trimmed);
-
     const isOnSearchablePage = ["/", "/ofertas", "/builds"].includes(location.pathname);
     if (!isOnSearchablePage && trimmed) {
       navigate("/");
@@ -41,8 +47,7 @@ const Navbar = () => {
     e.preventDefault();
     const trimmed = mobileSearchQuery.trim();
     setSearchQuery(trimmed);
-    setMobileMenuOpen(false);
-
+    setMobileSearchOpen(false);
     const isOnSearchablePage = ["/", "/ofertas", "/builds"].includes(location.pathname);
     if (!isOnSearchablePage && trimmed) {
       navigate("/");
@@ -112,10 +117,34 @@ const Navbar = () => {
               </li>
             </ul>
 
-            {/* Mobile hamburger */}
-            <div className="flex items-center gap-3 lg:border-l lg:border-border lg:pl-6">
+            {/* Mobile: search icon + hamburger */}
+            <div className="flex items-center gap-2 sm:hidden">
               <button
-                className="lg:hidden text-muted-foreground hover:text-foreground p-1"
+                className="text-muted-foreground hover:text-foreground p-1.5"
+                onClick={() => {
+                  setMobileSearchOpen((v) => !v);
+                  setMobileMenuOpen(false);
+                }}
+                aria-label="Buscar"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+              <button
+                className="text-muted-foreground hover:text-foreground p-1.5"
+                onClick={() => {
+                  setMobileMenuOpen((v) => !v);
+                  setMobileSearchOpen(false);
+                }}
+                aria-label="Abrir menu"
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+
+            {/* Tablet hamburger (sm-lg) */}
+            <div className="hidden sm:flex lg:hidden items-center">
+              <button
+                className="text-muted-foreground hover:text-foreground p-1"
                 onClick={() => setMobileMenuOpen((v) => !v)}
                 aria-label="Abrir menu"
               >
@@ -126,39 +155,41 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile search bar dropdown */}
+      {mobileSearchOpen && (
+        <div className="sm:hidden fixed top-16 left-0 right-0 z-40 bg-surface border-b border-border shadow-lg px-4 py-3 animate-in slide-in-from-top duration-200">
+          <form onSubmit={handleMobileSubmit}>
+            <div className="relative">
+              <input
+                ref={mobileInputRef}
+                className="w-full bg-muted border-none rounded-full py-2.5 pl-4 pr-20 text-sm focus:ring-2 focus:ring-primary text-foreground shadow-inner"
+                placeholder="Buscar ofertas, hardware..."
+                type="text"
+                value={mobileSearchQuery}
+                onChange={(e) => setMobileSearchQuery(e.target.value)}
+              />
+              {mobileSearchQuery && (
+                <button
+                  type="button"
+                  onClick={handleMobileClear}
+                  className="absolute right-10 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              )}
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors">
+                <span className="material-symbols-outlined text-xl">search</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       {/* Mobile menu drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-40">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileMenuOpen(false)} />
           <div className="absolute top-16 left-0 right-0 bg-surface border-b border-border shadow-xl px-4 py-5 flex flex-col gap-5 animate-in slide-in-from-top duration-200">
-
-            {/* Mobile search */}
-            <form onSubmit={handleMobileSubmit}>
-              <div className="relative">
-                <input
-                  ref={mobileInputRef}
-                  className="w-full bg-muted border-none rounded-full py-3 pl-4 pr-20 text-sm focus:ring-2 focus:ring-primary text-foreground shadow-inner"
-                  placeholder="Buscar ofertas, hardware, periféricos..."
-                  type="text"
-                  value={mobileSearchQuery}
-                  onChange={(e) => setMobileSearchQuery(e.target.value)}
-                  autoFocus
-                />
-                {mobileSearchQuery && (
-                  <button
-                    type="button"
-                    onClick={handleMobileClear}
-                    className="absolute right-10 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-lg">close</span>
-                  </button>
-                )}
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors">
-                  <span className="material-symbols-outlined text-xl">search</span>
-                </button>
-              </div>
-            </form>
-
             {/* Nav links */}
             <nav className="flex flex-col gap-1">
               <Link
@@ -184,4 +215,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
