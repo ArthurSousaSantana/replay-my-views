@@ -72,7 +72,7 @@ const DetailsOffer = () => {
         <div className="mb-4">
           <Breadcrumb variant="light" items={[{ label: "Home", to: "/" }, { label: offer.category, to: "/ofertas" }, { label: offer.name }]} />
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-md text-white">{offer.name}</h1>
+        
       </HeroBanner>
 
       <main className="container mx-auto px-4 py-8 -mt-8 relative z-30">
