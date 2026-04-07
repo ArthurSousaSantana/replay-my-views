@@ -22,7 +22,7 @@ const BuildCard = ({ title, image, badgeText, badgeColor, oldPrice, newPrice, di
           <div className="absolute top-1.5 left-1.5 z-10">
             <span className={`${badgeColor} text-[9px] font-bold px-1.5 py-0.5 rounded-md backdrop-blur-sm uppercase tracking-wider`}>{badgeText}</span>
           </div>
-          <img alt={title} className="max-w-full max-h-full object-contain p-2" src={image} />
+          <img alt={title} className="max-w-full max-h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300" src={image} />
         </div>
         <div className="p-2.5 flex-1 flex flex-col">
           <h3 className="text-xs font-bold text-foreground mb-1 line-clamp-2 leading-tight">{title}</h3>
