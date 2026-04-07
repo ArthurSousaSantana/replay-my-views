@@ -47,7 +47,7 @@ const BuildCard = ({ title, image, badgeText, badgeColor, oldPrice, newPrice, di
         <div className="absolute top-4 left-4 z-10">
           <span className={`${badgeColor} text-xs font-bold px-3 py-1 rounded-md backdrop-blur-sm uppercase tracking-wider`}>{badgeText}</span>
         </div>
-        <img alt={title} className="max-w-full max-h-full object-contain p-4" src={image} />
+        <img alt={title} className="max-w-full max-h-full object-contain p-4 group-hover:scale-110 transition-transform duration-300" src={image} />
         {chips.length > 0 && (
           <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
             <div className="flex gap-2 text-xs font-medium text-white/90">
