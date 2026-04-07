@@ -54,7 +54,7 @@ const ScrollableRow = ({
   };
 
   return (
-    <div className="relative group">
+    <div className="relative">
       {canScrollLeft && (
         <button
           onClick={() => scroll("left")}
