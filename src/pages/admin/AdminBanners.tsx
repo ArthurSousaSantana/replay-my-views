@@ -162,45 +162,18 @@ const AdminBanners = () => {
                 </div>
               </div>
 
-              {/* 3 Image uploads */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <ImageUpload
-                  label="Desktop (1200×450)"
-                  hint="Recomendado: 1200×450px"
-                  previewUrl={form.image_desktop || undefined}
-                  onFileSelect={async (file) => {
-                    try {
-                      const url = await uploadFile(file, "desktop");
-                      setForm(f => ({ ...f, image_desktop: url }));
-                    } catch (e: any) { toast.error(e.message); }
-                  }}
-                  onUrlSubmit={(url) => setForm(f => ({ ...f, image_desktop: url }))}
-                />
-                <ImageUpload
-                  label="Tablet (800×400)"
-                  hint="Recomendado: 800×400px"
-                  previewUrl={form.image_tablet || undefined}
-                  onFileSelect={async (file) => {
-                    try {
-                      const url = await uploadFile(file, "tablet");
-                      setForm(f => ({ ...f, image_tablet: url }));
-                    } catch (e: any) { toast.error(e.message); }
-                  }}
-                  onUrlSubmit={(url) => setForm(f => ({ ...f, image_tablet: url }))}
-                />
-                <ImageUpload
-                  label="Mobile (600×170)"
-                  hint="Recomendado: 600×170px"
-                  previewUrl={form.image_mobile || undefined}
-                  onFileSelect={async (file) => {
-                    try {
-                      const url = await uploadFile(file, "mobile");
-                      setForm(f => ({ ...f, image_mobile: url }));
-                    } catch (e: any) { toast.error(e.message); }
-                  }}
-                  onUrlSubmit={(url) => setForm(f => ({ ...f, image_mobile: url }))}
-                />
-              </div>
+              <ImageUpload
+                label="Imagem do Banner"
+                hint="Recomendado: 1200×450px — PNG, JPG até 5MB"
+                previewUrl={form.image_desktop || undefined}
+                onFileSelect={async (file) => {
+                  try {
+                    const url = await uploadFile(file, "desktop");
+                    setForm(f => ({ ...f, image_desktop: url, image_tablet: url, image_mobile: url }));
+                  } catch (e: any) { toast.error(e.message); }
+                }}
+                onUrlSubmit={(url) => setForm(f => ({ ...f, image_desktop: url, image_tablet: url, image_mobile: url }))}
+              />
 
               <div className="flex gap-3 justify-end pt-4 border-t border-border">
                 <button onClick={() => setShowForm(false)} className="px-5 py-2 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">
