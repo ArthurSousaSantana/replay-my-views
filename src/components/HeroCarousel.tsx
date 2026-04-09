@@ -85,24 +85,11 @@ const HeroCarousel = ({ autoPlayInterval = 5000 }: HeroCarouselProps) => {
               className={cn("min-w-full relative", slide.link && "cursor-pointer")}
               onClick={() => slide.link && navigate(slide.link)}
             >
-              <div className="relative h-[170px] md:h-[400px] lg:h-[518px]">
-                {/* Mobile image */}
-                <img
-                  src={slide.image_mobile || slide.image_tablet || slide.image_desktop}
-                  alt={slide.title}
-                  className="absolute inset-0 w-full h-full object-cover md:hidden"
-                />
-                {/* Tablet image */}
-                <img
-                  src={slide.image_tablet || slide.image_desktop}
-                  alt={slide.title}
-                  className="absolute inset-0 w-full h-full object-cover hidden md:block lg:hidden"
-                />
-                {/* Desktop image */}
+              <div className="relative h-[clamp(280px,45vw,450px)]">
                 <img
                   src={slide.image_desktop || slide.image_tablet || slide.image_mobile}
                   alt={slide.title}
-                  className="absolute inset-0 w-full h-full object-cover hidden lg:block"
+                  className="absolute inset-0 w-full h-full object-cover [object-position:82%_50%] min-[480px]:[object-position:78%_center] md:[object-position:68%_center] lg:[object-position:center_center]"
                 />
               </div>
             </div>
