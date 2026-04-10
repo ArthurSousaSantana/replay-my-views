@@ -120,13 +120,14 @@ const Index = () => {
         setTotalBuilds(buildsRes.count ?? 0);
       } else {
         // Default featured mode
-        const [offersRes, buildsRes] = await Promise.all([
+        const [offersRes, buildsRes, portableRes] = await Promise.all([
           supabase
             .from("offers")
             .select("*")
             .eq("is_active", true)
             .eq("is_visible", true)
             .eq("is_featured", true)
+            .eq("listing_category", "Ofertas Tech")
             .order("created_at", { ascending: false })
             .limit(OFFERS_LIMIT),
           supabase
@@ -136,11 +137,21 @@ const Index = () => {
             .eq("is_featured", true)
             .order("created_at", { ascending: false })
             .limit(BUILDS_LIMIT),
+          supabase
+            .from("offers")
+            .select("*")
+            .eq("is_active", true)
+            .eq("is_visible", true)
+            .eq("is_featured", true)
+            .eq("listing_category", "Seleção de Portáteis")
+            .order("created_at", { ascending: false })
+            .limit(OFFERS_LIMIT),
         ]);
         setOffers(offersRes.data ?? []);
         setTotalOffers(0);
         setBuilds(buildsRes.data ?? []);
         setTotalBuilds(0);
+        setPortableOffers(portableRes.data ?? []);
       }
 
       setLoading(false);
