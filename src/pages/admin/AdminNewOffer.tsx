@@ -30,6 +30,7 @@ const AdminNewOffer = () => {
   // Form state
   const [name, setName] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
+  const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [specs, setSpecs] = useState<SpecRow[]>([{ id: 1, key: "", value: "" }, { id: 2, key: "", value: "" }]);
