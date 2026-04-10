@@ -84,6 +84,7 @@ const ScrollableRow = ({
 const Index = () => {
   const { searchQuery } = useSearch();
   const [offers, setOffers] = useState<Tables<"offers">[]>([]);
+  const [portableOffers, setPortableOffers] = useState<Tables<"offers">[]>([]);
   const [builds, setBuilds] = useState<Tables<"builds">[]>([]);
   const [totalOffers, setTotalOffers] = useState(0);
   const [totalBuilds, setTotalBuilds] = useState(0);
