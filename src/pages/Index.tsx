@@ -287,6 +287,66 @@ const Index = () => {
           </>
         )}
       </section>
+
+      {/* Seleção de Portáteis */}
+      {!isSearching && (
+        <section className="container mx-auto px-4 py-4 md:py-16">
+          <SectionHeader
+            title="Seleção de Portáteis"
+            subtitle="Notebooks, tablets e wearables com os melhores preços."
+            linkTo="/ofertas"
+            linkLabel="Ver todas as ofertas"
+          />
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-80 rounded-xl" />
+              ))}
+            </div>
+          ) : portableOffers.length === 0 ? (
+            <p className="text-muted-foreground text-center py-12">
+              Nenhum portátil em destaque no momento.
+            </p>
+          ) : (
+            <>
+              <div className="flex sm:hidden gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 scrollbar-hide">
+                {portableOffers.map((o) => (
+                  <div key={o.id} className="snap-start shrink-0 w-[40vw] max-w-[170px]">
+                    <OfferCard
+                      title={o.name}
+                      image={o.image_url || undefined}
+                      category={o.category}
+                      badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
+                      oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
+                      newPrice={formatBRL(o.current_price)}
+                      discount={formatDiscount(o.discount_percentage)}
+                      link={`/ofertas/${o.id}`}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="hidden sm:block">
+                <ScrollableRow itemCount={portableOffers.length}>
+                  {portableOffers.map((o) => (
+                    <div key={o.id} className="snap-start shrink-0 w-[calc(25%-12px)]">
+                      <OfferCard
+                        title={o.name}
+                        image={o.image_url || undefined}
+                        category={o.category}
+                        badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
+                        oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
+                        newPrice={formatBRL(o.current_price)}
+                        discount={formatDiscount(o.discount_percentage)}
+                        link={`/ofertas/${o.id}`}
+                      />
+                    </div>
+                  ))}
+                </ScrollableRow>
+              </div>
+            </>
+          )}
+        </section>
+      )}
     </PublicLayout>
   );
 };
