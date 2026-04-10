@@ -184,6 +184,7 @@ const AdminNewOffer = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
                 <FormField type="select" label="Categoria" options={CATEGORIES} value={category} onChange={setCategory} />
+                <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
               </div>
             </AdminFormSection>
 
