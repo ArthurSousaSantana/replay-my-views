@@ -10,6 +10,7 @@ import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 
 const CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
+const LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis"];
 const BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
 
 interface SpecRow {
@@ -29,6 +30,7 @@ const AdminNewOffer = () => {
   // Form state
   const [name, setName] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
+  const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [specs, setSpecs] = useState<SpecRow[]>([{ id: 1, key: "", value: "" }, { id: 2, key: "", value: "" }]);
@@ -61,6 +63,7 @@ const AdminNewOffer = () => {
       }
       setName(data.name);
       setCategory(data.category || CATEGORIES[0]);
+      setListingCategory(data.listing_category || LISTING_CATEGORIES[0]);
       setShortDescription(data.short_description || "");
       setLongDescription(data.long_description || "");
       const specsData = (data.specs as { key: string; value: string }[] | null) || [];
@@ -113,6 +116,7 @@ const AdminNewOffer = () => {
       const payload = {
         name: name.trim(),
         category,
+        listing_category: listingCategory,
         short_description: shortDescription,
         long_description: longDescription,
         specs: specsJson,
@@ -180,6 +184,7 @@ const AdminNewOffer = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
                 <FormField type="select" label="Categoria" options={CATEGORIES} value={category} onChange={setCategory} />
+                <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
               </div>
             </AdminFormSection>
 

@@ -200,6 +200,7 @@ export type Database = {
           is_limited_offer: boolean
           is_reusable_in_builds: boolean
           is_visible: boolean
+          listing_category: string
           long_description: string | null
           name: string
           old_price: number | null
@@ -223,6 +224,7 @@ export type Database = {
           is_limited_offer?: boolean
           is_reusable_in_builds?: boolean
           is_visible?: boolean
+          listing_category?: string
           long_description?: string | null
           name: string
           old_price?: number | null
@@ -246,6 +248,7 @@ export type Database = {
           is_limited_offer?: boolean
           is_reusable_in_builds?: boolean
           is_visible?: boolean
+          listing_category?: string
           long_description?: string | null
           name?: string
           old_price?: number | null
