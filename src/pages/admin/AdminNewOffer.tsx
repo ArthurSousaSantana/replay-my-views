@@ -116,6 +116,7 @@ const AdminNewOffer = () => {
       const payload = {
         name: name.trim(),
         category,
+        listing_category: listingCategory,
         short_description: shortDescription,
         long_description: longDescription,
         specs: specsJson,
