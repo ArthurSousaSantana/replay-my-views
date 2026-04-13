@@ -14,8 +14,10 @@ const DEBOUNCE_MS = 300;
 const MAX_RESULTS = 5;
 
 const SearchSuggestions = ({ query, onSelect, className = "" }: SearchSuggestionsProps) => {
-  const [offers, setOffers] = useState<Tables<"offers">[]>([]);
-  const [builds, setBuilds] = useState<Tables<"builds">[]>([]);
+  type SuggestionOffer = Pick<Tables<"offers">, "id" | "name" | "image_url" | "current_price" | "old_price" | "discount_percentage" | "category">;
+  type SuggestionBuild = Pick<Tables<"builds">, "id" | "name" | "image_url" | "final_price" | "total_price" | "discount_percentage" | "category">;
+  const [offers, setOffers] = useState<SuggestionOffer[]>([]);
+  const [builds, setBuilds] = useState<SuggestionBuild[]>([]);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
