@@ -13,9 +13,12 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileSearchQuery, setMobileSearchQuery] = useState(searchQuery);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showMobileSuggestions, setShowMobileSuggestions] = useState(false);
   const isActive = (path: string) => location.pathname === path;
   const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
+  const desktopSearchRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setLocalQuery(searchQuery);
