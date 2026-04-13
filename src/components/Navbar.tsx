@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { X, Menu, Search } from "lucide-react";
 import { useSearch } from "@/contexts/SearchContext";
+import SearchSuggestions from "@/components/SearchSuggestions";
 import logoImg from "@/assets/logo.png";
 
 const Navbar = () => {
