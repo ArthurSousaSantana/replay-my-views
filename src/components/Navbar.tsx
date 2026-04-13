@@ -84,8 +84,7 @@ const Navbar = () => {
             <span className="font-bold text-xl text-foreground hidden md:block">DescontoGamer</span>
           </Link>
 
-          {/* Desktop search */}
-          <form onSubmit={handleSubmit} className="flex-1 max-w-xl mx-auto hidden sm:block">
+          <form ref={desktopSearchRef} onSubmit={handleSubmit} className="flex-1 max-w-xl mx-auto hidden sm:block relative">
             <div className="relative">
               <input
                 ref={inputRef}
@@ -93,7 +92,8 @@ const Navbar = () => {
                 placeholder="Buscar ofertas, hardware, periféricos..."
                 type="text"
                 value={localQuery}
-                onChange={(e) => setLocalQuery(e.target.value)}
+                onChange={(e) => { setLocalQuery(e.target.value); setShowSuggestions(true); }}
+                onFocus={() => setShowSuggestions(true)}
               />
               {localQuery && (
                 <button
@@ -108,6 +108,12 @@ const Navbar = () => {
                 <span className="material-symbols-outlined text-xl">search</span>
               </button>
             </div>
+            {showSuggestions && (
+              <SearchSuggestions
+                query={localQuery}
+                onSelect={() => { setShowSuggestions(false); setLocalQuery(""); setSearchQuery(""); }}
+              />
+            )}
           </form>
 
           <div className="flex items-center gap-6">
