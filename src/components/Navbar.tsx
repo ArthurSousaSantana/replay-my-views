@@ -55,6 +55,7 @@ const Navbar = () => {
     const trimmed = mobileSearchQuery.trim();
     setSearchQuery(trimmed);
     setMobileSearchOpen(false);
+    setShowMobileSuggestions(false);
     const isOnSearchablePage = ["/", "/ofertas", "/builds"].includes(location.pathname);
     if (!isOnSearchablePage && trimmed) {
       navigate("/");
