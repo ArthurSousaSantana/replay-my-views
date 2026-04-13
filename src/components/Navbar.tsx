@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { X, Menu, Search } from "lucide-react";
 import { useSearch } from "@/contexts/SearchContext";
+import SearchSuggestions from "@/components/SearchSuggestions";
 import logoImg from "@/assets/logo.png";
 
 const Navbar = () => {
@@ -12,9 +13,12 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileSearchQuery, setMobileSearchQuery] = useState(searchQuery);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showMobileSuggestions, setShowMobileSuggestions] = useState(false);
   const isActive = (path: string) => location.pathname === path;
   const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
+  const desktopSearchRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setLocalQuery(searchQuery);
@@ -24,6 +28,8 @@ const Navbar = () => {
   useEffect(() => {
     setMobileMenuOpen(false);
     setMobileSearchOpen(false);
+    setShowSuggestions(false);
+    setShowMobileSuggestions(false);
   }, [location.pathname]);
 
   // Auto-focus mobile search input when opened
@@ -33,10 +39,22 @@ const Navbar = () => {
     }
   }, [mobileSearchOpen]);
 
+  // Close desktop suggestions on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (desktopSearchRef.current && !desktopSearchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = localQuery.trim();
     setSearchQuery(trimmed);
+    setShowSuggestions(false);
     const isOnSearchablePage = ["/", "/ofertas", "/builds"].includes(location.pathname);
     if (!isOnSearchablePage && trimmed) {
       navigate("/");
@@ -48,6 +66,7 @@ const Navbar = () => {
     const trimmed = mobileSearchQuery.trim();
     setSearchQuery(trimmed);
     setMobileSearchOpen(false);
+    setShowMobileSuggestions(false);
     const isOnSearchablePage = ["/", "/ofertas", "/builds"].includes(location.pathname);
     if (!isOnSearchablePage && trimmed) {
       navigate("/");
@@ -76,8 +95,7 @@ const Navbar = () => {
             <span className="font-bold text-xl text-foreground hidden md:block">DescontoGamer</span>
           </Link>
 
-          {/* Desktop search */}
-          <form onSubmit={handleSubmit} className="flex-1 max-w-xl mx-auto hidden sm:block">
+          <form ref={desktopSearchRef} onSubmit={handleSubmit} className="flex-1 max-w-xl mx-auto hidden sm:block relative">
             <div className="relative">
               <input
                 ref={inputRef}
@@ -85,7 +103,8 @@ const Navbar = () => {
                 placeholder="Buscar ofertas, hardware, periféricos..."
                 type="text"
                 value={localQuery}
-                onChange={(e) => setLocalQuery(e.target.value)}
+                onChange={(e) => { setLocalQuery(e.target.value); setShowSuggestions(true); }}
+                onFocus={() => setShowSuggestions(true)}
               />
               {localQuery && (
                 <button
@@ -100,6 +119,12 @@ const Navbar = () => {
                 <span className="material-symbols-outlined text-xl">search</span>
               </button>
             </div>
+            {showSuggestions && (
+              <SearchSuggestions
+                query={localQuery}
+                onSelect={() => { setShowSuggestions(false); setLocalQuery(""); setSearchQuery(""); }}
+              />
+            )}
           </form>
 
           <div className="flex items-center gap-6">
@@ -158,7 +183,7 @@ const Navbar = () => {
       {/* Mobile search bar dropdown */}
       {mobileSearchOpen && (
         <div className="sm:hidden fixed top-16 left-0 right-0 z-40 bg-surface border-b border-border shadow-lg px-4 py-3 animate-in slide-in-from-top duration-200">
-          <form onSubmit={handleMobileSubmit}>
+          <form onSubmit={handleMobileSubmit} className="relative">
             <div className="relative">
               <input
                 ref={mobileInputRef}
@@ -166,7 +191,8 @@ const Navbar = () => {
                 placeholder="Buscar ofertas, hardware..."
                 type="text"
                 value={mobileSearchQuery}
-                onChange={(e) => setMobileSearchQuery(e.target.value)}
+                onChange={(e) => { setMobileSearchQuery(e.target.value); setShowMobileSuggestions(true); }}
+                onFocus={() => setShowMobileSuggestions(true)}
               />
               {mobileSearchQuery && (
                 <button
@@ -181,6 +207,12 @@ const Navbar = () => {
                 <span className="material-symbols-outlined text-xl">search</span>
               </button>
             </div>
+            {showMobileSuggestions && (
+              <SearchSuggestions
+                query={mobileSearchQuery}
+                onSelect={() => { setShowMobileSuggestions(false); setMobileSearchOpen(false); setMobileSearchQuery(""); }}
+              />
+            )}
           </form>
         </div>
       )}
