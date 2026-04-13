@@ -172,7 +172,7 @@ const Navbar = () => {
       {/* Mobile search bar dropdown */}
       {mobileSearchOpen && (
         <div className="sm:hidden fixed top-16 left-0 right-0 z-40 bg-surface border-b border-border shadow-lg px-4 py-3 animate-in slide-in-from-top duration-200">
-          <form onSubmit={handleMobileSubmit}>
+          <form onSubmit={handleMobileSubmit} className="relative">
             <div className="relative">
               <input
                 ref={mobileInputRef}
@@ -180,7 +180,8 @@ const Navbar = () => {
                 placeholder="Buscar ofertas, hardware..."
                 type="text"
                 value={mobileSearchQuery}
-                onChange={(e) => setMobileSearchQuery(e.target.value)}
+                onChange={(e) => { setMobileSearchQuery(e.target.value); setShowMobileSuggestions(true); }}
+                onFocus={() => setShowMobileSuggestions(true)}
               />
               {mobileSearchQuery && (
                 <button
@@ -195,6 +196,12 @@ const Navbar = () => {
                 <span className="material-symbols-outlined text-xl">search</span>
               </button>
             </div>
+            {showMobileSuggestions && (
+              <SearchSuggestions
+                query={mobileSearchQuery}
+                onSelect={() => { setShowMobileSuggestions(false); setMobileSearchOpen(false); setMobileSearchQuery(""); }}
+              />
+            )}
           </form>
         </div>
       )}
