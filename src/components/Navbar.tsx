@@ -43,6 +43,7 @@ const Navbar = () => {
     e.preventDefault();
     const trimmed = localQuery.trim();
     setSearchQuery(trimmed);
+    setShowSuggestions(false);
     const isOnSearchablePage = ["/", "/ofertas", "/builds"].includes(location.pathname);
     if (!isOnSearchablePage && trimmed) {
       navigate("/");
