@@ -28,6 +28,8 @@ const Navbar = () => {
   useEffect(() => {
     setMobileMenuOpen(false);
     setMobileSearchOpen(false);
+    setShowSuggestions(false);
+    setShowMobileSuggestions(false);
   }, [location.pathname]);
 
   // Auto-focus mobile search input when opened
