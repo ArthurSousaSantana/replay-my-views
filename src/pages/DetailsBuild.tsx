@@ -58,11 +58,12 @@ const DetailsBuild = () => {
 
   return (
     <PublicLayout>
-      <HeroBanner size="md">
-        <div className="mb-4">
-          <Breadcrumb variant="light" items={[{ label: "Home", to: "/" }, { label: "Builds de PC", to: "/builds" }, { label: build.name }]} />
+      <HeroBanner size="sm" />
+
+      <main className="container mx-auto px-4 -mt-10 relative z-30 pb-20">
+        <div className="mb-3">
+          <Breadcrumb items={[{ label: "Home", to: "/" }, { label: "Builds de PC", to: "/builds" }, { label: build.name }]} />
         </div>
-      </HeroBanner>
 
       <main className="container mx-auto px-4 -mt-10 relative z-30 pb-20">
         <div className="bg-surface rounded-xl shadow-xl overflow-hidden border border-border">
