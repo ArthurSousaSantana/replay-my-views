@@ -90,9 +90,8 @@ const Navbar = () => {
     <>
       <nav className="bg-surface border-b border-border sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-            <img alt="DescontoGamer Logo" className="w-10 h-10 object-contain" src={logoImg} />
-            <span className="font-bold text-xl text-foreground hidden md:block">DescontoGamer</span>
+          <Link to="/" className="flex-shrink-0">
+            <img alt="DescontoGamer" className="h-9 md:h-10 w-auto object-contain" src={logoImg} />
           </Link>
 
           <form ref={desktopSearchRef} onSubmit={handleSubmit} className="flex-1 max-w-xl mx-auto hidden sm:block relative">
