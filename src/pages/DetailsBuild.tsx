@@ -97,9 +97,9 @@ const DetailsBuild = () => {
                   <h2 className="text-xl font-bold text-foreground mb-4">Performance Estimada</h2>
                   <div className="grid grid-cols-3 gap-3 mb-6">
                     {performances.slice(0, 3).map(p => (
-                      <div key={p.id} className="bg-muted rounded-lg p-3 text-center border border-border">
-                        <div className="text-xs text-muted-foreground mb-1">{p.game} ({p.quality})</div>
-                        <div className="text-xl font-bold text-primary">{p.fps}+ <span className="text-sm text-muted-foreground font-normal">FPS</span></div>
+                      <div key={p.id} className="bg-muted rounded-lg p-3 text-center border border-border flex flex-col justify-between min-h-[90px]">
+                        <div className="text-xs text-muted-foreground">{p.game} ({p.quality})</div>
+                        <div className="text-xl font-bold text-primary mt-auto">{p.fps}+ <span className="text-sm text-muted-foreground font-normal">FPS</span></div>
                       </div>
                     ))}
                   </div>
