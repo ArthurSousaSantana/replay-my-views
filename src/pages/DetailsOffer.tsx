@@ -68,14 +68,12 @@ const DetailsOffer = () => {
 
   return (
     <PublicLayout>
-      <HeroBanner size="sm">
-        <div className="mb-4">
+      <HeroBanner size="sm" />
+
+      <main className="container mx-auto px-4 -mt-10 relative z-30 pb-20">
+        <div className="mb-3">
           <Breadcrumb variant="light" items={[{ label: "Home", to: "/" }, { label: offer.category, to: "/ofertas" }, { label: offer.name }]} />
         </div>
-        
-      </HeroBanner>
-
-      <main className="container mx-auto px-4 py-8 -mt-8 relative z-30">
         <div className="bg-surface rounded-xl shadow-xl border border-border overflow-hidden">
           <div className="flex flex-col lg:flex-row">
             {/* Image */}
