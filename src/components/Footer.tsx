@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import logoImg from "@/assets/logo.png";
 
 const Footer = () => (
   <footer className="bg-surface border-t border-border pt-16 pb-8 mt-12">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
         <div>
-          <h3 className="text-xl font-bold text-foreground mb-4">DescontoGamer</h3>
+          <Link to="/"><img alt="DescontoGamer" className="h-8 w-auto object-contain mb-4" src={logoImg} /></Link>
           <p className="text-sm text-muted-foreground">
             Sua fonte número um para as melhores ofertas de tecnologia e hardware de alto desempenho.
           </p>
