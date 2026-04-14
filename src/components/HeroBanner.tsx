@@ -1,5 +1,5 @@
 interface HeroBannerProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   size?: "sm" | "md" | "lg";
   contained?: boolean;
 }
