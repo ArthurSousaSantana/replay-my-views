@@ -37,6 +37,7 @@ const ListingOffers = () => {
   const [loading, setLoading] = useState(true);
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [listingCategory, setListingCategory] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [appliedMinPrice, setAppliedMinPrice] = useState<number | null>(null);
@@ -44,7 +45,7 @@ const ListingOffers = () => {
   const [minDiscount, setMinDiscount] = useState(0);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  // Pick up ?q=, ?categoria=, ?desconto= from URL on mount
+  // Pick up ?q=, ?categoria=, ?listagem=, ?desconto= from URL on mount
   useEffect(() => {
     const q = searchParams.get("q");
     if (q && q !== searchQuery) {
@@ -52,6 +53,8 @@ const ListingOffers = () => {
     }
     const cat = searchParams.get("categoria");
     if (cat) setSelectedCategories([cat]);
+    const listing = searchParams.get("listagem");
+    setListingCategory(listing || null);
     const desc = searchParams.get("desconto");
     if (desc) setMinDiscount(Number(desc) || 0);
   }, [searchParams]);
@@ -72,6 +75,9 @@ const ListingOffers = () => {
     if (selectedCategories.length > 0) {
       query = query.in("category", selectedCategories);
     }
+    if (listingCategory) {
+      query = query.eq("listing_category", listingCategory);
+    }
     if (appliedMinPrice !== null) {
       query = query.gte("current_price", appliedMinPrice);
     }
@@ -90,7 +96,7 @@ const ListingOffers = () => {
     setOffers(data ?? []);
     setTotal(count ?? 0);
     setLoading(false);
-  }, [page, selectedCategories, appliedMinPrice, appliedMaxPrice, minDiscount, searchQuery]);
+  }, [page, selectedCategories, listingCategory, appliedMinPrice, appliedMaxPrice, minDiscount, searchQuery]);
 
   useEffect(() => {
     fetchOffers();
