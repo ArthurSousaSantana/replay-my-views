@@ -7,6 +7,7 @@ import ImageUpload from "@/components/shared/ImageUpload";
 import AdminFormSection from "@/components/shared/AdminFormSection";
 import {
   OFFER_CATEGORIES,
+  OFFER_LISTING_CATEGORIES,
   BUILD_CATEGORIES,
   DISCOUNT_FILTER_OPTIONS,
   buildBannerHref,
