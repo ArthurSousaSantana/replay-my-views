@@ -25,6 +25,7 @@ interface Banner {
   is_active: boolean;
   destination_type: string;
   destination_category: string | null;
+  destination_listing_category: string | null;
   destination_min_discount: number | null;
   destination_id: string | null;
 }
@@ -39,6 +40,7 @@ const emptyBanner = (): Omit<Banner, "id"> => ({
   is_active: true,
   destination_type: "offers",
   destination_category: "",
+  destination_listing_category: "",
   destination_min_discount: 0,
   destination_id: null,
 });
@@ -109,6 +111,7 @@ const AdminBanners = () => {
       is_active: b.is_active,
       destination_type: b.destination_type || "link",
       destination_category: b.destination_category || "",
+      destination_listing_category: b.destination_listing_category || "",
       destination_min_discount: b.destination_min_discount || 0,
       destination_id: b.destination_id || null,
     });
