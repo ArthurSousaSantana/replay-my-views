@@ -1,4 +1,4 @@
-export type DestinationType = "offers" | "builds" | "product" | "link";
+export type DestinationType = "offers" | "builds" | "offer" | "build" | "link";
 
 export interface BannerDestination {
   destination_type: DestinationType | string;
@@ -38,11 +38,8 @@ export const buildBannerHref = (b: BannerDestination): string => {
     return qs ? `${base}?${qs}` : base;
   }
 
-  if (type === "product" && b.destination_id) {
-    // produto único pode ser oferta ou build — usamos uma rota neutra que tenta resolver
-    // por padrão, assumimos oferta (admin escolhe explicitamente o id de uma oferta)
-    return `/ofertas/${b.destination_id}`;
-  }
+  if (type === "offer" && b.destination_id) return `/ofertas/${b.destination_id}`;
+  if (type === "build" && b.destination_id) return `/builds/${b.destination_id}`;
 
   return b.link || "";
 };
