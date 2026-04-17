@@ -3,10 +3,13 @@ export type DestinationType = "offers" | "builds" | "offer" | "build" | "link";
 export interface BannerDestination {
   destination_type: DestinationType | string;
   destination_category?: string | null;
+  destination_listing_category?: string | null;
   destination_min_discount?: number | null;
   destination_id?: string | null;
   link?: string | null;
 }
+
+export const OFFER_LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis"];
 
 export const OFFER_CATEGORIES = [
   "Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios",
@@ -31,6 +34,9 @@ export const buildBannerHref = (b: BannerDestination): string => {
     const base = type === "offers" ? "/ofertas" : "/builds";
     const params = new URLSearchParams();
     if (b.destination_category) params.set("categoria", b.destination_category);
+    if (type === "offers" && b.destination_listing_category) {
+      params.set("listagem", b.destination_listing_category);
+    }
     if (b.destination_min_discount && b.destination_min_discount > 0) {
       params.set("desconto", String(b.destination_min_discount));
     }
