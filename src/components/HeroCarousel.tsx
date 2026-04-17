@@ -19,6 +19,7 @@ const placeholderSlides: BannerSlide[] = [
     id: "1",
     title: "As melhores ofertas tech",
     link: "/ofertas",
+    destination_type: "link",
     image_desktop: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=1200&h=450&fit=crop",
     image_tablet: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=800&h=400&fit=crop",
     image_mobile: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&h=170&fit=crop",
