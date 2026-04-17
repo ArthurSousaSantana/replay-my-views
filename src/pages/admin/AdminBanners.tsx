@@ -229,7 +229,7 @@ const AdminBanners = () => {
                       <button
                         type="button"
                         key={opt.v}
-                        onClick={() => setForm(f => ({ ...f, destination_type: opt.v, destination_category: "", destination_min_discount: 0, destination_id: null }))}
+                        onClick={() => setForm(f => ({ ...f, destination_type: opt.v, destination_category: "", destination_listing_category: "", destination_min_discount: 0, destination_id: null }))}
                         className={`text-xs font-medium rounded-md py-2 px-2 border transition-colors ${
                           form.destination_type === opt.v
                             ? "bg-primary text-primary-foreground border-primary"
@@ -243,27 +243,43 @@ const AdminBanners = () => {
                 </div>
 
                 {isListType && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-medium text-foreground mb-1">Filtrar por categoria (opcional)</label>
-                      <select
-                        className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
-                        value={form.destination_category || ""}
-                        onChange={e => setForm(f => ({ ...f, destination_category: e.target.value }))}
-                      >
-                        <option value="">Todas as categorias</option>
-                        {categoryOptions.map(c => <option key={c} value={c}>{c}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-foreground mb-1">Desconto mínimo</label>
-                      <select
-                        className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
-                        value={form.destination_min_discount || 0}
-                        onChange={e => setForm(f => ({ ...f, destination_min_discount: Number(e.target.value) }))}
-                      >
-                        {DISCOUNT_FILTER_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                      </select>
+                  <div className="space-y-4">
+                    {form.destination_type === "offers" && (
+                      <div>
+                        <label className="block text-xs font-medium text-foreground mb-1">Categoria de listagem (opcional)</label>
+                        <select
+                          className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                          value={form.destination_listing_category || ""}
+                          onChange={e => setForm(f => ({ ...f, destination_listing_category: e.target.value }))}
+                        >
+                          <option value="">Todas as listagens</option>
+                          {OFFER_LISTING_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                        <p className="text-[11px] text-muted-foreground mt-1">Agrupa várias categorias (ex: "Seleção de Portáteis" inclui notebooks, tablets, smartphones etc.).</p>
+                      </div>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-foreground mb-1">Filtrar por categoria (opcional)</label>
+                        <select
+                          className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                          value={form.destination_category || ""}
+                          onChange={e => setForm(f => ({ ...f, destination_category: e.target.value }))}
+                        >
+                          <option value="">Todas as categorias</option>
+                          {categoryOptions.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-foreground mb-1">Desconto mínimo</label>
+                        <select
+                          className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                          value={form.destination_min_discount || 0}
+                          onChange={e => setForm(f => ({ ...f, destination_min_discount: Number(e.target.value) }))}
+                        >
+                          {DISCOUNT_FILTER_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                        </select>
+                      </div>
                     </div>
                   </div>
                 )}
