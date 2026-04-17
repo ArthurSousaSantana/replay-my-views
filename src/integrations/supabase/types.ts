@@ -17,6 +17,10 @@ export type Database = {
       banners: {
         Row: {
           created_at: string
+          destination_category: string | null
+          destination_id: string | null
+          destination_min_discount: number | null
+          destination_type: string
           id: string
           image_desktop: string | null
           image_mobile: string | null
@@ -29,6 +33,10 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          destination_category?: string | null
+          destination_id?: string | null
+          destination_min_discount?: number | null
+          destination_type?: string
           id?: string
           image_desktop?: string | null
           image_mobile?: string | null
@@ -41,6 +49,10 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          destination_category?: string | null
+          destination_id?: string | null
+          destination_min_discount?: number | null
+          destination_type?: string
           id?: string
           image_desktop?: string | null
           image_mobile?: string | null

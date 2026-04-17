@@ -5,6 +5,13 @@ import HeroBanner from "@/components/HeroBanner";
 import { toast } from "sonner";
 import ImageUpload from "@/components/shared/ImageUpload";
 import AdminFormSection from "@/components/shared/AdminFormSection";
+import {
+  OFFER_CATEGORIES,
+  BUILD_CATEGORIES,
+  DISCOUNT_FILTER_OPTIONS,
+  buildBannerHref,
+  type DestinationType,
+} from "@/lib/bannerDestination";
 
 interface Banner {
   id: string;
@@ -15,6 +22,10 @@ interface Banner {
   image_mobile: string;
   sort_order: number;
   is_active: boolean;
+  destination_type: string;
+  destination_category: string | null;
+  destination_min_discount: number | null;
+  destination_id: string | null;
 }
 
 const emptyBanner = (): Omit<Banner, "id"> => ({
@@ -25,7 +36,13 @@ const emptyBanner = (): Omit<Banner, "id"> => ({
   image_mobile: "",
   sort_order: 0,
   is_active: true,
+  destination_type: "offers",
+  destination_category: "",
+  destination_min_discount: 0,
+  destination_id: null,
 });
+
+interface ProductOption { id: string; name: string; }
 
 const AdminBanners = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -34,17 +51,44 @@ const AdminBanners = () => {
   const [form, setForm] = useState<Omit<Banner, "id">>(emptyBanner());
   const [saving, setSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
 
   const fetchBanners = async () => {
     const { data } = await supabase
       .from("banners")
       .select("*")
       .order("sort_order", { ascending: true });
-    setBanners((data as Banner[]) ?? []);
+    setBanners((data as any[] as Banner[]) ?? []);
     setLoading(false);
   };
 
   useEffect(() => { fetchBanners(); }, []);
+
+  // Carrega opções de produto/build quando o tipo de destino é "item único"
+  useEffect(() => {
+    const loadOptions = async () => {
+      if (form.destination_type === "offer") {
+        const { data } = await supabase
+          .from("offers")
+          .select("id, name")
+          .eq("is_active", true)
+          .order("name", { ascending: true })
+          .limit(500);
+        setProductOptions(data ?? []);
+      } else if (form.destination_type === "build") {
+        const { data } = await supabase
+          .from("builds")
+          .select("id, name")
+          .eq("status", "published")
+          .order("name", { ascending: true })
+          .limit(500);
+        setProductOptions(data ?? []);
+      } else {
+        setProductOptions([]);
+      }
+    };
+    loadOptions();
+  }, [form.destination_type]);
 
   const openNew = () => {
     setEditing(null);
@@ -54,7 +98,19 @@ const AdminBanners = () => {
 
   const openEdit = (b: Banner) => {
     setEditing(b);
-    setForm({ title: b.title, link: b.link, image_desktop: b.image_desktop, image_tablet: b.image_tablet, image_mobile: b.image_mobile, sort_order: b.sort_order, is_active: b.is_active });
+    setForm({
+      title: b.title,
+      link: b.link,
+      image_desktop: b.image_desktop,
+      image_tablet: b.image_tablet,
+      image_mobile: b.image_mobile,
+      sort_order: b.sort_order,
+      is_active: b.is_active,
+      destination_type: b.destination_type || "link",
+      destination_category: b.destination_category || "",
+      destination_min_discount: b.destination_min_discount || 0,
+      destination_id: b.destination_id || null,
+    });
     setShowForm(true);
   };
 
@@ -72,14 +128,19 @@ const AdminBanners = () => {
       toast.error("Adicione pelo menos uma imagem.");
       return;
     }
+    if ((form.destination_type === "offer" || form.destination_type === "build") && !form.destination_id) {
+      toast.error("Selecione o produto/build de destino.");
+      return;
+    }
     setSaving(true);
     try {
+      const payload: any = { ...form };
       if (editing) {
-        const { error } = await supabase.from("banners").update(form).eq("id", editing.id);
+        const { error } = await supabase.from("banners").update(payload).eq("id", editing.id);
         if (error) throw error;
         toast.success("Banner atualizado!");
       } else {
-        const { error } = await supabase.from("banners").insert(form);
+        const { error } = await supabase.from("banners").insert(payload);
         if (error) throw error;
         toast.success("Banner criado!");
       }
@@ -104,6 +165,11 @@ const AdminBanners = () => {
     fetchBanners();
   };
 
+  const isListType = form.destination_type === "offers" || form.destination_type === "builds";
+  const isItemType = form.destination_type === "offer" || form.destination_type === "build";
+  const categoryOptions = (form.destination_type === "builds") ? BUILD_CATEGORIES : OFFER_CATEGORIES;
+  const previewHref = buildBannerHref(form);
+
   return (
     <AdminLayout>
       <HeroBanner size="sm">
@@ -119,10 +185,10 @@ const AdminBanners = () => {
       </HeroBanner>
 
       <main className="container mx-auto px-4 py-8 -mt-10 relative z-30 space-y-6">
-        {/* Form */}
         {showForm && (
           <AdminFormSection icon="image" iconColor="bg-purple-100 text-purple-600" title={editing ? "Editar Banner" : "Novo Banner"} highlighted>
             <div className="space-y-6">
+              {/* Identificação */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Título (opcional)</label>
@@ -134,18 +200,6 @@ const AdminBanners = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Link de destino</label>
-                  <input
-                    className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
-                    value={form.link}
-                    onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
-                    placeholder="/ofertas ou https://..."
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Ordem</label>
                   <input
                     type="number"
@@ -154,13 +208,102 @@ const AdminBanners = () => {
                     onChange={e => setForm(f => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))}
                   />
                 </div>
-                <div className="flex items-end">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} className="rounded" />
-                    <span className="text-sm text-foreground">Banner ativo</span>
-                  </label>
-                </div>
               </div>
+
+              {/* Destino */}
+              <div className="border border-border rounded-lg p-4 bg-muted/30 space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-foreground mb-2">Destino do clique</label>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                    {([
+                      { v: "offers", l: "Lista de ofertas" },
+                      { v: "builds", l: "Lista de builds" },
+                      { v: "offer", l: "Oferta única" },
+                      { v: "build", l: "Build única" },
+                      { v: "link", l: "Link manual" },
+                    ] as { v: DestinationType; l: string }[]).map(opt => (
+                      <button
+                        type="button"
+                        key={opt.v}
+                        onClick={() => setForm(f => ({ ...f, destination_type: opt.v, destination_category: "", destination_min_discount: 0, destination_id: null }))}
+                        className={`text-xs font-medium rounded-md py-2 px-2 border transition-colors ${
+                          form.destination_type === opt.v
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-card text-foreground border-border hover:bg-muted"
+                        }`}
+                      >
+                        {opt.l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {isListType && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-foreground mb-1">Filtrar por categoria (opcional)</label>
+                      <select
+                        className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                        value={form.destination_category || ""}
+                        onChange={e => setForm(f => ({ ...f, destination_category: e.target.value }))}
+                      >
+                        <option value="">Todas as categorias</option>
+                        {categoryOptions.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-foreground mb-1">Desconto mínimo</label>
+                      <select
+                        className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                        value={form.destination_min_discount || 0}
+                        onChange={e => setForm(f => ({ ...f, destination_min_discount: Number(e.target.value) }))}
+                      >
+                        {DISCOUNT_FILTER_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {isItemType && (
+                  <div>
+                    <label className="block text-xs font-medium text-foreground mb-1">
+                      Selecione {form.destination_type === "offer" ? "a oferta" : "a build"}
+                    </label>
+                    <select
+                      className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                      value={form.destination_id || ""}
+                      onChange={e => setForm(f => ({ ...f, destination_id: e.target.value || null }))}
+                    >
+                      <option value="">— escolha —</option>
+                      {productOptions.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                    </select>
+                  </div>
+                )}
+
+                {form.destination_type === "link" && (
+                  <div>
+                    <label className="block text-xs font-medium text-foreground mb-1">Link de destino</label>
+                    <input
+                      className="w-full rounded-lg border border-border bg-card text-foreground text-sm px-3 py-2 focus:ring-primary focus:border-primary"
+                      value={form.link}
+                      onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
+                      placeholder="/ofertas ou https://..."
+                    />
+                  </div>
+                )}
+
+                {previewHref && (
+                  <div className="text-xs text-muted-foreground">
+                    URL final: <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">{previewHref}</code>
+                  </div>
+                )}
+              </div>
+
+              {/* Status */}
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} className="rounded" />
+                <span className="text-sm text-foreground">Banner ativo</span>
+              </label>
 
               <ImageUpload
                 label="Imagem do Banner"
@@ -198,7 +341,9 @@ const AdminBanners = () => {
             <div className="p-8 text-center text-muted-foreground text-sm">Nenhum banner cadastrado.</div>
           ) : (
             <div className="divide-y divide-border">
-              {banners.map(b => (
+              {banners.map(b => {
+                const href = buildBannerHref(b);
+                return (
                 <div key={b.id} className="p-4 flex items-center gap-4 hover:bg-muted/50 transition-colors">
                   <div className="w-24 h-14 bg-muted rounded border border-border overflow-hidden flex-shrink-0">
                     {b.image_desktop ? (
@@ -211,13 +356,11 @@ const AdminBanners = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-sm font-semibold text-foreground truncate">{b.title || "Banner sem título"}</h4>
-                    <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                       <span className={`inline-block w-2 h-2 rounded-full ${b.is_active ? "bg-emerald-500" : "bg-muted-foreground"}`} />
                       <span className="text-xs text-muted-foreground">{b.is_active ? "Ativo" : "Inativo"}</span>
                       <span className="text-xs text-muted-foreground">• Ordem: {b.sort_order}</span>
-                      {b.image_desktop && <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground">Desktop</span>}
-                      {b.image_tablet && <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground">Tablet</span>}
-                      {b.image_mobile && <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground">Mobile</span>}
+                      {href && <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground truncate max-w-[260px]" title={href}>→ {href}</span>}
                     </div>
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
@@ -232,7 +375,8 @@ const AdminBanners = () => {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
