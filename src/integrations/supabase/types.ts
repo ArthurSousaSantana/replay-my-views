@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           destination_category: string | null
           destination_id: string | null
+          destination_listing_category: string | null
           destination_min_discount: number | null
           destination_type: string
           id: string
@@ -35,6 +36,7 @@ export type Database = {
           created_at?: string
           destination_category?: string | null
           destination_id?: string | null
+          destination_listing_category?: string | null
           destination_min_discount?: number | null
           destination_type?: string
           id?: string
@@ -51,6 +53,7 @@ export type Database = {
           created_at?: string
           destination_category?: string | null
           destination_id?: string | null
+          destination_listing_category?: string | null
           destination_min_discount?: number | null
           destination_type?: string
           id?: string
