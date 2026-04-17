@@ -38,12 +38,16 @@ const ListingBuilds = () => {
   const [minDiscount, setMinDiscount] = useState(0);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  // Pick up ?q= from URL on mount
+  // Pick up ?q=, ?categoria=, ?desconto= from URL on mount
   useEffect(() => {
     const q = searchParams.get("q");
     if (q && q !== searchQuery) {
       setSearchQuery(q);
     }
+    const cat = searchParams.get("categoria");
+    if (cat) setSelectedCategories([cat]);
+    const desc = searchParams.get("desconto");
+    if (desc) setMinDiscount(Number(desc) || 0);
   }, [searchParams]);
 
   const fetchBuilds = useCallback(async () => {

@@ -3,8 +3,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { buildBannerHref, type BannerDestination } from "@/lib/bannerDestination";
 
-interface BannerSlide {
+interface BannerSlide extends BannerDestination {
   id: string;
   title: string;
   link: string;
@@ -100,11 +101,13 @@ const HeroCarousel = ({ autoPlayInterval = 5000 }: HeroCarouselProps) => {
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
-          {slides.map((slide) => (
+          {slides.map((slide) => {
+            const href = buildBannerHref(slide);
+            return (
             <div
               key={slide.id}
-              className={cn("min-w-full relative", slide.link && "cursor-pointer")}
-              onClick={() => slide.link && navigate(slide.link)}
+              className={cn("min-w-full relative", href && "cursor-pointer")}
+              onClick={() => href && navigate(href)}
             >
               <img
                 src={slide.image_desktop || slide.image_tablet || slide.image_mobile}
@@ -112,7 +115,8 @@ const HeroCarousel = ({ autoPlayInterval = 5000 }: HeroCarouselProps) => {
                 className="w-full h-auto block"
               />
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {slides.length > 1 && (
