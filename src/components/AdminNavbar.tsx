@@ -1,9 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
-
-const LOGO_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuC8DJY7gvG5QchLaSkJMxxjfMxLM-nB7amBFfho_rRhktPHun5WZj4fnbkSyoRLdSWwBLVjeZk_Cs6vpcIhmv10ZNVk55770yPbOA4tqDkDN39TPTWAlkycUxv3v5o75YOexaijUPj0ES3Cv25QPCE6UqCrPrE4yE4ddlNVHDUa8Zju3-7z3XB7TOl4Xg_lqwb0h4DuTTamOsNd_Ji-Odp7Hpnk7AWSKLFDhCBAFSvO4B8INhUeRZMMWk0PIqhr-lQy6cYAtub8gQ";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import logoImg from "@/assets/logo.png";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const AdminNavbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + "/");
 
   const links = [
@@ -14,13 +25,21 @@ const AdminNavbar = () => {
     { to: "/admin/banners", label: "Banners" },
   ];
 
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/admin/login", { replace: true });
+  };
+
+  const email = user?.email ?? "";
+  const initial = (email[0] || "A").toUpperCase();
+
   return (
     <nav className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         <Link to="/admin" className="flex-shrink-0 flex items-center gap-2">
-          <img alt="TechDeals Logo" className="w-10 h-10 object-contain" src={LOGO_URL} />
+          <img alt="DescontoGamer Logo" className="w-10 h-10 object-contain" src={logoImg} />
           <span className="font-bold text-xl text-foreground hidden md:block">
-            TechDeals{" "}
+            DescontoGamer{" "}
             <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded ml-1 text-muted-foreground">
               Admin
             </span>
@@ -59,17 +78,32 @@ const AdminNavbar = () => {
             })}
           </ul>
           <div className="flex items-center gap-3 border-l border-border pl-6">
-            <button className="relative text-muted-foreground hover:text-foreground transition-colors">
-              <span className="material-symbols-outlined text-2xl">notifications</span>
-              <span className="absolute top-0 right-0 h-2.5 w-2.5 bg-destructive rounded-full border-2 border-card" />
-            </button>
-            <div className="flex items-center gap-2 cursor-pointer hover:bg-muted p-1 rounded-lg transition-colors">
-              <span className="material-symbols-outlined text-3xl text-muted-foreground">account_circle</span>
-              <div className="hidden md:block text-left">
-                <p className="text-xs font-bold text-foreground">Admin User</p>
-                <p className="text-[10px] text-muted-foreground">Super Admin</p>
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 cursor-pointer hover:bg-muted p-1 rounded-lg transition-colors outline-none">
+                  <div className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+                    {initial}
+                  </div>
+                  <div className="hidden md:block text-left max-w-[160px]">
+                    <p className="text-xs font-bold text-foreground truncate">{email || "Admin"}</p>
+                    <p className="text-[10px] text-muted-foreground">Administrador</p>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground font-normal">Logado como</span>
+                    <span className="text-sm font-semibold truncate">{email}</span>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
