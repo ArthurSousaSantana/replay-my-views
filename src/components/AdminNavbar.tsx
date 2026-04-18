@@ -37,7 +37,7 @@ const AdminNavbar = () => {
     <nav className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         <Link to="/admin" className="flex-shrink-0 flex items-center gap-2">
-          <img alt="DescontoGamer Logo" className="w-10 h-10 object-contain" src={logoImg} />
+          <img alt="DescontoGamer" className="h-9 md:h-10 w-auto object-contain" src={logoImg} />
           <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded text-muted-foreground hidden md:inline">
             Admin
           </span>
