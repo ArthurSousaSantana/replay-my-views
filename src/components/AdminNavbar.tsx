@@ -38,11 +38,8 @@ const AdminNavbar = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         <Link to="/admin" className="flex-shrink-0 flex items-center gap-2">
           <img alt="DescontoGamer Logo" className="w-10 h-10 object-contain" src={logoImg} />
-          <span className="font-bold text-xl text-foreground hidden md:block">
-            DescontoGamer{" "}
-            <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded ml-1 text-muted-foreground">
-              Admin
-            </span>
+          <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded text-muted-foreground hidden md:inline">
+            Admin
           </span>
         </Link>
 
