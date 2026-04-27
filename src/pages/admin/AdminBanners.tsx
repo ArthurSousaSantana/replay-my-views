@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/layouts/AdminLayout";
-import HeroBanner from "@/components/HeroBanner";
+
 import { toast } from "sonner";
 import ImageUpload from "@/components/shared/ImageUpload";
 import AdminFormSection from "@/components/shared/AdminFormSection";
@@ -13,6 +13,7 @@ import {
   buildBannerHref,
   type DestinationType,
 } from "@/lib/bannerDestination";
+import heroBannerImg from "@/assets/admin-banners-hero.png";
 
 interface Banner {
   id: string;
@@ -176,17 +177,42 @@ const AdminBanners = () => {
 
   return (
     <AdminLayout>
-      <HeroBanner size="sm">
-        <div className="flex justify-between items-end">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight drop-shadow-xl mb-1">Banners</h1>
-            <p className="text-blue-100 font-light drop-shadow-md text-sm">Gerencie os banners do carrossel da home.</p>
+      <header
+        className="relative overflow-hidden text-white"
+        style={{ backgroundColor: "#3D3D3D" }}
+      >
+        {/* Imagem de fundo centralizada com gradiente lateral para preencher telas largas */}
+        <div
+          className="absolute inset-0 bg-no-repeat bg-center bg-cover md:bg-contain"
+          style={{
+            backgroundImage: `url(${heroBannerImg})`,
+          }}
+          aria-hidden="true"
+        />
+        {/* Gradiente que preenche as laterais e suaviza a leitura do texto */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, #3D3D3D 0%, rgba(61,61,61,0.85) 30%, rgba(61,61,61,0.55) 50%, rgba(61,61,61,0.85) 75%, #3D3D3D 100%)",
+          }}
+          aria-hidden="true"
+        />
+        <div className="relative z-10 container mx-auto px-4 py-6 md:py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="max-w-xl">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight drop-shadow-xl mb-1">Banners</h1>
+            <p className="text-white/80 font-light drop-shadow-md text-xs sm:text-sm">
+              Gerencie os banners do carrossel da home.
+            </p>
           </div>
-          <button onClick={openNew} className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-5 rounded-lg flex items-center gap-2 shadow-lg text-sm">
+          <button
+            onClick={openNew}
+            className="self-start sm:self-auto bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2 px-5 rounded-lg flex items-center gap-2 shadow-lg text-sm"
+          >
             <span className="material-symbols-outlined text-lg">add</span>Novo Banner
           </button>
         </div>
-      </HeroBanner>
+      </header>
 
       <main className="container mx-auto px-4 py-8 -mt-10 relative z-30 space-y-6">
         {showForm && (
