@@ -13,7 +13,7 @@ import {
   buildBannerHref,
   type DestinationType,
 } from "@/lib/bannerDestination";
-import heroBannerImg from "@/assets/admin-banners-hero.png";
+import HeroBanner from "@/components/HeroBanner";
 
 interface Banner {
   id: string;
