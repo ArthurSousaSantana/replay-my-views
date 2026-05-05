@@ -211,23 +211,16 @@ const ListingBuilds = () => {
 
   return (
     <PublicLayout>
-      <HeroBanner size="md">
-        <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-6 md:gap-8 max-w-6xl mx-auto">
-          <div className="text-center md:text-left flex-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight drop-shadow-xl text-white mb-3 leading-tight">
-              {searchQuery ? `Resultados para "${searchQuery}"` : "SEU SETUP DOS SONHOS, AGORA POSSÍVEL"}
-            </h1>
-            {!searchQuery && (
-              <p className="text-sm sm:text-base md:text-lg text-blue-100 max-w-xl mx-auto md:mx-0 font-light drop-shadow-md">
-                As melhores combinações de hardware com o selo de economia que você já conhece.
-              </p>
-            )}
-          </div>
-          <img
-            src={buildsHeroPc}
-            alt="PC gamer com iluminação RGB"
-            className="w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain drop-shadow-2xl flex-shrink-0"
-          />
+      <HeroBanner size="sm">
+        <div className="text-center max-w-3xl mx-auto py-2">
+          <h1 className="text-base sm:text-lg md:text-2xl font-extrabold tracking-tight drop-shadow-xl text-white mb-1 leading-tight">
+            {searchQuery ? `Resultados para "${searchQuery}"` : "SEU SETUP DOS SONHOS, AGORA POSSÍVEL"}
+          </h1>
+          {!searchQuery && (
+            <p className="text-xs sm:text-sm md:text-base text-blue-100 font-light drop-shadow-md">
+              As melhores combinações de hardware com o selo de economia que você já conhece.
+            </p>
+          )}
         </div>
       </HeroBanner>
 
