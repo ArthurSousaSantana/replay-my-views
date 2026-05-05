@@ -13,7 +13,7 @@ import {
   buildBannerHref,
   type DestinationType,
 } from "@/lib/bannerDestination";
-import heroBannerImg from "@/assets/admin-banners-hero.png";
+import HeroBanner from "@/components/HeroBanner";
 
 interface Banner {
   id: string;
@@ -177,28 +177,8 @@ const AdminBanners = () => {
 
   return (
     <AdminLayout>
-      <header
-        className="relative overflow-hidden text-white"
-        style={{ backgroundColor: "#3D3D3D" }}
-      >
-        {/* Imagem de fundo centralizada com gradiente lateral para preencher telas largas */}
-        <div
-          className="absolute inset-0 bg-no-repeat bg-center bg-cover md:bg-contain"
-          style={{
-            backgroundImage: `url(${heroBannerImg})`,
-          }}
-          aria-hidden="true"
-        />
-        {/* Gradiente que preenche as laterais e suaviza a leitura do texto */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(90deg, #3D3D3D 0%, rgba(61,61,61,0.85) 30%, rgba(61,61,61,0.55) 50%, rgba(61,61,61,0.85) 75%, #3D3D3D 100%)",
-          }}
-          aria-hidden="true"
-        />
-        <div className="relative z-10 container mx-auto px-4 py-6 md:py-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <HeroBanner size="sm">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div className="max-w-xl">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight drop-shadow-xl mb-1">Banners</h1>
             <p className="text-white/80 font-light drop-shadow-md text-xs sm:text-sm">
@@ -212,7 +192,7 @@ const AdminBanners = () => {
             <span className="material-symbols-outlined text-lg">add</span>Novo Banner
           </button>
         </div>
-      </header>
+      </HeroBanner>
 
       <main className="container mx-auto px-4 py-8 -mt-10 relative z-30 space-y-6">
         {showForm && (
