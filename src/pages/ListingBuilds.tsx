@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import PublicLayout from "@/components/layouts/PublicLayout";
-import buildsHeroImg from "@/assets/builds-hero.png";
+import HeroBanner from "@/components/HeroBanner";
+import buildsHeroPc from "@/assets/builds-hero-pc.png";
 import BuildCard from "@/components/BuildCard";
 import Pagination from "@/components/shared/Pagination";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -210,29 +211,25 @@ const ListingBuilds = () => {
 
   return (
     <PublicLayout>
-      <header className="relative overflow-hidden text-white" style={{ backgroundColor: "#3D3D3D" }}>
-        <div
-          className="absolute inset-0 bg-no-repeat bg-center bg-cover md:bg-contain"
-          style={{ backgroundImage: `url(${buildsHeroImg})` }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(90deg, #3D3D3D 0%, rgba(61,61,61,0.6) 12%, rgba(61,61,61,0) 25%, rgba(61,61,61,0) 75%, rgba(61,61,61,0.6) 88%, #3D3D3D 100%)",
-          }}
-          aria-hidden="true"
-        />
-        <div className="relative z-10 container mx-auto px-4 min-h-[160px] md:min-h-[220px]" />
-        {searchQuery && (
-          <div className="relative z-10 container mx-auto px-4 pb-6">
-            <h1 className="text-xl md:text-2xl font-extrabold tracking-tight drop-shadow-xl">
-              Resultados para "{searchQuery}"
+      <HeroBanner size="md">
+        <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-6 md:gap-8 max-w-6xl mx-auto">
+          <div className="text-center md:text-left flex-1 min-w-0">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight drop-shadow-xl text-white mb-3 leading-tight">
+              {searchQuery ? `Resultados para "${searchQuery}"` : "SEU SETUP DOS SONHOS, AGORA POSSÍVEL"}
             </h1>
+            {!searchQuery && (
+              <p className="text-sm sm:text-base md:text-lg text-blue-100 max-w-xl mx-auto md:mx-0 font-light drop-shadow-md">
+                As melhores combinações de hardware com o selo de economia que você já conhece.
+              </p>
+            )}
           </div>
-        )}
-      </header>
+          <img
+            src={buildsHeroPc}
+            alt="PC gamer com iluminação RGB"
+            className="w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain drop-shadow-2xl flex-shrink-0"
+          />
+        </div>
+      </HeroBanner>
 
       <main className="container mx-auto px-4 py-8">
         <button
