@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import PublicLayout from "@/components/layouts/PublicLayout";
-import HeroBanner from "@/components/HeroBanner";
+import buildsHeroImg from "@/assets/builds-hero.png";
 import BuildCard from "@/components/BuildCard";
 import Pagination from "@/components/shared/Pagination";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -210,18 +210,31 @@ const ListingBuilds = () => {
 
   return (
     <PublicLayout>
-      <HeroBanner size="md">
-        <div className="text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-xl text-white">
+      <header className="relative overflow-hidden text-white" style={{ backgroundColor: "#3D3D3D" }}>
+        <div
+          className="absolute inset-0 bg-no-repeat bg-center bg-cover md:bg-contain"
+          style={{ backgroundImage: `url(${buildsHeroImg})` }}
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, #3D3D3D 0%, rgba(61,61,61,0.85) 25%, rgba(61,61,61,0.45) 50%, rgba(61,61,61,0.85) 75%, #3D3D3D 100%)",
+          }}
+          aria-hidden="true"
+        />
+        <div className="relative z-10 container mx-auto px-4 py-10 md:py-16 text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 tracking-tight drop-shadow-xl">
             {searchQuery ? `Resultados para "${searchQuery}"` : "Builds de PC Recomendadas"}
           </h1>
           {!searchQuery && (
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto font-light drop-shadow-md">
+            <p className="text-sm sm:text-base md:text-lg text-white/85 max-w-2xl mx-auto font-light drop-shadow-md">
               Escolha sua performance. De configurações básicas a máquinas extremas para 4K, tudo testado e aprovado.
             </p>
           )}
         </div>
-      </HeroBanner>
+      </header>
 
       <main className="container mx-auto px-4 py-8">
         <button
