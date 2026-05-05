@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import logoImg from "@/assets/logo.png";
 import {
@@ -10,11 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 const AdminNavbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + "/");
 
   const links = [
@@ -36,12 +39,68 @@ const AdminNavbar = () => {
   return (
     <nav className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        <Link to="/admin" className="flex-shrink-0 flex items-center gap-2">
-          <img alt="DescontoGamer" className="h-9 md:h-10 w-auto object-contain" src={logoImg} />
-          <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded text-muted-foreground hidden md:inline">
-            Admin
-          </span>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-muted text-foreground"
+                aria-label="Abrir menu"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-72 p-0">
+              <SheetHeader className="p-4 border-b border-border">
+                <SheetTitle className="flex items-center gap-2">
+                  <img alt="DescontoGamer" className="h-8 w-auto object-contain" src={logoImg} />
+                  <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded text-muted-foreground">
+                    Admin
+                  </span>
+                </SheetTitle>
+              </SheetHeader>
+              <ul className="flex flex-col p-2">
+                {links.map((link) => {
+                  const active = link.exact
+                    ? location.pathname === link.to
+                    : isActive(link.to);
+                  return (
+                    <li key={link.to}>
+                      <Link
+                        to={link.to}
+                        onClick={() => setMobileOpen(false)}
+                        className={`block px-4 py-3 rounded-lg text-sm transition-colors ${
+                          active
+                            ? "bg-primary/10 font-bold text-primary"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="border-t border-border p-2 mt-auto">
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full flex items-center gap-2 px-4 py-3 rounded-lg text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sair
+                </button>
+              </div>
+            </SheetContent>
+          </Sheet>
+          <Link to="/admin" className="flex-shrink-0 flex items-center gap-2">
+            <img alt="DescontoGamer" className="h-9 md:h-10 w-auto object-contain" src={logoImg} />
+            <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded text-muted-foreground hidden md:inline">
+              Admin
+            </span>
+          </Link>
+        </div>
 
         <div className="flex-1 max-w-xl mx-auto hidden sm:block">
           <div className="relative">
