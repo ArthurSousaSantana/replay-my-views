@@ -217,23 +217,21 @@ const ListingBuilds = () => {
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "linear-gradient(90deg, #3D3D3D 0%, rgba(61,61,61,0.85) 25%, rgba(61,61,61,0.45) 50%, rgba(61,61,61,0.85) 75%, #3D3D3D 100%)",
+              "linear-gradient(90deg, #3D3D3D 0%, rgba(61,61,61,0.6) 12%, rgba(61,61,61,0) 25%, rgba(61,61,61,0) 75%, rgba(61,61,61,0.6) 88%, #3D3D3D 100%)",
           }}
           aria-hidden="true"
         />
-        <div className="relative z-10 container mx-auto px-4 py-10 md:py-16 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 tracking-tight drop-shadow-xl">
-            {searchQuery ? `Resultados para "${searchQuery}"` : "Builds de PC Recomendadas"}
-          </h1>
-          {!searchQuery && (
-            <p className="text-sm sm:text-base md:text-lg text-white/85 max-w-2xl mx-auto font-light drop-shadow-md">
-              Escolha sua performance. De configurações básicas a máquinas extremas para 4K, tudo testado e aprovado.
-            </p>
-          )}
-        </div>
+        <div className="relative z-10 container mx-auto px-4 min-h-[160px] md:min-h-[220px]" />
+        {searchQuery && (
+          <div className="relative z-10 container mx-auto px-4 pb-6">
+            <h1 className="text-xl md:text-2xl font-extrabold tracking-tight drop-shadow-xl">
+              Resultados para "{searchQuery}"
+            </h1>
+          </div>
+        )}
       </header>
 
       <main className="container mx-auto px-4 py-8">
