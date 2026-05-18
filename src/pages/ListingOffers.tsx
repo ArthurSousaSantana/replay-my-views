@@ -224,9 +224,16 @@ const ListingOffers = () => {
   return (
     <PublicLayout>
       <HeroBanner size="sm">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
-          {searchQuery ? `Resultados para "${searchQuery}"` : "Ofertas Tech em Destaque"}
-        </h1>
+        <div className="text-center max-w-3xl mx-auto py-2">
+          <h1 className="text-base sm:text-lg md:text-2xl font-extrabold tracking-tight drop-shadow-xl text-white mb-1 leading-tight">
+            {searchQuery ? `Resultados para "${searchQuery}"` : "Ofertas Tech em Destaque"}
+          </h1>
+          {!searchQuery && (
+            <p className="text-xs sm:text-sm md:text-base text-blue-100 font-light drop-shadow-md">
+              Uma seleção atualizada com as melhores ofertas e os maiores descontos em tecnologia para você economizar de verdade.
+            </p>
+          )}
+        </div>
       </HeroBanner>
 
       <div className="container mx-auto px-4 py-6">
