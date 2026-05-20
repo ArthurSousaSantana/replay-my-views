@@ -80,7 +80,7 @@ const DetailsOffer = () => {
             <div className="lg:w-7/12 p-8 border-b lg:border-b-0 lg:border-r border-border flex flex-col items-center justify-center bg-card">
               <div className="relative w-full max-w-lg aspect-square mb-6 flex items-center justify-center">
                 {offer.image_url ? (
-                  <img alt={offer.name} className="object-contain max-h-full max-w-full drop-shadow-lg" src={offer.image_url} />
+                  <img alt={offer.name} loading="lazy" className="object-contain max-h-full max-w-full drop-shadow-lg" src={offer.image_url} />
                 ) : (
                   <span className="material-symbols-outlined text-9xl text-muted-foreground">devices</span>
                 )}
@@ -89,7 +89,7 @@ const DetailsOffer = () => {
                 <div className="flex gap-4 overflow-x-auto py-2 w-full max-w-lg px-2">
                   {gallery.map((url, i) => (
                     <button key={i} className="w-20 h-20 flex-shrink-0 border border-border rounded-lg p-2 bg-card flex items-center justify-center hover:border-primary transition-colors">
-                      <img alt={`Gallery ${i}`} className="max-h-full max-w-full object-contain" src={url} />
+                      <img alt={`Gallery ${i}`} loading="lazy" className="max-h-full max-w-full object-contain" src={url} />
                     </button>
                   ))}
                 </div>

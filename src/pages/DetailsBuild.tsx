@@ -70,7 +70,7 @@ const DetailsBuild = () => {
             {/* Image */}
             <div className="lg:w-1/2 bg-white relative min-h-[400px] lg:min-h-[600px] flex items-center justify-center p-8 group border-r border-border">
               {build.image_url ? (
-                <img alt={build.name} className="max-w-full max-h-full object-contain drop-shadow-2xl transform transition-transform duration-700 group-hover:scale-105" src={build.image_url} />
+                <img alt={build.name} loading="lazy" className="max-w-full max-h-full object-contain drop-shadow-2xl transform transition-transform duration-700 group-hover:scale-105" src={build.image_url} />
               ) : (
                 <span className="material-symbols-outlined text-9xl text-muted-foreground/30">computer</span>
               )}

@@ -113,6 +113,7 @@ const HeroCarousel = ({ autoPlayInterval = 5000 }: HeroCarouselProps) => {
               <img
                 src={slide.image_desktop || slide.image_tablet || slide.image_mobile}
                 alt={slide.title}
+                loading="lazy"
                 className="w-full h-auto block"
               />
             </div>
