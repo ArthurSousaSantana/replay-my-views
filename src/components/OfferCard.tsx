@@ -25,7 +25,7 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
             </div>
           )}
           {image ? (
-            <img alt={title} loading="lazy" className="max-h-full max-w-full object-contain p-1 group-hover:scale-110 transition-transform duration-300" style={{ aspectRatio: "16/9", objectFit: "cover", width: "100%" }} src={image} />
+            <img alt={title} loading="lazy" className="max-h-full max-w-full object-contain p-1 group-hover:scale-110 transition-transform duration-300" src={image} />
           ) : (
             <span className="material-symbols-outlined text-3xl text-muted-foreground">{icon || "devices"}</span>
           )}
@@ -57,7 +57,7 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
           </div>
         )}
         {image ? (
-          <img alt={title} loading="lazy" className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300" style={{ aspectRatio: "16/9", objectFit: "cover", width: "100%" }} src={image} />
+          <img alt={title} loading="lazy" className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300" src={image} />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted rounded text-muted-foreground">
             <span className="material-symbols-outlined text-5xl md:text-6xl group-hover:scale-110 transition-transform duration-300">{icon || "devices"}</span>
