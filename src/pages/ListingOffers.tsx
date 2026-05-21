@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import PublicLayout from "@/components/layouts/PublicLayout";
 import HeroBanner from "@/components/HeroBanner";
@@ -13,6 +14,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { SlidersHorizontal, X } from "lucide-react";
 
 const PAGE_SIZE = 12;
+const OFFERS_STALE_TIME = 1000 * 60 * 2;
 
 const CATEGORIES = [
   "Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios",
@@ -31,10 +33,7 @@ const DISCOUNT_OPTIONS = [
 const ListingOffers = () => {
   const [searchParams] = useSearchParams();
   const { searchQuery, setSearchQuery } = useSearch();
-  const [offers, setOffers] = useState<Tables<"offers">[]>([]);
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [listingCategory, setListingCategory] = useState<string | null>(null);
@@ -59,48 +58,47 @@ const ListingOffers = () => {
     if (desc) setMinDiscount(Number(desc) || 0);
   }, [searchParams]);
 
-  const fetchOffers = useCallback(async () => {
-    setLoading(true);
-    const from = (page - 1) * PAGE_SIZE;
+  const { data, isLoading: loading } = useQuery({
+    queryKey: ["offers-listing", { page, selectedCategories, listingCategory, appliedMinPrice, appliedMaxPrice, minDiscount, searchQuery }],
+    queryFn: async () => {
+      const from = (page - 1) * PAGE_SIZE;
+      let query = supabase
+        .from("offers")
+        .select("*", { count: "exact" })
+        .eq("is_active", true)
+        .eq("is_visible", true);
 
-    let query = supabase
-      .from("offers")
-      .select("*", { count: "exact" })
-      .eq("is_active", true)
-      .eq("is_visible", true);
+      if (searchQuery) {
+        query = query.ilike("name", `%${searchQuery}%`);
+      }
+      if (selectedCategories.length > 0) {
+        query = query.in("category", selectedCategories);
+      }
+      if (listingCategory) {
+        query = query.eq("listing_category", listingCategory);
+      }
+      if (appliedMinPrice !== null) {
+        query = query.gte("current_price", appliedMinPrice);
+      }
+      if (appliedMaxPrice !== null) {
+        query = query.lte("current_price", appliedMaxPrice);
+      }
+      if (minDiscount > 0) {
+        query = query.gte("discount_percentage", minDiscount);
+      }
 
-    if (searchQuery) {
-      query = query.ilike("name", `%${searchQuery}%`);
-    }
-    if (selectedCategories.length > 0) {
-      query = query.in("category", selectedCategories);
-    }
-    if (listingCategory) {
-      query = query.eq("listing_category", listingCategory);
-    }
-    if (appliedMinPrice !== null) {
-      query = query.gte("current_price", appliedMinPrice);
-    }
-    if (appliedMaxPrice !== null) {
-      query = query.lte("current_price", appliedMaxPrice);
-    }
-    if (minDiscount > 0) {
-      query = query.gte("discount_percentage", minDiscount);
-    }
+      query = query
+        .order("created_at", { ascending: false })
+        .range(from, from + PAGE_SIZE - 1);
 
-    query = query
-      .order("created_at", { ascending: false })
-      .range(from, from + PAGE_SIZE - 1);
+      const { data, count } = await query;
+      return { offers: (data ?? []) as Tables<"offers">[], total: count ?? 0 };
+    },
+    staleTime: OFFERS_STALE_TIME,
+  });
 
-    const { data, count } = await query;
-    setOffers(data ?? []);
-    setTotal(count ?? 0);
-    setLoading(false);
-  }, [page, selectedCategories, listingCategory, appliedMinPrice, appliedMaxPrice, minDiscount, searchQuery]);
-
-  useEffect(() => {
-    fetchOffers();
-  }, [fetchOffers]);
+  const offers = data?.offers ?? [];
+  const total = data?.total ?? 0;
 
   const toggleCategory = (cat: string) => {
     setSelectedCategories((prev) =>
