@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import AdminRouteGuard from "@/components/AdminRouteGuard";
@@ -12,12 +13,19 @@ import ListingBuilds from "./pages/ListingBuilds";
 import DetailsOffer from "./pages/DetailsOffer";
 import DetailsBuild from "./pages/DetailsBuild";
 import NotFound from "./pages/NotFound";
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminNewBuild from "./pages/admin/AdminNewBuild";
-import AdminNewOffer from "./pages/admin/AdminNewOffer";
-import AdminProducts from "./pages/admin/AdminProducts";
-import AdminBanners from "./pages/admin/AdminBanners";
+
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminNewBuild = lazy(() => import("./pages/admin/AdminNewBuild"));
+const AdminNewOffer = lazy(() => import("./pages/admin/AdminNewOffer"));
+const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
+const AdminBanners = lazy(() => import("./pages/admin/AdminBanners"));
+
+const AdminFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -37,17 +45,15 @@ const App = () => (
               <Route path="/builds" element={<ListingBuilds />} />
               <Route path="/builds/:id" element={<DetailsBuild />} />
 
-              {/* Admin login (public, no guard) */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-
-              {/* Protected admin routes */}
-              <Route path="/admin" element={<AdminRouteGuard><AdminDashboard /></AdminRouteGuard>} />
-              <Route path="/admin/builds/nova" element={<AdminRouteGuard><AdminNewBuild /></AdminRouteGuard>} />
-              <Route path="/admin/builds/:id/editar" element={<AdminRouteGuard><AdminNewBuild /></AdminRouteGuard>} />
-              <Route path="/admin/ofertas/nova" element={<AdminRouteGuard><AdminNewOffer /></AdminRouteGuard>} />
-              <Route path="/admin/ofertas/:id/editar" element={<AdminRouteGuard><AdminNewOffer /></AdminRouteGuard>} />
-              <Route path="/admin/produtos" element={<AdminRouteGuard><AdminProducts /></AdminRouteGuard>} />
-              <Route path="/admin/banners" element={<AdminRouteGuard><AdminBanners /></AdminRouteGuard>} />
+              {/* Admin routes */}
+              <Route path="/admin/login" element={<Suspense fallback={<AdminFallback />}><AdminLogin /></Suspense>} />
+              <Route path="/admin" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminDashboard /></Suspense></AdminRouteGuard>} />
+              <Route path="/admin/builds/nova" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminNewBuild /></Suspense></AdminRouteGuard>} />
+              <Route path="/admin/builds/:id/editar" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminNewBuild /></Suspense></AdminRouteGuard>} />
+              <Route path="/admin/ofertas/nova" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminNewOffer /></Suspense></AdminRouteGuard>} />
+              <Route path="/admin/ofertas/:id/editar" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminNewOffer /></Suspense></AdminRouteGuard>} />
+              <Route path="/admin/produtos" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminProducts /></Suspense></AdminRouteGuard>} />
+              <Route path="/admin/banners" element={<AdminRouteGuard><Suspense fallback={<AdminFallback />}><AdminBanners /></Suspense></AdminRouteGuard>} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>
