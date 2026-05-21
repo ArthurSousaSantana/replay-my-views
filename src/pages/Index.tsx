@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import PublicLayout from "@/components/layouts/PublicLayout";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -11,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatBRL, formatDiscount } from "@/lib/format";
 import { useSearch } from "@/contexts/SearchContext";
 import type { Tables } from "@/integrations/supabase/types";
+
+const HOME_STALE_TIME = 1000 * 60 * 2;
 
 const OFFERS_LIMIT = 8;
 const BUILDS_LIMIT = 6;
@@ -83,19 +86,11 @@ const ScrollableRow = ({
 
 const Index = () => {
   const { searchQuery } = useSearch();
-  const [offers, setOffers] = useState<Tables<"offers">[]>([]);
-  const [portableOffers, setPortableOffers] = useState<Tables<"offers">[]>([]);
-  const [builds, setBuilds] = useState<Tables<"builds">[]>([]);
-  const [totalOffers, setTotalOffers] = useState(0);
-  const [totalBuilds, setTotalBuilds] = useState(0);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
+  const { data, isLoading: loading } = useQuery({
+    queryKey: ["home", searchQuery || "__featured__"],
+    queryFn: async () => {
       if (searchQuery) {
-        // Search mode
         const searchPattern = `%${searchQuery}%`;
         const [offersRes, buildsRes] = await Promise.all([
           supabase
@@ -114,50 +109,58 @@ const Index = () => {
             .order("created_at", { ascending: false })
             .limit(BUILDS_LIMIT),
         ]);
-        setOffers(offersRes.data ?? []);
-        setTotalOffers(offersRes.count ?? 0);
-        setBuilds(buildsRes.data ?? []);
-        setTotalBuilds(buildsRes.count ?? 0);
-      } else {
-        // Default featured mode
-        const [offersRes, buildsRes, portableRes] = await Promise.all([
-          supabase
-            .from("offers")
-            .select("*")
-            .eq("is_active", true)
-            .eq("is_visible", true)
-            .eq("is_featured", true)
-            .eq("listing_category", "Ofertas Tech")
-            .order("created_at", { ascending: false })
-            .limit(OFFERS_LIMIT),
-          supabase
-            .from("builds")
-            .select("*")
-            .eq("status", "published")
-            .eq("is_featured", true)
-            .order("created_at", { ascending: false })
-            .limit(BUILDS_LIMIT),
-          supabase
-            .from("offers")
-            .select("*")
-            .eq("is_active", true)
-            .eq("is_visible", true)
-            .eq("is_featured", true)
-            .eq("listing_category", "Seleção de Portáteis")
-            .order("created_at", { ascending: false })
-            .limit(OFFERS_LIMIT),
-        ]);
-        setOffers(offersRes.data ?? []);
-        setTotalOffers(0);
-        setBuilds(buildsRes.data ?? []);
-        setTotalBuilds(0);
-        setPortableOffers(portableRes.data ?? []);
+        return {
+          offers: offersRes.data ?? [],
+          totalOffers: offersRes.count ?? 0,
+          builds: buildsRes.data ?? [],
+          totalBuilds: buildsRes.count ?? 0,
+          portableOffers: [] as Tables<"offers">[],
+        };
       }
 
-      setLoading(false);
-    };
-    fetchData();
-  }, [searchQuery]);
+      const [offersRes, buildsRes, portableRes] = await Promise.all([
+        supabase
+          .from("offers")
+          .select("*")
+          .eq("is_active", true)
+          .eq("is_visible", true)
+          .eq("is_featured", true)
+          .eq("listing_category", "Ofertas Tech")
+          .order("created_at", { ascending: false })
+          .limit(OFFERS_LIMIT),
+        supabase
+          .from("builds")
+          .select("*")
+          .eq("status", "published")
+          .eq("is_featured", true)
+          .order("created_at", { ascending: false })
+          .limit(BUILDS_LIMIT),
+        supabase
+          .from("offers")
+          .select("*")
+          .eq("is_active", true)
+          .eq("is_visible", true)
+          .eq("is_featured", true)
+          .eq("listing_category", "Seleção de Portáteis")
+          .order("created_at", { ascending: false })
+          .limit(OFFERS_LIMIT),
+      ]);
+      return {
+        offers: offersRes.data ?? [],
+        totalOffers: 0,
+        builds: buildsRes.data ?? [],
+        totalBuilds: 0,
+        portableOffers: portableRes.data ?? [],
+      };
+    },
+    staleTime: HOME_STALE_TIME,
+  });
+
+  const offers = data?.offers ?? [];
+  const builds = data?.builds ?? [];
+  const portableOffers = data?.portableOffers ?? [];
+  const totalOffers = data?.totalOffers ?? 0;
+  const totalBuilds = data?.totalBuilds ?? 0;
 
   const buildCardProps = (b: Tables<"builds">) => ({
     key: b.id,
