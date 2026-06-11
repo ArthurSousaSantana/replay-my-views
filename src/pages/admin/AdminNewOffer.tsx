@@ -139,11 +139,11 @@ const AdminNewOffer = () => {
       };
 
       if (isEditing) {
-        const { error } = await supabase.from("offers").update(payload).eq("id", id);
+        const { error } = await supabase.from("offers").update(payload as any).eq("id", id);
         if (error) throw error;
         toast.success("Oferta atualizada com sucesso!");
       } else {
-        const { error } = await supabase.from("offers").insert(payload);
+        const { error } = await supabase.from("offers").insert(payload as any);
         if (error) throw error;
         toast.success(asDraft ? "Rascunho salvo!" : "Oferta publicada com sucesso!");
       }
