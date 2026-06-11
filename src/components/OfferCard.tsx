@@ -32,8 +32,15 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
           )}
         </div>
         <div className="flex-1 min-w-0">
-          {category && (
-            <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+          {(category || platform) && (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {category && (
+                <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+              )}
+              {platform && (
+                <span className="text-[9px] font-bold px-1 py-0.5 rounded bg-primary/15 text-primary uppercase tracking-wider">{platform}</span>
+              )}
+            </div>
           )}
           <h3 className="font-semibold text-foreground text-sm leading-tight line-clamp-2">{title}</h3>
           <div className="flex items-center gap-2 mt-1">
