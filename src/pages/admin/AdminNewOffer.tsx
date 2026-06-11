@@ -189,6 +189,9 @@ const AdminNewOffer = () => {
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
                 <FormField type="select" label="Categoria" options={CATEGORIES} value={category} onChange={setCategory} />
                 <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
+                {listingCategory === "Jogos" && (
+                  <FormField className="md:col-span-2" type="select" label="Plataforma / Loja" options={PLATFORMS} value={platform} onChange={setPlatform} hint="Disponível apenas para ofertas de Jogos." />
+                )}
               </div>
             </AdminFormSection>
 
