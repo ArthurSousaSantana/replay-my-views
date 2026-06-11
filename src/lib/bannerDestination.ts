@@ -9,7 +9,9 @@ export interface BannerDestination {
   link?: string | null;
 }
 
-export const OFFER_LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis"];
+export const OFFER_LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis", "Jogos"];
+
+export const GAME_PLATFORMS = ["PlayStation", "Xbox", "Nintendo", "Steam", "Epic Games"];
 
 export const OFFER_CATEGORIES = [
   "Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios",
