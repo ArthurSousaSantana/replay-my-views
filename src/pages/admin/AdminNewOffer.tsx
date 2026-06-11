@@ -66,6 +66,7 @@ const AdminNewOffer = () => {
       setName(data.name);
       setCategory(data.category || CATEGORIES[0]);
       setListingCategory(data.listing_category || LISTING_CATEGORIES[0]);
+      setPlatform((data as any).platform || PLATFORMS[0]);
       setShortDescription(data.short_description || "");
       setLongDescription(data.long_description || "");
       const specsData = (data.specs as { key: string; value: string }[] | null) || [];
