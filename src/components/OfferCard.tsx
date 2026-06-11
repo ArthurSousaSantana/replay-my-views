@@ -10,11 +10,12 @@ interface OfferCardProps {
   badge?: string;
   badgeColor?: string;
   category?: string;
+  platform?: string;
   link?: string;
   compact?: boolean;
 }
 
-const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-white", category, link = "/ofertas/1", compact = false }: OfferCardProps) => {
+const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-white", category, platform, link = "/ofertas/1", compact = false }: OfferCardProps) => {
   if (compact) {
     return (
       <Link to={link} className="bg-surface rounded-xl shadow-sm border border-border p-3 flex items-center gap-3 group hover:shadow-md transition-shadow">
