@@ -118,7 +118,7 @@ const Index = () => {
         };
       }
 
-      const [offersRes, buildsRes, portableRes] = await Promise.all([
+      const [offersRes, buildsRes, portableRes, gamesRes] = await Promise.all([
         supabase
           .from("offers")
           .select("*")
@@ -144,6 +144,15 @@ const Index = () => {
           .eq("listing_category", "Seleção de Portáteis")
           .order("created_at", { ascending: false })
           .limit(OFFERS_LIMIT),
+        supabase
+          .from("offers")
+          .select("*")
+          .eq("is_active", true)
+          .eq("is_visible", true)
+          .eq("is_featured", true)
+          .eq("listing_category", "Jogos")
+          .order("created_at", { ascending: false })
+          .limit(OFFERS_LIMIT),
       ]);
       return {
         offers: offersRes.data ?? [],
@@ -151,6 +160,7 @@ const Index = () => {
         builds: buildsRes.data ?? [],
         totalBuilds: 0,
         portableOffers: portableRes.data ?? [],
+        gameOffers: gamesRes.data ?? [],
       };
     },
     staleTime: HOME_STALE_TIME,
