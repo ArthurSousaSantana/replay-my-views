@@ -120,6 +120,7 @@ const AdminNewOffer = () => {
         name: name.trim(),
         category,
         listing_category: listingCategory,
+        platform: listingCategory === "Jogos" && platform !== "Nenhuma" ? platform : null,
         short_description: shortDescription,
         long_description: longDescription,
         specs: specsJson,
