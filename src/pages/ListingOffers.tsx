@@ -304,6 +304,7 @@ const ListingOffers = () => {
                     title={o.name}
                     image={o.image_url || undefined}
                     category={o.category}
+                    platform={(o as any).platform || undefined}
                     badge={o.promo_badge || formatDiscount(o.discount_percentage) || undefined}
                     oldPrice={o.old_price ? formatBRL(o.old_price) : ""}
                     newPrice={formatBRL(o.current_price)}
