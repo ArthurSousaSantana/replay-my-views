@@ -115,6 +115,7 @@ const Index = () => {
           builds: buildsRes.data ?? [],
           totalBuilds: buildsRes.count ?? 0,
           portableOffers: [] as Tables<"offers">[],
+          gameOffers: [] as Tables<"offers">[],
         };
       }
 
