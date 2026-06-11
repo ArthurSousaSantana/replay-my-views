@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import imageCompression from "browser-image-compression";
+import { toast } from "sonner";
 
 interface ImageUploadProps {
   label?: string;
@@ -9,16 +11,44 @@ interface ImageUploadProps {
   onUrlSubmit?: (url: string) => void;
 }
 
-const ImageUpload = ({ label, hint = "PNG, JPG até 5MB", compact = false, previewUrl, onFileSelect, onUrlSubmit }: ImageUploadProps) => {
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+const ImageUpload = ({ label, hint = "JPG, PNG ou WEBP até 5MB (comprimido para ~1MB)", compact = false, previewUrl, onFileSelect, onUrlSubmit }: ImageUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [mode, setMode] = useState<"upload" | "url">("upload");
   const [urlValue, setUrlValue] = useState("");
+  const [compressing, setCompressing] = useState(false);
 
-  const handleClick = () => inputRef.current?.click();
+  const handleClick = () => {
+    if (!compressing) inputRef.current?.click();
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && onFileSelect) onFileSelect(file);
+    if (!file) return;
+
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      toast.error("Formato inválido. Use JPG, PNG ou WEBP.");
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
+
+    try {
+      setCompressing(true);
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true,
+      });
+      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type || file.type });
+      if (onFileSelect) onFileSelect(finalFile);
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao comprimir imagem.");
+    } finally {
+      setCompressing(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
   };
 
   const handleUrlConfirm = () => {
@@ -52,18 +82,27 @@ const ImageUpload = ({ label, hint = "PNG, JPG até 5MB", compact = false, previ
 
       {mode === "upload" ? (
         <>
-          <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleChange} />
+          <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleChange} />
           <div
             onClick={handleClick}
-            className={`border-2 border-dashed border-border rounded-lg ${compact ? "p-4" : "p-8"} flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors text-center`}
+            className={`border-2 border-dashed border-border rounded-lg ${compact ? "p-4" : "p-8"} flex flex-col items-center justify-center ${compressing ? "cursor-wait opacity-70" : "cursor-pointer"} hover:border-primary hover:bg-muted/50 transition-colors text-center`}
           >
-            {previewUrl ? (
-              <img src={previewUrl} alt="Preview" className="max-h-32 object-contain rounded mb-2" />
+            {compressing ? (
+              <>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mb-2" />
+                <p className="text-sm text-muted-foreground">Comprimindo imagem...</p>
+              </>
             ) : (
-              <span className={`material-symbols-outlined ${compact ? "text-3xl" : "text-4xl"} text-muted-foreground mb-1`}>cloud_upload</span>
+              <>
+                {previewUrl ? (
+                  <img src={previewUrl} alt="Preview" className="max-h-32 object-contain rounded mb-2" />
+                ) : (
+                  <span className={`material-symbols-outlined ${compact ? "text-3xl" : "text-4xl"} text-muted-foreground mb-1`}>cloud_upload</span>
+                )}
+                <p className="text-sm text-muted-foreground">{previewUrl ? "Clique para trocar" : compact ? "Clique para upload" : "Arraste uma imagem ou clique para selecionar"}</p>
+                {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
+              </>
             )}
-            <p className="text-sm text-muted-foreground">{previewUrl ? "Clique para trocar" : compact ? "Clique para upload" : "Arraste uma imagem ou clique para selecionar"}</p>
-            {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
           </div>
         </>
       ) : (
