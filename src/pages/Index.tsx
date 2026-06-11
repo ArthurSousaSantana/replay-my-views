@@ -170,6 +170,7 @@ const Index = () => {
   const offers = data?.offers ?? [];
   const builds = data?.builds ?? [];
   const portableOffers = data?.portableOffers ?? [];
+  const gameOffers = data?.gameOffers ?? [];
   const totalOffers = data?.totalOffers ?? 0;
   const totalBuilds = data?.totalBuilds ?? 0;
 
