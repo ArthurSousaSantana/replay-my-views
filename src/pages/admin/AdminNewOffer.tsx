@@ -10,7 +10,8 @@ import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 
 const CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
-const LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis"];
+const LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis", "Jogos"];
+const PLATFORMS = ["Nenhuma", "PlayStation", "Xbox", "Nintendo", "Steam", "Epic Games"];
 const BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
 
 interface SpecRow {
@@ -31,6 +32,7 @@ const AdminNewOffer = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
+  const [platform, setPlatform] = useState(PLATFORMS[0]);
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [specs, setSpecs] = useState<SpecRow[]>([{ id: 1, key: "", value: "" }, { id: 2, key: "", value: "" }]);
@@ -64,6 +66,7 @@ const AdminNewOffer = () => {
       setName(data.name);
       setCategory(data.category || CATEGORIES[0]);
       setListingCategory(data.listing_category || LISTING_CATEGORIES[0]);
+      setPlatform((data as any).platform || PLATFORMS[0]);
       setShortDescription(data.short_description || "");
       setLongDescription(data.long_description || "");
       const specsData = (data.specs as { key: string; value: string }[] | null) || [];
@@ -117,6 +120,7 @@ const AdminNewOffer = () => {
         name: name.trim(),
         category,
         listing_category: listingCategory,
+        platform: listingCategory === "Jogos" && platform !== "Nenhuma" ? platform : null,
         short_description: shortDescription,
         long_description: longDescription,
         specs: specsJson,
@@ -135,11 +139,11 @@ const AdminNewOffer = () => {
       };
 
       if (isEditing) {
-        const { error } = await supabase.from("offers").update(payload).eq("id", id);
+        const { error } = await supabase.from("offers").update(payload as any).eq("id", id);
         if (error) throw error;
         toast.success("Oferta atualizada com sucesso!");
       } else {
-        const { error } = await supabase.from("offers").insert(payload);
+        const { error } = await supabase.from("offers").insert(payload as any);
         if (error) throw error;
         toast.success(asDraft ? "Rascunho salvo!" : "Oferta publicada com sucesso!");
       }
@@ -185,6 +189,9 @@ const AdminNewOffer = () => {
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
                 <FormField type="select" label="Categoria" options={CATEGORIES} value={category} onChange={setCategory} />
                 <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
+                {listingCategory === "Jogos" && (
+                  <FormField className="md:col-span-2" type="select" label="Plataforma / Loja" options={PLATFORMS} value={platform} onChange={setPlatform} hint="Disponível apenas para ofertas de Jogos." />
+                )}
               </div>
             </AdminFormSection>
 

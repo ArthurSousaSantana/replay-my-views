@@ -10,11 +10,12 @@ interface OfferCardProps {
   badge?: string;
   badgeColor?: string;
   category?: string;
+  platform?: string;
   link?: string;
   compact?: boolean;
 }
 
-const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-white", category, link = "/ofertas/1", compact = false }: OfferCardProps) => {
+const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, badgeColor = "bg-red-500 text-white", category, platform, link = "/ofertas/1", compact = false }: OfferCardProps) => {
   if (compact) {
     return (
       <Link to={link} className="bg-surface rounded-xl shadow-sm border border-border p-3 flex items-center gap-3 group hover:shadow-md transition-shadow">
@@ -31,8 +32,15 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
           )}
         </div>
         <div className="flex-1 min-w-0">
-          {category && (
-            <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+          {(category || platform) && (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {category && (
+                <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+              )}
+              {platform && (
+                <span className="text-[9px] font-bold px-1 py-0.5 rounded bg-primary/15 text-primary uppercase tracking-wider">{platform}</span>
+              )}
+            </div>
           )}
           <h3 className="font-semibold text-foreground text-sm leading-tight line-clamp-2">{title}</h3>
           <div className="flex items-center gap-2 mt-1">
@@ -65,9 +73,14 @@ const OfferCard = ({ title, image, icon, oldPrice, newPrice, discount, badge, ba
         )}
       </div>
       <div className="flex-1 flex flex-col">
-        {category && (
-          <div className="mb-1">
-            <span className="text-[9px] md:text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+        {(category || platform) && (
+          <div className="mb-1 flex items-center gap-1.5 flex-wrap">
+            {category && (
+              <span className="text-[9px] md:text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{category}</span>
+            )}
+            {platform && (
+              <span className="text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/15 text-primary uppercase tracking-wider">{platform}</span>
+            )}
           </div>
         )}
         <h3 className="font-semibold text-foreground mb-auto text-xs md:text-base leading-tight line-clamp-2">{title}</h3>

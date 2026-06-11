@@ -219,6 +219,7 @@ export type Database = {
           long_description: string | null
           name: string
           old_price: number | null
+          platform: string | null
           promo_badge: string | null
           short_description: string | null
           specs: Json | null
@@ -243,6 +244,7 @@ export type Database = {
           long_description?: string | null
           name: string
           old_price?: number | null
+          platform?: string | null
           promo_badge?: string | null
           short_description?: string | null
           specs?: Json | null
@@ -267,6 +269,7 @@ export type Database = {
           long_description?: string | null
           name?: string
           old_price?: number | null
+          platform?: string | null
           promo_badge?: string | null
           short_description?: string | null
           specs?: Json | null
