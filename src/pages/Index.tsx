@@ -309,8 +309,8 @@ const Index = () => {
           <SectionHeader
             title="Seleção de Portáteis"
             subtitle="Notebooks, tablets e wearables com os melhores preços."
-            linkTo="/ofertas"
-            linkLabel="Ver todas as ofertas"
+            linkTo="/ofertas?listagem=Seleção de Portáteis"
+            linkLabel="Ver todos os portáteis"
           />
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
