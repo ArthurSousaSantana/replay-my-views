@@ -7,6 +7,7 @@ import { Suspense, lazy } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import AdminRouteGuard from "@/components/AdminRouteGuard";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import ListingOffers from "./pages/ListingOffers";
 import ListingBuilds from "./pages/ListingBuilds";
@@ -37,6 +38,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
