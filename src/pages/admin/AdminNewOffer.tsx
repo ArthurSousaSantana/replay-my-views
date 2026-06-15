@@ -132,7 +132,13 @@ const AdminNewOffer = () => {
   };
 
   const handleSubmit = async (asDraft: boolean) => {
-    if (!name.trim()) {
+    if (!asDraft) {
+      const result = offerSchema.safeParse({ name, shortDescription, externalUrl });
+      if (!result.success) {
+        toast.error(result.error.errors[0].message);
+        return;
+      }
+    } else if (!name.trim()) {
       toast.error("O nome do produto é obrigatório.");
       return;
     }
