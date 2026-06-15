@@ -8,9 +8,32 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+const cookieStorage = {
+  getItem: (key: string): string | null => {
+    const name = encodeURIComponent(key) + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1);
+      if (c.indexOf(name) === 0) return decodeURIComponent(c.substring(name.length, c.length));
+    }
+    return null;
+  },
+  setItem: (key: string, value: string): void => {
+    const date = new Date();
+    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+    const expires = "; expires=" + date.toUTCString();
+    document.cookie = `${encodeURIComponent(key)}=${encodeURIComponent(value)}${expires}; path=/; SameSite=Lax; Secure`;
+  },
+  removeItem: (key: string): void => {
+    document.cookie = `${encodeURIComponent(key)}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Lax; Secure`;
+  }
+};
+
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: localStorage,
+    storage: cookieStorage,
+    flowType: 'pkce',
     persistSession: true,
     autoRefreshToken: true,
   }
