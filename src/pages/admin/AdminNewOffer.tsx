@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import AdminLayout from "@/components/layouts/AdminLayout";
@@ -8,6 +9,30 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
+
+const offerSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(3, { message: "O título deve ter pelo menos 3 caracteres." })
+    .max(100, { message: "O título deve ter no máximo 100 caracteres." }),
+  shortDescription: z
+    .string()
+    .trim()
+    .min(10, { message: "A descrição deve ter pelo menos 10 caracteres." })
+    .max(500, { message: "A descrição deve ter no máximo 500 caracteres." }),
+  externalUrl: z
+    .string()
+    .trim()
+    .min(1, { message: "A URL externa é obrigatória." })
+    .refine((url) => {
+      const lower = url.toLowerCase().trim();
+      return !lower.startsWith("javascript:") && !lower.startsWith("data:") && !lower.startsWith("vbscript:");
+    }, { message: "Protocolo de URL não permitido." })
+    .refine((url) => url.toLowerCase().startsWith("https://"), {
+      message: "A URL externa deve começar com https://",
+    }),
+});
 
 const CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
 const LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis", "Jogos"];
@@ -107,7 +132,13 @@ const AdminNewOffer = () => {
   };
 
   const handleSubmit = async (asDraft: boolean) => {
-    if (!name.trim()) {
+    if (!asDraft) {
+      const result = offerSchema.safeParse({ name, shortDescription, externalUrl });
+      if (!result.success) {
+        toast.error(result.error.errors[0].message);
+        return;
+      }
+    } else if (!name.trim()) {
       toast.error("O nome do produto é obrigatório.");
       return;
     }
