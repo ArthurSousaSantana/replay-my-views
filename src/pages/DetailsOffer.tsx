@@ -23,15 +23,36 @@ const DetailsOffer = () => {
       const { data } = await supabase.from("offers").select("*").eq("id", id).single();
       setOffer(data);
       if (data) {
-        const { data: rel } = await supabase
+        const listingCat = (data as any).listing_category as string | null;
+        let query = supabase
           .from("offers")
           .select("*")
           .eq("is_active", true)
           .eq("is_visible", true)
-          .neq("id", id)
-          .eq("category", data.category)
+          .neq("id", id);
+        // Prefer grouping by listing_category (e.g. "Seleção de Portáteis", "Jogos")
+        // so different sub-categories within the same rail still relate to each other.
+        query = listingCat
+          ? query.eq("listing_category", listingCat)
+          : query.eq("category", data.category);
+        const { data: rel } = await query
+          .order("created_at", { ascending: false })
           .limit(4);
-        setRelated(rel ?? []);
+        // Fallback: if nothing matched by listing_category, try by category.
+        if ((!rel || rel.length === 0) && listingCat) {
+          const { data: rel2 } = await supabase
+            .from("offers")
+            .select("*")
+            .eq("is_active", true)
+            .eq("is_visible", true)
+            .neq("id", id)
+            .eq("category", data.category)
+            .order("created_at", { ascending: false })
+            .limit(4);
+          setRelated(rel2 ?? []);
+        } else {
+          setRelated(rel ?? []);
+        }
       }
       setLoading(false);
     };
