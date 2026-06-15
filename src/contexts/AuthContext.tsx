@@ -53,14 +53,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(session?.user ?? null);
 
         if (session?.user) {
+          setIsLoading(true);
           // Use setTimeout to avoid blocking the callback
           setTimeout(async () => {
             if (!mounted) return;
             const admin = await checkAdminRole(session.user.id);
-            if (mounted) setIsAdmin(admin);
+            if (!mounted) return;
+            setIsAdmin(admin);
+            setIsLoading(false);
           }, 0);
         } else {
           setIsAdmin(false);
+          setIsLoading(false);
         }
       }
     );
