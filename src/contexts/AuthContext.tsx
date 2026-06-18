@@ -31,12 +31,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let mounted = true;
+    let currentUserId: string | null = null;
 
     // First, restore session from storage
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!mounted) return;
       setSession(session);
       setUser(session?.user ?? null);
+      currentUserId = session?.user?.id ?? null;
 
       if (session?.user) {
         const admin = await checkAdminRole(session.user.id);
@@ -45,26 +47,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (mounted) setIsLoading(false);
     });
 
-    // Then listen for future changes (sign in/out)
+    // Then listen for future changes (sign in/out / token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (event, session) => {
         if (!mounted) return;
         setSession(session);
         setUser(session?.user ?? null);
 
+        const newUserId = session?.user?.id ?? null;
+        const userChanged = newUserId !== currentUserId;
+        currentUserId = newUserId;
+
+        // Ignore noise events that don't change the user (TOKEN_REFRESHED,
+        // INITIAL_SESSION on tab focus). Avoid toggling isLoading because it
+        // unmounts protected routes and wipes form state.
+        if (!userChanged) return;
+
         if (session?.user) {
-          setIsLoading(true);
-          // Use setTimeout to avoid blocking the callback
+          // Recheck role in background WITHOUT flipping isLoading so the
+          // admin route children (forms) don't get unmounted.
           setTimeout(async () => {
             if (!mounted) return;
             const admin = await checkAdminRole(session.user.id);
             if (!mounted) return;
             setIsAdmin(admin);
-            setIsLoading(false);
           }, 0);
         } else {
           setIsAdmin(false);
-          setIsLoading(false);
         }
       }
     );
