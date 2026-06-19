@@ -74,9 +74,9 @@ const writeStore = (store: ScrollStore) => {
 const getDocumentMaxScroll = () =>
   Math.max(
     0,
-    document.documentElement.scrollHeight,
-    document.body.scrollHeight,
-  ) - window.innerHeight;
+    Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) -
+      window.innerHeight,
+  );
 
 const getSavedPosition = ({ historyKey, pathKey }: RouteSnapshot) => {
   const store = readStore();
