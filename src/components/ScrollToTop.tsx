@@ -50,17 +50,18 @@ const ScrollToTop = () => {
 
   // Save the scroll position of the page we are leaving (keyed by its history key).
   useEffect(() => {
+    const keyAtMount = location.key;
     const handleSave = () => {
       const map = readPositions();
-      map[prevKeyRef.current] = window.scrollY;
+      map[keyAtMount] = window.scrollY;
       writePositions(map);
     };
 
     window.addEventListener("pagehide", handleSave);
+    prevKeyRef.current = keyAtMount;
     return () => {
       handleSave();
       window.removeEventListener("pagehide", handleSave);
-      prevKeyRef.current = location.key;
     };
   }, [location.key]);
 
