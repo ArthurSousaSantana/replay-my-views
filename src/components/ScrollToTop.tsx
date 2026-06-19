@@ -151,8 +151,6 @@ const ScrollToTop = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const previousRoute = activeRouteRef.current;
-    savePosition(previousRoute);
     activeRouteRef.current = routeSnapshot;
 
     if (navigationType === "POP") {
@@ -200,7 +198,6 @@ const ScrollToTop = () => {
 
       return () => {
         cancelled = true;
-        savePosition(routeSnapshot);
         if (frameId !== null) window.cancelAnimationFrame(frameId);
         if (timeoutId !== null) window.clearTimeout(timeoutId);
         resizeObserver?.disconnect();
@@ -211,10 +208,6 @@ const ScrollToTop = () => {
     }
 
     window.scrollTo(0, 0);
-
-    return () => {
-      savePosition(routeSnapshot);
-    };
   }, [navigationType, routeSnapshot]);
 
   return null;
