@@ -34,13 +34,13 @@ const handleShare = (platform: string, url: string, text: string) => {
 
   switch (platform) {
     case "whatsapp":
-      window.open(`https://wa.me/?text=${encodedText}%20${encodedUrl}`, "_blank");
+      window.open(`https://wa.me/?text=${encodedText}%20${encodedUrl}`, "_blank", "noopener,noreferrer");
       break;
     case "telegram":
-      window.open(`https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`, "_blank");
+      window.open(`https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`, "_blank", "noopener,noreferrer");
       break;
     case "x":
-      window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`, "_blank");
+      window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`, "_blank", "noopener,noreferrer");
       break;
   }
 };
