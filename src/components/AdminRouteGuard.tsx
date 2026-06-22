@@ -1,6 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
+// ATENÇÃO: Este guard serve apenas para fins de UX (melhorar a experiência do usuário,
+// escondendo a interface administrativa de quem não é admin).
+// A segurança real dos dados e as permissões de escrita/leitura são garantidas
+// pelas políticas RLS (Row Level Security) diretamente no banco de dados do Supabase.
 const AdminRouteGuard = ({ children }: { children: React.ReactNode }) => {
   const { isLoading, session, isAdmin } = useAuth();
 
