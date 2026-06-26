@@ -392,19 +392,19 @@ const AdminNewBuild = () => {
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField 
-                    type="select" 
-                    label="Categoria" 
-                    options={["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]}
+                  <EditableSelect
+                    label="Categoria"
+                    options={categoryOptions}
                     value={category}
                     onChange={setCategory}
+                    onOptionsChange={setCategoryOptions}
                   />
-                  <FormField 
-                    type="select" 
-                    label="Badges / Tags" 
-                    options={["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]}
+                  <EditableSelect
+                    label="Badges / Tags"
+                    options={badgeOptions}
                     value={badge}
                     onChange={setBadge}
+                    onOptionsChange={setBadgeOptions}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
