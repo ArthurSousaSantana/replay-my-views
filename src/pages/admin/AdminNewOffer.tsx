@@ -57,7 +57,7 @@ const AdminNewOffer = () => {
 
   // Form state
   const [name, setName] = useState("");
-  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const { options: categories, setOptions: setCategories, addOption: addCategoryOption } = useTaxonomyOptions("offer_category", DEFAULT_CATEGORIES);
   const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
   const [platform, setPlatform] = useState(PLATFORMS[0]);
