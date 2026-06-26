@@ -94,7 +94,7 @@ const AdminNewOffer = () => {
       }
       setName(data.name);
       const loadedCategory = data.category || DEFAULT_CATEGORIES[0];
-      setCategories((prev) => (prev.includes(loadedCategory) ? prev : [...prev, loadedCategory]));
+      setCategories(categories.includes(loadedCategory) ? categories : [...categories, loadedCategory]);
       setCategory(loadedCategory);
       setListingCategory(data.listing_category || LISTING_CATEGORIES[0]);
       setPlatform((data as any).platform || PLATFORMS[0]);
