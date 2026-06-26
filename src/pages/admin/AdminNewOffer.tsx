@@ -226,7 +226,7 @@ const AdminNewOffer = () => {
             <AdminFormSection icon="feed" title="Informações Básicas">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
-                <EditableSelect label="Categoria" options={categories} value={category} onChange={setCategory} onOptionsChange={setCategories} />
+                <EditableSelect label="Categoria" options={categories} value={category} onChange={setCategory} onOptionsChange={setCategories} onAdd={addCategoryOption} />
                 <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
                 {listingCategory === "Jogos" && (
                   <FormField className="md:col-span-2" type="select" label="Plataforma / Loja" options={PLATFORMS} value={platform} onChange={setPlatform} hint="Disponível apenas para ofertas de Jogos." />
