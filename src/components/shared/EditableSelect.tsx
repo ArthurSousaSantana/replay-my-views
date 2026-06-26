@@ -51,6 +51,7 @@ const EditableSelect = ({
     if (!options.includes(trimmed)) {
       onOptionsChange?.([...options, trimmed]);
     }
+    onAdd?.(trimmed);
     onChange(trimmed);
     setDraft("");
     setAdding(false);
