@@ -9,6 +9,7 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
+import EditableSelect from "@/components/shared/EditableSelect";
 
 const offerSchema = z.object({
   name: z
@@ -34,10 +35,10 @@ const offerSchema = z.object({
     }),
 });
 
-const CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
+const DEFAULT_CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
 const LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis", "Jogos"];
 const PLATFORMS = ["Nenhuma", "PlayStation", "Xbox", "Nintendo", "Steam", "Epic Games"];
-const BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
+const DEFAULT_BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
 
 interface SpecRow {
   id: number;
@@ -55,7 +56,8 @@ const AdminNewOffer = () => {
 
   // Form state
   const [name, setName] = useState("");
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
   const [platform, setPlatform] = useState(PLATFORMS[0]);
   const [shortDescription, setShortDescription] = useState("");
@@ -67,7 +69,8 @@ const AdminNewOffer = () => {
   const [isFeatured, setIsFeatured] = useState(false);
   const [oldPrice, setOldPrice] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
-  const [promoBadge, setPromoBadge] = useState(BADGES[0]);
+  const [badges, setBadges] = useState<string[]>(DEFAULT_BADGES);
+  const [promoBadge, setPromoBadge] = useState(DEFAULT_BADGES[0]);
   const [isLimited, setIsLimited] = useState(false);
   const [isBestPrice, setIsBestPrice] = useState(true);
   const [externalUrl, setExternalUrl] = useState("");
@@ -89,7 +92,9 @@ const AdminNewOffer = () => {
         return;
       }
       setName(data.name);
-      setCategory(data.category || CATEGORIES[0]);
+      const loadedCategory = data.category || DEFAULT_CATEGORIES[0];
+      setCategories((prev) => (prev.includes(loadedCategory) ? prev : [...prev, loadedCategory]));
+      setCategory(loadedCategory);
       setListingCategory(data.listing_category || LISTING_CATEGORIES[0]);
       setPlatform((data as any).platform || PLATFORMS[0]);
       setShortDescription(data.short_description || "");
@@ -102,7 +107,9 @@ const AdminNewOffer = () => {
       setIsFeatured(data.is_featured);
       setOldPrice(data.old_price?.toString() || "");
       setCurrentPrice(data.current_price?.toString() || "");
-      setPromoBadge(data.promo_badge || BADGES[0]);
+      const loadedBadge = data.promo_badge || DEFAULT_BADGES[0];
+      setBadges((prev) => (prev.includes(loadedBadge) ? prev : [...prev, loadedBadge]));
+      setPromoBadge(loadedBadge);
       setIsLimited(data.is_limited_offer);
       setIsBestPrice(data.is_best_price);
       setExternalUrl(data.external_url || "");
@@ -218,7 +225,7 @@ const AdminNewOffer = () => {
             <AdminFormSection icon="feed" title="Informações Básicas">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
-                <FormField type="select" label="Categoria" options={CATEGORIES} value={category} onChange={setCategory} />
+                <EditableSelect label="Categoria" options={categories} value={category} onChange={setCategory} onOptionsChange={setCategories} />
                 <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
                 {listingCategory === "Jogos" && (
                   <FormField className="md:col-span-2" type="select" label="Plataforma / Loja" options={PLATFORMS} value={platform} onChange={setPlatform} hint="Disponível apenas para ofertas de Jogos." />
@@ -275,7 +282,7 @@ const AdminNewOffer = () => {
                   <FormField type="number" label="Preço Atual" prefix="R$" labelSize="xs" value={currentPrice} onChange={setCurrentPrice} />
                 </div>
                 <FormField type="text" label="% Desconto (Auto)" disabled value={discountPercentage ? `${discountPercentage}%` : "0%"} labelSize="xs" />
-                <FormField type="select" label="Badge Promocional" options={BADGES} labelSize="xs" value={promoBadge} onChange={setPromoBadge} />
+                <EditableSelect label="Badge Promocional" options={badges} value={promoBadge} onChange={setPromoBadge} onOptionsChange={setBadges} labelSize="xs" />
                 <div className="flex items-center gap-4 pt-2">
                   <label className="flex items-center gap-2 text-xs text-foreground cursor-pointer">
                     <input className="rounded border-border text-primary focus:ring-primary" type="checkbox" checked={isLimited} onChange={(e) => setIsLimited(e.target.checked)} />

@@ -9,6 +9,7 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
+import EditableSelect from "@/components/shared/EditableSelect";
 import { formatBRL } from "@/lib/format";
 
 interface PerformanceRow {
@@ -41,7 +42,9 @@ const AdminNewBuild = () => {
   // Form state
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
+  const [categoryOptions, setCategoryOptions] = useState<string[]>(["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]);
   const [category, setCategory] = useState("Gamer Entry-Level");
+  const [badgeOptions, setBadgeOptions] = useState<string[]>(["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]);
   const [badge, setBadge] = useState("");
   const [description, setDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -82,8 +85,11 @@ const AdminNewBuild = () => {
 
       setName(build.name);
       setSubtitle(build.subtitle || "");
+      setCategoryOptions((prev) => (build.category && !prev.includes(build.category) ? [...prev, build.category] : prev));
       setCategory(build.category);
-      setBadge(build.badge || "");
+      const loadedBadge = build.badge || "";
+      setBadgeOptions((prev) => (loadedBadge && !prev.includes(loadedBadge) ? [...prev, loadedBadge] : prev));
+      setBadge(loadedBadge);
       setDescription(build.description || "");
       setIsFeatured(build.is_featured);
       setStatus(build.status);
@@ -386,19 +392,19 @@ const AdminNewBuild = () => {
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField 
-                    type="select" 
-                    label="Categoria" 
-                    options={["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]}
+                  <EditableSelect
+                    label="Categoria"
+                    options={categoryOptions}
                     value={category}
                     onChange={setCategory}
+                    onOptionsChange={setCategoryOptions}
                   />
-                  <FormField 
-                    type="select" 
-                    label="Badges / Tags" 
-                    options={["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]}
+                  <EditableSelect
+                    label="Badges / Tags"
+                    options={badgeOptions}
                     value={badge}
                     onChange={setBadge}
+                    onOptionsChange={setBadgeOptions}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
