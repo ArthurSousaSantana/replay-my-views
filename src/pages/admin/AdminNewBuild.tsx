@@ -9,6 +9,7 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
+import EditableSelect from "@/components/shared/EditableSelect";
 import { formatBRL } from "@/lib/format";
 
 interface PerformanceRow {
