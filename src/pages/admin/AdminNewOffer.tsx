@@ -56,7 +56,8 @@ const AdminNewOffer = () => {
 
   // Form state
   const [name, setName] = useState("");
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
   const [platform, setPlatform] = useState(PLATFORMS[0]);
   const [shortDescription, setShortDescription] = useState("");
@@ -68,7 +69,8 @@ const AdminNewOffer = () => {
   const [isFeatured, setIsFeatured] = useState(false);
   const [oldPrice, setOldPrice] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
-  const [promoBadge, setPromoBadge] = useState(BADGES[0]);
+  const [badges, setBadges] = useState<string[]>(DEFAULT_BADGES);
+  const [promoBadge, setPromoBadge] = useState(DEFAULT_BADGES[0]);
   const [isLimited, setIsLimited] = useState(false);
   const [isBestPrice, setIsBestPrice] = useState(true);
   const [externalUrl, setExternalUrl] = useState("");
