@@ -28,6 +28,7 @@ const EditableSelect = ({
   value,
   onChange,
   onOptionsChange,
+  onAdd,
   labelSize = "sm",
   className,
   addLabel = "➕ Adicionar novo...",
