@@ -401,6 +401,7 @@ const AdminNewBuild = () => {
                     value={category}
                     onChange={setCategory}
                     onOptionsChange={setCategoryOptions}
+                    onAdd={addCategoryOption}
                   />
                   <EditableSelect
                     label="Badges / Tags"
@@ -408,6 +409,7 @@ const AdminNewBuild = () => {
                     value={badge}
                     onChange={setBadge}
                     onOptionsChange={setBadgeOptions}
+                    onAdd={addBadgeOption}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
