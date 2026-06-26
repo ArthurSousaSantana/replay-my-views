@@ -277,6 +277,27 @@ export type Database = {
         }
         Relationships: []
       }
+      taxonomy_options: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          value?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
