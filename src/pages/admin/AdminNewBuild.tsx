@@ -42,7 +42,9 @@ const AdminNewBuild = () => {
   // Form state
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
+  const [categoryOptions, setCategoryOptions] = useState<string[]>(["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]);
   const [category, setCategory] = useState("Gamer Entry-Level");
+  const [badgeOptions, setBadgeOptions] = useState<string[]>(["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]);
   const [badge, setBadge] = useState("");
   const [description, setDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
