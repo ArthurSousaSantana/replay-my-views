@@ -6,6 +6,7 @@ interface EditableSelectProps {
   value: string;
   onChange: (value: string) => void;
   onOptionsChange?: (options: string[]) => void;
+  onAdd?: (value: string) => void | Promise<void>;
   labelSize?: "sm" | "xs";
   className?: string;
   addLabel?: string;
