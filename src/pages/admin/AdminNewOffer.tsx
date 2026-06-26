@@ -35,10 +35,10 @@ const offerSchema = z.object({
     }),
 });
 
-const CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
+const DEFAULT_CATEGORIES = ["Hardware", "Smartphones", "Periféricos", "Mobiliário", "Acessórios", "Gadgets", "Notebooks", "Áudio", "Monitores", "Redes", "Armazenamento", "Games", "Iluminação", "Escritório", "Ergonomia", "Componentes", "Conectividade", "Tablets", "Wearables", "Suportes"];
 const LISTING_CATEGORIES = ["Ofertas Tech", "Seleção de Portáteis", "Jogos"];
 const PLATFORMS = ["Nenhuma", "PlayStation", "Xbox", "Nintendo", "Steam", "Epic Games"];
-const BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
+const DEFAULT_BADGES = ["Nenhuma", "Frete Grátis", "Lançamento", "Black Friday", "Menor Preço", "Cupom Ativo", "Seleção do Editor", "Estoque Baixo", "Preço de Bug", "Cashback", "Exclusivo Prime", "Kit Completo", "Relíquia", "Estoque no Brasil"];
 
 interface SpecRow {
   id: number;
