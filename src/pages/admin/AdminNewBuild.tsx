@@ -85,8 +85,11 @@ const AdminNewBuild = () => {
 
       setName(build.name);
       setSubtitle(build.subtitle || "");
+      setCategoryOptions((prev) => (build.category && !prev.includes(build.category) ? [...prev, build.category] : prev));
       setCategory(build.category);
-      setBadge(build.badge || "");
+      const loadedBadge = build.badge || "";
+      setBadgeOptions((prev) => (loadedBadge && !prev.includes(loadedBadge) ? [...prev, loadedBadge] : prev));
+      setBadge(loadedBadge);
       setDescription(build.description || "");
       setIsFeatured(build.is_featured);
       setStatus(build.status);
