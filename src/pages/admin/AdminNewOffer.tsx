@@ -10,6 +10,7 @@ import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 import EditableSelect from "@/components/shared/EditableSelect";
+import { useTaxonomyOptions } from "@/hooks/useTaxonomyOptions";
 
 const offerSchema = z.object({
   name: z
