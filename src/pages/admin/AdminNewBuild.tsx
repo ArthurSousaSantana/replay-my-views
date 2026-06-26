@@ -10,6 +10,7 @@ import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 import EditableSelect from "@/components/shared/EditableSelect";
+import { useTaxonomyOptions } from "@/hooks/useTaxonomyOptions";
 import { formatBRL } from "@/lib/format";
 
 interface PerformanceRow {
@@ -42,9 +43,11 @@ const AdminNewBuild = () => {
   // Form state
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState<string[]>(["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]);
+  const DEFAULT_BUILD_CATEGORIES = ["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"];
+  const DEFAULT_BUILD_BADGES = ["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"];
+  const { options: categoryOptions, setOptions: setCategoryOptions, addOption: addCategoryOption } = useTaxonomyOptions("build_category", DEFAULT_BUILD_CATEGORIES);
   const [category, setCategory] = useState("Gamer Entry-Level");
-  const [badgeOptions, setBadgeOptions] = useState<string[]>(["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]);
+  const { options: badgeOptions, setOptions: setBadgeOptions, addOption: addBadgeOption } = useTaxonomyOptions("build_badge", DEFAULT_BUILD_BADGES);
   const [badge, setBadge] = useState("");
   const [description, setDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -85,10 +88,10 @@ const AdminNewBuild = () => {
 
       setName(build.name);
       setSubtitle(build.subtitle || "");
-      setCategoryOptions((prev) => (build.category && !prev.includes(build.category) ? [...prev, build.category] : prev));
+      if (build.category && !categoryOptions.includes(build.category)) setCategoryOptions([...categoryOptions, build.category]);
       setCategory(build.category);
       const loadedBadge = build.badge || "";
-      setBadgeOptions((prev) => (loadedBadge && !prev.includes(loadedBadge) ? [...prev, loadedBadge] : prev));
+      if (loadedBadge && !badgeOptions.includes(loadedBadge)) setBadgeOptions([...badgeOptions, loadedBadge]);
       setBadge(loadedBadge);
       setDescription(build.description || "");
       setIsFeatured(build.is_featured);
@@ -398,6 +401,7 @@ const AdminNewBuild = () => {
                     value={category}
                     onChange={setCategory}
                     onOptionsChange={setCategoryOptions}
+                    onAdd={addCategoryOption}
                   />
                   <EditableSelect
                     label="Badges / Tags"
@@ -405,6 +409,7 @@ const AdminNewBuild = () => {
                     value={badge}
                     onChange={setBadge}
                     onOptionsChange={setBadgeOptions}
+                    onAdd={addBadgeOption}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

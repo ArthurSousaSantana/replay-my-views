@@ -6,6 +6,7 @@ interface EditableSelectProps {
   value: string;
   onChange: (value: string) => void;
   onOptionsChange?: (options: string[]) => void;
+  onAdd?: (value: string) => void | Promise<void>;
   labelSize?: "sm" | "xs";
   className?: string;
   addLabel?: string;
@@ -27,6 +28,7 @@ const EditableSelect = ({
   value,
   onChange,
   onOptionsChange,
+  onAdd,
   labelSize = "sm",
   className,
   addLabel = "➕ Adicionar novo...",
@@ -49,6 +51,7 @@ const EditableSelect = ({
     if (!options.includes(trimmed)) {
       onOptionsChange?.([...options, trimmed]);
     }
+    onAdd?.(trimmed);
     onChange(trimmed);
     setDraft("");
     setAdding(false);

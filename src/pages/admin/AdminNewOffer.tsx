@@ -10,6 +10,7 @@ import AdminFormSection from "@/components/shared/AdminFormSection";
 import FormField from "@/components/shared/FormField";
 import ImageUpload from "@/components/shared/ImageUpload";
 import EditableSelect from "@/components/shared/EditableSelect";
+import { useTaxonomyOptions } from "@/hooks/useTaxonomyOptions";
 
 const offerSchema = z.object({
   name: z
@@ -56,7 +57,7 @@ const AdminNewOffer = () => {
 
   // Form state
   const [name, setName] = useState("");
-  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const { options: categories, setOptions: setCategories, addOption: addCategoryOption } = useTaxonomyOptions("offer_category", DEFAULT_CATEGORIES);
   const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [listingCategory, setListingCategory] = useState(LISTING_CATEGORIES[0]);
   const [platform, setPlatform] = useState(PLATFORMS[0]);
@@ -69,7 +70,7 @@ const AdminNewOffer = () => {
   const [isFeatured, setIsFeatured] = useState(false);
   const [oldPrice, setOldPrice] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
-  const [badges, setBadges] = useState<string[]>(DEFAULT_BADGES);
+  const { options: badges, setOptions: setBadges, addOption: addBadgeOption } = useTaxonomyOptions("offer_badge", DEFAULT_BADGES);
   const [promoBadge, setPromoBadge] = useState(DEFAULT_BADGES[0]);
   const [isLimited, setIsLimited] = useState(false);
   const [isBestPrice, setIsBestPrice] = useState(true);
@@ -93,7 +94,7 @@ const AdminNewOffer = () => {
       }
       setName(data.name);
       const loadedCategory = data.category || DEFAULT_CATEGORIES[0];
-      setCategories((prev) => (prev.includes(loadedCategory) ? prev : [...prev, loadedCategory]));
+      setCategories(categories.includes(loadedCategory) ? categories : [...categories, loadedCategory]);
       setCategory(loadedCategory);
       setListingCategory(data.listing_category || LISTING_CATEGORIES[0]);
       setPlatform((data as any).platform || PLATFORMS[0]);
@@ -108,7 +109,7 @@ const AdminNewOffer = () => {
       setOldPrice(data.old_price?.toString() || "");
       setCurrentPrice(data.current_price?.toString() || "");
       const loadedBadge = data.promo_badge || DEFAULT_BADGES[0];
-      setBadges((prev) => (prev.includes(loadedBadge) ? prev : [...prev, loadedBadge]));
+      setBadges(badges.includes(loadedBadge) ? badges : [...badges, loadedBadge]);
       setPromoBadge(loadedBadge);
       setIsLimited(data.is_limited_offer);
       setIsBestPrice(data.is_best_price);
@@ -225,7 +226,7 @@ const AdminNewOffer = () => {
             <AdminFormSection icon="feed" title="Informações Básicas">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField className="md:col-span-2" type="text" label="Nome do Produto" placeholder="Ex: iPhone 15 128GB Preto" value={name} onChange={setName} />
-                <EditableSelect label="Categoria" options={categories} value={category} onChange={setCategory} onOptionsChange={setCategories} />
+                <EditableSelect label="Categoria" options={categories} value={category} onChange={setCategory} onOptionsChange={setCategories} onAdd={addCategoryOption} />
                 <FormField type="select" label="Categoria de Listagem" options={LISTING_CATEGORIES} value={listingCategory} onChange={setListingCategory} />
                 {listingCategory === "Jogos" && (
                   <FormField className="md:col-span-2" type="select" label="Plataforma / Loja" options={PLATFORMS} value={platform} onChange={setPlatform} hint="Disponível apenas para ofertas de Jogos." />
@@ -282,7 +283,7 @@ const AdminNewOffer = () => {
                   <FormField type="number" label="Preço Atual" prefix="R$" labelSize="xs" value={currentPrice} onChange={setCurrentPrice} />
                 </div>
                 <FormField type="text" label="% Desconto (Auto)" disabled value={discountPercentage ? `${discountPercentage}%` : "0%"} labelSize="xs" />
-                <EditableSelect label="Badge Promocional" options={badges} value={promoBadge} onChange={setPromoBadge} onOptionsChange={setBadges} labelSize="xs" />
+                <EditableSelect label="Badge Promocional" options={badges} value={promoBadge} onChange={setPromoBadge} onOptionsChange={setBadges} onAdd={addBadgeOption} labelSize="xs" />
                 <div className="flex items-center gap-4 pt-2">
                   <label className="flex items-center gap-2 text-xs text-foreground cursor-pointer">
                     <input className="rounded border-border text-primary focus:ring-primary" type="checkbox" checked={isLimited} onChange={(e) => setIsLimited(e.target.checked)} />
