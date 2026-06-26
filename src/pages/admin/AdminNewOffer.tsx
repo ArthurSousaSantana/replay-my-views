@@ -107,7 +107,9 @@ const AdminNewOffer = () => {
       setIsFeatured(data.is_featured);
       setOldPrice(data.old_price?.toString() || "");
       setCurrentPrice(data.current_price?.toString() || "");
-      setPromoBadge(data.promo_badge || BADGES[0]);
+      const loadedBadge = data.promo_badge || DEFAULT_BADGES[0];
+      setBadges((prev) => (prev.includes(loadedBadge) ? prev : [...prev, loadedBadge]));
+      setPromoBadge(loadedBadge);
       setIsLimited(data.is_limited_offer);
       setIsBestPrice(data.is_best_price);
       setExternalUrl(data.external_url || "");
