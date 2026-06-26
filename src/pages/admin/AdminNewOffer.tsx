@@ -282,7 +282,7 @@ const AdminNewOffer = () => {
                   <FormField type="number" label="Preço Atual" prefix="R$" labelSize="xs" value={currentPrice} onChange={setCurrentPrice} />
                 </div>
                 <FormField type="text" label="% Desconto (Auto)" disabled value={discountPercentage ? `${discountPercentage}%` : "0%"} labelSize="xs" />
-                <FormField type="select" label="Badge Promocional" options={BADGES} labelSize="xs" value={promoBadge} onChange={setPromoBadge} />
+                <EditableSelect label="Badge Promocional" options={badges} value={promoBadge} onChange={setPromoBadge} onOptionsChange={setBadges} labelSize="xs" />
                 <div className="flex items-center gap-4 pt-2">
                   <label className="flex items-center gap-2 text-xs text-foreground cursor-pointer">
                     <input className="rounded border-border text-primary focus:ring-primary" type="checkbox" checked={isLimited} onChange={(e) => setIsLimited(e.target.checked)} />
