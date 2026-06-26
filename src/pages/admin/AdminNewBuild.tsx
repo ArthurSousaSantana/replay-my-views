@@ -43,9 +43,11 @@ const AdminNewBuild = () => {
   // Form state
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState<string[]>(["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"]);
+  const DEFAULT_BUILD_CATEGORIES = ["Gamer Entry-Level", "Gamer Mid-Range", "Gamer High-End", "Workstation", "Office"];
+  const DEFAULT_BUILD_BADGES = ["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"];
+  const { options: categoryOptions, setOptions: setCategoryOptions, addOption: addCategoryOption } = useTaxonomyOptions("build_category", DEFAULT_BUILD_CATEGORIES);
   const [category, setCategory] = useState("Gamer Entry-Level");
-  const [badgeOptions, setBadgeOptions] = useState<string[]>(["", "Lançamento", "Oferta Limitada", "RGB Pro", "Silent Build", "PC da Crise", "PC de Rico", "Full White", "Pc Aesthetic", "PC de Entrada Raiz", "Máquina de Streamer", "Rodando Tudo", "Setup Minimalista", "Sonho de Consumo", "Pronto para Upgrade", "Foco em FPS", "Melhor Custo-Benefício"]);
+  const { options: badgeOptions, setOptions: setBadgeOptions, addOption: addBadgeOption } = useTaxonomyOptions("build_badge", DEFAULT_BUILD_BADGES);
   const [badge, setBadge] = useState("");
   const [description, setDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
