@@ -70,7 +70,7 @@ const AdminNewOffer = () => {
   const [isFeatured, setIsFeatured] = useState(false);
   const [oldPrice, setOldPrice] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
-  const [badges, setBadges] = useState<string[]>(DEFAULT_BADGES);
+  const { options: badges, setOptions: setBadges, addOption: addBadgeOption } = useTaxonomyOptions("offer_badge", DEFAULT_BADGES);
   const [promoBadge, setPromoBadge] = useState(DEFAULT_BADGES[0]);
   const [isLimited, setIsLimited] = useState(false);
   const [isBestPrice, setIsBestPrice] = useState(true);
