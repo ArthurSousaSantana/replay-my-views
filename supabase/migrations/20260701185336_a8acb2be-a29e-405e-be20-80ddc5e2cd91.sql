@@ -1,0 +1,4 @@
+CREATE POLICY "Admin can view img-utils" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'img-utils' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admin can upload to img-utils" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'img-utils' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admin can update img-utils" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'img-utils' AND public.has_role(auth.uid(), 'admin')) WITH CHECK (bucket_id = 'img-utils' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admin can delete from img-utils" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'img-utils' AND public.has_role(auth.uid(), 'admin'));
