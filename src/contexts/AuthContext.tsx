@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRoleChecking, setIsRoleChecking] = useState(false);
 
   const checkAdminRole = async (userId: string) => {
     const { data } = await supabase
@@ -64,16 +65,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!userChanged) return;
 
         if (session?.user) {
-          // Recheck role in background WITHOUT flipping isLoading so the
-          // admin route children (forms) don't get unmounted.
+          // Recheck role WITHOUT flipping isLoading so the admin route
+          // children (forms) don't get unmounted. isRoleChecking keeps the
+          // guard in a loading state instead of flashing "Acesso Negado".
+          setIsRoleChecking(true);
           setTimeout(async () => {
             if (!mounted) return;
             const admin = await checkAdminRole(session.user.id);
             if (!mounted) return;
             setIsAdmin(admin);
+            setIsRoleChecking(false);
           }, 0);
         } else {
           setIsAdmin(false);
+          setIsRoleChecking(false);
         }
       }
     );
@@ -95,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, isAdmin, isLoading, signIn, signOut }}>
+    <AuthContext.Provider value={{ session, user, isAdmin, isLoading: isLoading || isRoleChecking, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
