@@ -90,8 +90,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error as Error | null };
+    setIsRoleChecking(true);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error || !data.session?.user) {
+      setIsRoleChecking(false);
+      return { error: error as Error | null };
+    }
+
+    const admin = await checkAdminRole(data.session.user.id);
+    setSession(data.session);
+    setUser(data.session.user);
+    setIsAdmin(admin);
+    setIsRoleChecking(false);
+
+    if (!admin) {
+      await supabase.auth.signOut();
+      return { error: new Error("Esta conta não possui permissão de administrador.") };
+    }
+
+    return { error: null };
   };
 
   const signOut = async () => {

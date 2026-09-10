@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -10,11 +10,11 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { signIn, isAdmin, session } = useAuth();
 
-  // If already authenticated as admin, redirect
-  if (session && isAdmin) {
-    navigate("/admin", { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (session && isAdmin) {
+      navigate("/admin", { replace: true });
+    }
+  }, [session, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,10 +29,7 @@ const AdminLogin = () => {
       return;
     }
 
-    // Wait briefly for auth state to update and check admin
-    setTimeout(() => {
-      navigate("/admin", { replace: true });
-    }, 500);
+    navigate("/admin", { replace: true });
   };
 
   return (
