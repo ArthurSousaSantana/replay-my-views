@@ -331,6 +331,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      recalc_build_prices: { Args: { _build_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "user"
